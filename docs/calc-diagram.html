@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Cardboard computer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="calc-diagram.css" />
+    <link rel="icon" type="image/png" sizes="192x192" href="images/e6b-icon.png" />
+  </head>
+  <body>
+    <header>
+      <h1>The Cardboard Computer</h1>
+    </header>
+    <main>
+      <figure id="sliderule">
+        <svg id="calc-face" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <g id="outer-wheel">
+            <circle cx="50" cy="50" r="49" stroke="black" stroke-width=".1" fill="white"/>
+            <g id="outer-unit-pointer">
+              <circle cx="50" cy="3.75" r="2" fill="black"/>
+              <text x="50" y="4.5" fill="white" class="label">10</text>
+            </g>
+          </g>
+          <g id="inner-wheel">
+            <circle cx="50" cy="50" r="42" stroke="black" stroke-width=".1" fill="#eeeeff"/>
+            <g id="inner-unit-pointer">
+              <circle cx="50" cy="11.5" r="2" fill="black"/>
+              <text x="50" y="12.25" fill="white" class="label">10</text>
+            </g>
+            <g id="rate-pointer" transform="rotate(280.134450, 50, 50)">
+              <polygon points="49,13.75 51,13.75 50,8" fill="black"/>
+            </g>
+            <g id="time-scale">
+              <circle cx="50" cy="50" r="36.5" stroke="black" fill="white" stroke-width=".1"/>
+              <g id="timescale-rate-pointer" transform="rotate(280.134450, 50, 50)">
+                <circle cx="50" cy="15.55" r="2" fill="black"/>
+                <text x="50" y="16.30" fill="white" class="label">60</text>
+              </g>
+            </g>
+          </g>
+          <g id="grommit">
+            <circle cx="50" cy="50" r="3" fill="#aaaaaa"/>
+            <circle cx="50" cy="50" r="1" stroke="black" stroke-width=".1" fill="#333333"/>
+          </g>
+        </svg>
+      </figure>
+    </main>
+    <script type="text/javascript" src="calc-diagram.js">
+    </script>
+  </body>
+</html>

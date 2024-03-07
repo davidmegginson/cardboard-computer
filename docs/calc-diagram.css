@@ -1,0 +1,12 @@
+body {
+    font-family: arial, sans-serif;
+}
+
+.label {
+    font-size: 15%;
+    text-anchor: middle;
+}
+
+#sliderule {
+    max-width: 100vh;
+}
