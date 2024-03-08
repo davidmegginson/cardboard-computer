@@ -7,6 +7,19 @@ body {
     text-anchor: middle;
 }
 
+.help {
+    font-size: 10%;
+}
+
+.help table {
+    border-spacing: 0;
+}
+
+.help table td, .conversions table th {
+    padding: 0 .5em 0 0;
+    spacing: 0 .5em 0 0;
+}
+
 #sliderule {
     max-width: 100vh;
 }

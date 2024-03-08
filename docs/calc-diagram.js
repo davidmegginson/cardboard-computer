@@ -65,7 +65,8 @@ window.onload = () => {
             }, label_text));
         }
 
-        // rotate the outer wheel a bit
-        outer_wheel_node.setAttribute("transform", "rotate(" + Math.log10(1.51) * -360.0 + ", 50, 50)");
     }
+
+    // rotate the outer wheel a bit
+    outer_wheel_node.setAttribute("transform", "rotate(" + Math.log10(1.51) * -360.0 + ", 50, 50)");
 };
