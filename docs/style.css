@@ -23,3 +23,8 @@ body {
 #sliderule {
     max-width: 90vh;
 }
+
+#outer-special-values #inner-special-values {
+    font-size: 80%;
+    font-color: #aaaaaa;
+}
