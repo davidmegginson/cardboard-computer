@@ -41,8 +41,6 @@ window.onload = () => {
             op = "×";
             eq = "=";
             n3 = n1 * n2;
-            rotateWheel(n1);
-            rotateCursor(n2);
         } else {
             op = "÷";
             if (n1 < n2) {
@@ -54,15 +52,13 @@ window.onload = () => {
             } else {
                 eq = "=~";
             }
-            rotateWheel(n3);
-            rotateCursor(n2);
         }
 
         return [n1, op, n2, eq, n3];
     }
 
     function rotateWheel (n) {
-        outer_wheel_node.setAttribute("transform", "rotate(" + Math.log10(n) * -360.0 + ", 500, 500)");
+        inner_wheel_node.setAttribute("transform", "rotate(" + Math.log10(n) * 360.0 + ", 500, 500)");
     }
 
     function rotateCursor (n) {
@@ -126,6 +122,14 @@ window.onload = () => {
 
     
     let [n1, op, n2, eq, n3]  = setProblem();
+    if (op == '×') {
+        rotateWheel(n1);
+        rotateCursor(n3);
+    } else {
+        rotateWheel(n3);
+        rotateCursor(n1);
+    }
+
     document.getElementById("n1").textContent = "" + n1;
     document.getElementById("op").textContent = op;
     document.getElementById("n2").textContent = "" + n2;
