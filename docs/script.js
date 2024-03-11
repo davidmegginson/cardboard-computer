@@ -1,5 +1,6 @@
 window.onload = () => {
 
+    // Construct an element node with the name, attributes, and text content provided
     function makeElement (name, atts, value) {
         node = document.createElementNS("http://www.w3.org/2000/svg", name);
         if (atts) {
@@ -13,10 +14,11 @@ window.onload = () => {
         return node;
     }
 
+    // Generate a multiplication or division problem
     function setProblem () {
 
-        let factor1 = Math.floor(Math.random() * 4.0);
-        let factor2 = Math.floor(Math.random() * 4.0);
+        let factor1 = Math.floor(Math.random() * 10.0);
+        let factor2 = Math.floor(Math.random() * 10.0);
 
         if (factor1 > 2) {
             factor1 = 2;
@@ -35,7 +37,7 @@ window.onload = () => {
         n1 == 1 && n1++;
         n2 == 1 && n2++;
 
-        if (Math.random() > 0.5) {
+        if (Math.random() >= 0.5) {
             op = "×";
             eq = "=";
             n3 = n1 * n2;
@@ -43,19 +45,20 @@ window.onload = () => {
             rotateCursor(n2);
         } else {
             op = "÷";
-            eq = "=~";
             if (n1 < n2) {
                 [n1, n2] = [n2, n1];
             }
             n3 = Math.round((n1 / n2) * 10.0) / 10.0;
+            if (n3 == n1 / n2) {
+                eq = "=";
+            } else {
+                eq = "=~";
+            }
             rotateWheel(n3);
             rotateCursor(n2);
         }
-        document.getElementById("n1").textContent = "" + n1;
-        document.getElementById("op").textContent = op;
-        document.getElementById("n2").textContent = "" + n2;
-        document.getElementById("eq").textContent = eq;
-        document.getElementById("n3").textContent = "" + n3;
+
+        return [n1, op, n2, eq, n3];
     }
 
     function rotateWheel (n) {
@@ -121,5 +124,12 @@ window.onload = () => {
 
     }
 
-    setProblem();
+    
+    let [n1, op, n2, eq, n3]  = setProblem();
+    document.getElementById("n1").textContent = "" + n1;
+    document.getElementById("op").textContent = op;
+    document.getElementById("n2").textContent = "" + n2;
+    document.getElementById("eq").textContent = eq;
+    document.getElementById("n3").textContent = "" + n3;
+    
 };
