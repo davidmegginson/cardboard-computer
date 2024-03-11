@@ -13,9 +13,63 @@ window.onload = () => {
         return node;
     }
 
+    function setProblem () {
+
+        let factor1 = Math.floor(Math.random() * 4.0);
+        let factor2 = Math.floor(Math.random() * 4.0);
+
+        if (factor1 > 2) {
+            factor1 = 2;
+        }
+
+        if (factor2 > 2) {
+            factor2 = 2;
+        }
+
+        let n1 = Math.ceil(Math.random() * (10.0 ** factor1));
+        let n2 = Math.ceil(Math.random() * (10.0 ** factor2));
+        let n3 = null;
+        let op = null;
+        let eq = null;
+
+        n1 == 1 && n1++;
+        n2 == 1 && n2++;
+
+        if (Math.random() > 0.5) {
+            op = "×";
+            eq = "=";
+            n3 = n1 * n2;
+            rotateWheel(n1);
+            rotateCursor(n2);
+        } else {
+            op = "÷";
+            eq = "=~";
+            if (n1 < n2) {
+                [n1, n2] = [n2, n1];
+            }
+            n3 = Math.round((n1 / n2) * 10.0) / 10.0;
+            rotateWheel(n3);
+            rotateCursor(n2);
+        }
+        document.getElementById("n1").textContent = "" + n1;
+        document.getElementById("op").textContent = op;
+        document.getElementById("n2").textContent = "" + n2;
+        document.getElementById("eq").textContent = eq;
+        document.getElementById("n3").textContent = "" + n3;
+    }
+
+    function rotateWheel (n) {
+        outer_wheel_node.setAttribute("transform", "rotate(" + Math.log10(n) * -360.0 + ", 500, 500)");
+    }
+
+    function rotateCursor (n) {
+        cursor_node.setAttribute("transform", "rotate(" + Math.log10(n) * 360.0 + ", 500, 500)");
+    }
+
     let outer_wheel_node = document.getElementById("outer-wheel");
     let inner_wheel_node = document.getElementById("inner-wheel");
-
+    let cursor_node = document.getElementById("cursor");
+    
     for (let i = 2; i < 1000; i++) {
 
         // figure out where to place the tick, on a circular log10 scale
@@ -67,6 +121,5 @@ window.onload = () => {
 
     }
 
-    // rotate the outer wheel a bit
-    outer_wheel_node.setAttribute("transform", "rotate(" + Math.log10(1.51) * -360.0 + ", 500, 500)");
+    setProblem();
 };

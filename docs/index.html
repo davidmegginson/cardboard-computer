@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>The Cardboard computer</title>
+    <title>Circular slide rule</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="style.css" />
@@ -9,9 +9,18 @@
   </head>
   <body>
     <header>
-      <h1>The Cardboard Computer</h1>
+      <h1>Circular slide rule</h1>
     </header>
     <main>
+      <figure id="problem">
+        <span id="n1"></span>
+        <span id="op"></span>
+        <span id="n2"></span>
+        <span id="eq"></span>
+        <span id="n3"></span>
+      </figure>
+    </main>
+    <aside>
       <figure id="sliderule">
         <svg id="calc-face" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
           <g id="outer-wheel">
@@ -40,13 +49,17 @@
               </g>
             </g>
           </g>
+          <g id="cursor">
+            <ellipse cx="500" cy="268"  rx="20" ry="232" fill-opacity="10%" fill="black" stroke="black" stroke-width="1"/>
+            <line id="hairline" x1="500" x2="500" y1="36" y2="500" opacity="50%" stroke="#aa0000" stroke-width="1"/>
+          </g>
           <g id="grommit">
             <circle cx="500" cy="500" r="30" fill="#aaaaaa"/>
             <circle cx="500" cy="500" r="10" stroke="black" stroke-width=".1" fill="#333333"/>
           </g>
         </svg>
       </figure>
-    </main>
+    </aside>
     <script type="text/javascript" src="script.js">
     </script>
   </body>

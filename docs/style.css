@@ -21,7 +21,12 @@ body {
 }
 
 #sliderule {
-    max-width: 90vh;
+    max-width: 80vh;
+}
+
+#problem {
+    display: block;
+    font-size: 200%;
 }
 
 #outer-special-values #inner-special-values {
