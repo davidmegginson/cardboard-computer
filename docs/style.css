@@ -1,5 +1,26 @@
 body {
     font-family: arial, sans-serif;
+    padding: 0;
+    margin: 2vw 2vh;
+}
+
+header, main, aside, figure{
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    margin: 2ex 0;
+}
+
+h1 {
+    font-size: 120%;
+}
+
+figcaption {
+    font-style: italic;
+    font-size: 90.1%;
+    color: #666666;
 }
 
 .label {
@@ -7,26 +28,14 @@ body {
     text-anchor: middle;
 }
 
-.help {
-    font-size: 100%;
-}
-
-.help table {
-    border-spacing: 0;
-}
-
-.help table td, .conversions table th {
-    padding: 0 .5em 0 0;
-    spacing: 0 .5em 0 0;
-}
-
 #sliderule {
-    max-width: 80vh;
+    max-width: 96vw;
+    width: 80vh
 }
 
 #problem {
     display: block;
-    font-size: 200%;
+    font-size: 120%;
 }
 
 #outer-special-values #inner-special-values {
