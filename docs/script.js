@@ -57,23 +57,37 @@ window.onload = () => {
         return [n1, op, n2, eq, n3];
     }
 
-    function rotateWheel (n) {
-        outer_wheel_node.setAttribute("transform", "rotate(" + Math.log10(n) * -360.0 + ", 500, 500)");
-    }
-
-    function rotateCursor (n) {
-        cursor_node.setAttribute("transform", "rotate(" + Math.log10(n) * 360.0 + ", 500, 500)");
-    }
-
-    let outer_wheel_node = document.getElementById("outer-wheel");
-    let inner_wheel_node = document.getElementById("inner-wheel");
-    let cursor_node = document.getElementById("cursor");
     
+    /**
+     * Construct a rotation transformation string
+     * n is the rotation in degrees
+     */
+    function makeRotation(n) {
+        return "rotate(" + n + ", 500, 500)";
+    }
+
+    
+    /**
+     * Rotate the node around its centre.
+     * The degrees of rotation will be the log10 of n
+     * 1 (default) means clockwise; -1 means counter-clockwise.
+     */
+    function rotate (node, n, direction) {
+        if (!direction) {
+            direction = 1;
+        }
+        let degrees = Math.log10(n) * 360.0 * direction;
+        node.setAttribute("transform", makeRotation(degrees));
+    }
+
+    let outerWheelNode = document.getElementById("outer-wheel");
+    let innerWheelNode = document.getElementById("inner-wheel");
+    let cursorNode = document.getElementById("cursor");
+
     for (let i = 2; i < 1000; i++) {
 
         // figure out where to place the tick, on a circular log10 scale
         let rotation = Math.log10(i) * 360.0;
-        let transform  = "rotate(" + rotation + ", 500, 500)";
 
         // tick defaults (small tick)
         let tick_offset = 20;
@@ -95,12 +109,12 @@ window.onload = () => {
             tick_stroke = 2;
         }
 
-        outer_wheel_node.appendChild(makeElement("line", {
-            x1: 500, x2: 500, y1: (80 - tick_offset), y2: 80, stroke: "black", "stroke-width": tick_stroke, transform: transform
+        outerWheelNode.appendChild(makeElement("line", {
+            x1: 500, x2: 500, y1: (80 - tick_offset), y2: 80, stroke: "black", "stroke-width": tick_stroke, transform: makeRotation(rotation)
         }));
 
-        inner_wheel_node.appendChild(makeElement("line", {
-            x1: 500, x2: 500, y1: 80, y2: 80 + tick_offset, stroke: "black", "stroke-width": tick_stroke, transform: transform
+        innerWheelNode.appendChild(makeElement("line", {
+            x1: 500, x2: 500, y1: 80, y2: 80 + tick_offset, stroke: "black", "stroke-width": tick_stroke, transform: makeRotation(rotation)
         }));
 
         // labels
@@ -109,12 +123,12 @@ window.onload = () => {
             if (i == 10) {
                 continue; // already drawing this as a special circle
             }
-            outer_wheel_node.appendChild(makeElement("text", {
-                x: 500, y: 45, class: "label", transform: transform
+            outerWheelNode.appendChild(makeElement("text", {
+                x: 500, y: 45, class: "label", transform: makeRotation(rotation)
             }, label_text));
 
-            inner_wheel_node.appendChild(makeElement("text", {
-                x: 500, y: 130, class: "label", transform: transform
+            innerWheelNode.appendChild(makeElement("text", {
+                x: 500, y: 130, class: "label", transform: makeRotation(rotation)
             }, label_text));
         }
 
@@ -123,11 +137,11 @@ window.onload = () => {
     
     let [n1, op, n2, eq, n3]  = setProblem();
     if (op == '×') {
-        rotateWheel(n1);
-        rotateCursor(n2);
+        rotate(outerWheelNode, n1, -1);
+        rotate(cursorNode, n2);
     } else {
-        rotateWheel(n3);
-        rotateCursor(n2);
+        rotate(outerWheelNode, n3, -1);
+        rotate(cursorNode, n2);
     }
 
     document.getElementById("n1").textContent = "" + n1;
