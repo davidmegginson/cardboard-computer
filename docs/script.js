@@ -38,6 +38,7 @@ window.onload = () => {
             direction = 1;
         }
         let degrees = Math.log10(n) * 360.0 * direction;
+        console.log(node, n, direction, degrees);
         node.setAttribute("transform", makeRotation(degrees));
     }
 
@@ -165,11 +166,10 @@ window.onload = () => {
      * Show the solution, including transforming the wheel and cursor.
      */
     function showSolution (problem) {
-        console.log(problem);
         document.getElementById("n3").textContent = "" + problem.n3;
-        if (op == '×') {
+        if (problem.op == '×') {
             rotate(outerWheelNode, problem.n1, -1);
-            rotate(cursorNode, problem.n2);
+            rotate(cursorNode, problem.n2, 1);
         } else {
             rotate(outerWheelNode, problem.n3, -1);
             rotate(cursorNode, problem.n2);
