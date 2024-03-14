@@ -1,11 +1,14 @@
 window.onload = () => {
 
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const PRECISION = 3;
+
     /**
      * Construct a DOM element in the SVG namespace
      * Use the local name and (optionally) attributes and text content provided
      */
     function makeElement (name, atts, value) {
-        node = document.createElementNS("http://www.w3.org/2000/svg", name);
+        node = document.createElementNS(SVG_NS, name);
         if (atts) {
             for (att in atts) {
                 node.setAttribute(att, atts[att]);
@@ -38,7 +41,7 @@ window.onload = () => {
             direction = 1;
         }
         let degrees = Math.log10(n) * 360.0 * direction;
-        console.log(node, n, direction, degrees);
+
         node.setAttribute("transform", makeRotation(degrees));
     }
 
@@ -100,6 +103,7 @@ window.onload = () => {
         
     }
 
+
     
     /**
      * Generate a multiplication or division problem
@@ -110,6 +114,8 @@ window.onload = () => {
 
         let factor1 = Math.floor(Math.random() * 10.0);
         let factor2 = Math.floor(Math.random() * 10.0);
+
+        let result = null;
 
         if (factor1 > 2) {
             factor1 = 2;
@@ -130,20 +136,18 @@ window.onload = () => {
 
         if (Math.random() >= 0.5) {
             problem.op = "×";
-            problem.eq = "=";
-            problem.n3 = problem.n1 * problem.n2;
+            result = problem.n1 * problem.n2;
         } else {
             problem.op = "÷";
             if (problem.n1 < problem.n2) {
                 [problem.n1, problem.n2] = [problem.n2, problem.n1];
             }
-            problem.n3 = Math.round((problem.n1 / problem.n2) * 10.0) / 10.0;
-            if (problem.n3 == problem.n1 / problem.n2) {
-                problem.eq = "=";
-            } else {
-                problem.eq = "=~";
-            }
+            result = problem.n1 / problem.n2;
         }
+
+        problem.n3 = Number(result.toPrecision(PRECISION));
+        console.log(result, problem.n3);
+        problem.eq = (result == problem.n3) ? "=" : "=~";
 
         return problem;
     }
@@ -153,9 +157,9 @@ window.onload = () => {
      * Show a problem without the solution
      */
     function showProblem (problem) {
-        document.getElementById("n1").textContent = "" + problem.n1;
+        document.getElementById("n1").textContent = problem.n1.toLocaleString();
         document.getElementById("op").textContent = problem.op;
-        document.getElementById("n2").textContent = "" + problem.n2;
+        document.getElementById("n2").textContent = problem.n2.toLocaleString();
         document.getElementById("eq").textContent = problem.eq;
         document.getElementById("n3").textContent = "?";
         rotate(outerWheelNode, 1);
@@ -166,7 +170,7 @@ window.onload = () => {
      * Show the solution, including transforming the wheel and cursor.
      */
     function showSolution (problem) {
-        document.getElementById("n3").textContent = "" + problem.n3;
+        document.getElementById("n3").textContent = problem.n3.toLocaleString();
         if (problem.op == '×') {
             rotate(outerWheelNode, problem.n1, -1);
             rotate(cursorNode, problem.n2, 1);
@@ -193,12 +197,14 @@ window.onload = () => {
 
     // Set up variables
     let outerWheelNode = document.getElementById("outer-wheel");
+    let outerWheelScaleNode = document.getElementById("outer-scale");
     let innerWheelNode = document.getElementById("inner-wheel");
+    let innerWheelScaleNode = document.getElementById("inner-scale");
     let cursorNode = document.getElementById("cursor");
     let problem = null;
 
     // Draw the scales on the wheels
-    drawScales(outerWheelNode, innerWheelNode);
+    drawScales(outerWheelScaleNode, innerWheelScaleNode);
 
     // Add the handler for clicks/taps and keypresses
     window.addEventListener("click", handler);
