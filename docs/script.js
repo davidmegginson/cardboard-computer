@@ -112,6 +112,7 @@ window.onload = () => {
 
         let problem = {};
 
+        // TODO problems with pi
         let factor1 = Math.floor(Math.random() * 10.0);
         let factor2 = Math.floor(Math.random() * 10.0);
 
@@ -139,9 +140,9 @@ window.onload = () => {
             result = problem.n1 * problem.n2;
         } else {
             problem.op = "÷";
-            if (problem.n1 < problem.n2) {
-                [problem.n1, problem.n2] = [problem.n2, problem.n1];
-            }
+//            if (problem.n1 < problem.n2) {
+//                [problem.n1, problem.n2] = [problem.n2, problem.n1];
+//            }
             result = problem.n1 / problem.n2;
         }
 
