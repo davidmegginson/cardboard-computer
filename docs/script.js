@@ -30,7 +30,6 @@ window.onload = () => {
         return "rotate(" + n + ", 500, 500)";
     }
 
-    
     /**
      * Rotate a node around its centre.
      * The degrees of rotation will be the log10 of n
@@ -40,9 +39,9 @@ window.onload = () => {
         if (!direction) {
             direction = 1;
         }
-        let degrees = Math.log10(n) * 360.0 * direction;
-
-        node.setAttribute("transform", makeRotation(degrees));
+        let degrees = (Math.log10(n) * 360.0 * direction) % 360.0;
+        console.log("rotate", node, n, direction);
+        node.style.transform="rotate(" + degrees + "deg)";
     }
 
 
@@ -146,7 +145,6 @@ window.onload = () => {
         }
 
         problem.n3 = Number(result.toPrecision(PRECISION));
-        console.log(result, problem.n3);
         problem.eq = (result == problem.n3) ? "=" : "=~";
 
         return problem;

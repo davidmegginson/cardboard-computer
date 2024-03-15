@@ -38,6 +38,11 @@ figcaption {
     font-size: 120%;
 }
 
+#outer-wheel, #inner-wheel, #cursor {
+    transform-origin: center;
+    transition-duration: 2s;
+}
+
 #outer-special-values #inner-special-values {
     font-size: 80%;
     font-color: #aaaaaa;
