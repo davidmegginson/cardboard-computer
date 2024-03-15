@@ -38,13 +38,8 @@ figcaption {
     font-size: 120%;
 }
 
-#outer-wheel, #inner-wheel, #cursor {
+#sliderule-diagram, #outer-wheel, #inner-wheel, #cursor {
     transform-origin: center;
-    transition-duration: 2s;
-}
-
-#cursor {
-    transition-delay: 2s;
 }
 
 #outer-special-values #inner-special-values {

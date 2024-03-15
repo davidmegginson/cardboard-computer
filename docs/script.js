@@ -31,11 +31,21 @@ window.onload = () => {
      * The degrees of rotation will be the log10 of n
      * 1 (default) means clockwise; -1 means counter-clockwise.
      */
-    function rotate (node, n, direction) {
+    function rotate (node, n, direction, duration, delay) {
         if (!direction) {
             direction = 1;
         }
+        if (!duration) {
+            duration = 0;
+        }
+        if (!delay) {
+            delay = 0;
+        }
         let degrees = (Math.log10(n) * 360.0 * direction) % 360.0;
+        if (degrees > 180.0) degrees -= 360.0;
+        else if (degrees < -180.0) degrees += 360.0;
+        node.style.transitionDelay = delay + "s";
+        node.style.transitionDuration = duration + "s";
         console.log("rotate", node, n, direction);
         node.style.transform="rotate(" + degrees + "deg)";
     }
@@ -158,8 +168,9 @@ window.onload = () => {
         document.getElementById("n2").textContent = problem.n2.toLocaleString();
         document.getElementById("eq").textContent = problem.eq;
         document.getElementById("n3").textContent = "?";
-        rotate(outerWheelNode, 1);
-        rotate(cursorNode, 1);
+        rotate(slideRuleNode, 1, 0, 0);
+        rotate(outerWheelNode, 1, 0, 0);
+        rotate(cursorNode, 1, 0, 0);
     }
 
     /**
@@ -168,11 +179,12 @@ window.onload = () => {
     function showSolution (problem) {
         document.getElementById("n3").textContent = problem.n3.toLocaleString();
         if (problem.op == '×') {
-            rotate(outerWheelNode, problem.n1, -1);
-            rotate(cursorNode, problem.n2, 1);
+            rotate(outerWheelNode, problem.n1, -1, 2, 0);
+            rotate(cursorNode, problem.n2, 1, 2, 2);
+            rotate(slideRuleNode, problem.n2, -1, 2, 4);
         } else {
-            rotate(outerWheelNode, problem.n3, -1);
-            rotate(cursorNode, problem.n2);
+            rotate(cursorNode, problem.n2, 1, 2, 0);
+            rotate(outerWheelNode, problem.n3, -1, 2, 2);
         }
     }
 
@@ -192,6 +204,7 @@ window.onload = () => {
 
 
     // Set up variables
+    let slideRuleNode = document.getElementById("sliderule-diagram");
     let outerWheelNode = document.getElementById("outer-wheel");
     let outerWheelScaleNode = document.getElementById("outer-scale");
     let innerWheelNode = document.getElementById("inner-wheel");
