@@ -26,11 +26,6 @@ window.onload = () => {
      * n is the rotation in degrees
      * Currently 500,500 is hardcoded as the centre.
      */
-    function makeRotation(n) {
-        return "rotate(" + n + ", 500, 500)";
-    }
-
-    
     /**
      * Rotate a node around its centre.
      * The degrees of rotation will be the log10 of n
@@ -40,9 +35,9 @@ window.onload = () => {
         if (!direction) {
             direction = 1;
         }
-        let degrees = Math.log10(n) * 360.0 * direction;
-
-        node.setAttribute("transform", makeRotation(degrees));
+        let degrees = (Math.log10(n) * 360.0 * direction) % 360.0;
+        console.log("rotate", node, n, direction);
+        node.style.transform="rotate(" + degrees + "deg)";
     }
 
 
@@ -53,8 +48,9 @@ window.onload = () => {
     function drawScales (outerWheelNode, innerWheelNode) {
         for (let i = 2; i < 1000; i++) {
 
-            // figure out where to place the tick, on a circular log10 scale
-            let rotation = Math.log10(i) * 360.0;
+            function makeRotation(n) {
+                return "rotate(" + (Math.log10(i) * 360.0) + ", 500, 500)";
+            }
 
             // tick defaults (small tick)
             let tick_offset = 20;
@@ -77,11 +73,11 @@ window.onload = () => {
             }
 
             outerWheelNode.appendChild(makeElement("line", {
-                x1: 500, x2: 500, y1: (80 - tick_offset), y2: 80, stroke: "black", "stroke-width": tick_stroke, transform: makeRotation(rotation)
+                x1: 500, x2: 500, y1: (80 - tick_offset), y2: 80, stroke: "black", "stroke-width": tick_stroke, transform: makeRotation(i)
             }));
 
             innerWheelNode.appendChild(makeElement("line", {
-                x1: 500, x2: 500, y1: 80, y2: 80 + tick_offset, stroke: "black", "stroke-width": tick_stroke, transform: makeRotation(rotation)
+                x1: 500, x2: 500, y1: 80, y2: 80 + tick_offset, stroke: "black", "stroke-width": tick_stroke, transform: makeRotation(i)
             }));
 
             // labels
@@ -91,11 +87,11 @@ window.onload = () => {
                     continue; // already drawing this as a special circle
                 }
                 outerWheelNode.appendChild(makeElement("text", {
-                    x: 500, y: 45, class: "label", transform: makeRotation(rotation)
+                    x: 500, y: 45, class: "label", transform: makeRotation(i)
                 }, label_text));
 
                 innerWheelNode.appendChild(makeElement("text", {
-                    x: 500, y: 130, class: "label", transform: makeRotation(rotation)
+                    x: 500, y: 130, class: "label", transform: makeRotation(i)
                 }, label_text));
             }
 
@@ -147,7 +143,6 @@ window.onload = () => {
         }
 
         problem.n3 = Number(result.toPrecision(PRECISION));
-        console.log(result, problem.n3);
         problem.eq = (result == problem.n3) ? "=" : "=~";
 
         return problem;
