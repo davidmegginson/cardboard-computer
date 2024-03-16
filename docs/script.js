@@ -42,8 +42,11 @@ window.onload = () => {
             delay = 0;
         }
         let degrees = (Math.log10(n) * 360.0 * direction) % 360.0;
-        if (degrees > 180.0) degrees -= 360.0;
-        else if (degrees < -180.0) degrees += 360.0;
+        if (degrees > 180.0) {
+            degrees -= 360.0;
+        } else if (degrees < -180.0) {
+            degrees += 360.0;
+        }
         node.style.transitionDelay = delay + "s";
         node.style.transitionDuration = duration + "s";
         console.log("rotate", node, n, direction);
