@@ -1,8 +1,50 @@
+//
+// Constants
+//
+
 const SVG_NS = "http://www.w3.org/2000/svg";
 const PRECISION = 3;
 
+
+//
+// Scale definitions (will move to JSON)
+//
+
 const LOG10_SCALE = {
-    func: Math.log10,
+    factor: 1,
+    ranges: [
+        {
+            start: 1,
+            end: 2,
+            step: 0.01,
+            largeTickInterval: 0.05,
+            labelInterval: 0.1
+        },
+        {
+            start: 2,
+            end: 5,
+            step: 0.02,
+            largeTickInterval: 0.1,
+            labelInterval: 0.5
+        },
+        {
+            start: 5,
+            end: 10,
+            step: 0.05,
+            largeTickInterval: 0.1,
+            labelInterval: 0.5
+        }
+    ],
+    specialValues: [
+        {
+            label: "π",
+            value: Math.PI
+        }
+    ]
+}
+
+const INVERSE_LOG10_SCALE = {
+    factor: -1,
     ranges: [
         {
             start: 1,
@@ -29,7 +71,7 @@ const LOG10_SCALE = {
 }
 
 const SQUARE_SCALE = {
-    func: (n) => Math.log10(n) / 2,
+    factor: 2,
     ranges: [
         {
             start: 1,
@@ -91,7 +133,7 @@ const SQUARE_SCALE = {
 }
 
 const CUBE_SCALE = {
-    func: (n) => Math.log10(n) / 3,
+    factor: 3,
     ranges: [
         {
             start: 1,
@@ -180,39 +222,46 @@ const CUBE_SCALE = {
     ]
 };
 
-function drawScale (node, scaleLabel, scale, yOffset, yDirection, rDirection, labelClass) {
+function drawScale (node, scaleLabel, scale, yOffset, yDirection, labelClass) {
+
     function checkInterval (i, interval) {
         let x = Math.round(i * 1000);
         let y = Math.round(interval * 1000);
         return (x % y == 0);
     }
+
+    function makeRotation (deg) {
+        return "rotate(" + (Math.log10(deg) / scale.factor) * 360.0 + ", 500, 500)";
+    }
+
+    let scaleNode = makeElement("g", {
+        class: "scale"
+    });
     
     if (!yDirection) {
         yDirection = 1;
     }
-    if (!rDirection) {
-        rDirection = 1;
-    }
+
     if (!labelClass) {
         labelClass = "label";
     }
 
     // Label the scale
     if (scaleLabel) {
-        node.appendChild(makeElement("text", {
+        scaleNode.appendChild(makeElement("text", {
             x: 500,
             y: yOffset + (yDirection == 1 ? 50 : -35),
             class: labelClass,
             fill: "blue",
-            transform: "rotate(" + (5.0 * rDirection) + ", 500, 500)"
+            transform: "rotate(" + (scale.factor < 0 ? -5 : 5) + ", 500, 500)"
         }, scaleLabel));
     }
     
     scale.ranges.forEach((range) => {
         for (let i = range.start; i < range.end; i += range.step) {
             let isLarge = checkInterval(i, range.largeTickInterval);
-            let rotation = "rotate(" + (scale.func(i) * 360.0 * rDirection) + ", 500, 500)";
-            node.appendChild(makeElement("line", {
+            let rotation = makeRotation(i);
+            scaleNode.appendChild(makeElement("line", {
                 x1: 500,
                 x2: 500,
                 y1: yOffset,
@@ -222,7 +271,7 @@ function drawScale (node, scaleLabel, scale, yOffset, yDirection, rDirection, la
                 transform: rotation
             }));
             if (checkInterval(i, range.labelInterval) || i == range.start) {
-                node.appendChild(makeElement("text", {
+                scaleNode.appendChild(makeElement("text", {
                     x: 500,
                     y: yOffset + (yDirection == 1 ? 50 : -35),
                     class: labelClass,
@@ -232,6 +281,30 @@ function drawScale (node, scaleLabel, scale, yOffset, yDirection, rDirection, la
             }
         }
     });
+
+    if (scale.specialValues) {
+        scale.specialValues.forEach((special) => {
+            let rotation = makeRotation(special.value);
+            scaleNode.appendChild(makeElement("text", {
+                x: 500,
+                y: yOffset + (yDirection == 1 ? 50 : -35),
+                class: labelClass,
+                fill: "grey",
+                transform: rotation
+            }, special.label));
+            scaleNode.appendChild(makeElement("line", {
+                x1: 500,
+                x2: 500,
+                y1: yOffset,
+                y2: yOffset + 30 * yDirection,
+                stroke: "grey",
+                stroke_width: 1,
+                transform: rotation
+            }));
+        });
+    }
+
+    node.appendChild(scaleNode);
 }
 
 /**
@@ -363,23 +436,22 @@ function showSolution (problem) {
 
 
 // Set up variables
+
 let slideRuleNode = document.getElementById("sliderule-diagram");
 let outerWheelNode = document.getElementById("outer-wheel");
-let outerWheelScaleNode = document.getElementById("outer-scale");
 let innerWheelNode = document.getElementById("inner-wheel");
-let innerWheelScaleNode = document.getElementById("inner-scale");
-let inverseScaleNode = document.getElementById("inverse-scale");
 let cursorNode = document.getElementById("cursor");
+
 let problem = null;
 
 
 function draw (advanced) {
-    drawScale(outerWheelScaleNode, "D", LOG10_SCALE, 80, -1, 1);
-    drawScale(innerWheelScaleNode, "C", LOG10_SCALE, 80, 1, 1);
+    drawScale(outerWheelNode, "D", LOG10_SCALE, 80, -1);
+    drawScale(innerWheelNode, "C", LOG10_SCALE, 80, 1);
     if (advanced) {
-        drawScale(innerWheelScaleNode, "CI", LOG10_SCALE, 140, 1, -1, "label-inverse");
-        drawScale(innerWheelScaleNode, "A", SQUARE_SCALE, 200, 1, 1, "label-medium");
-        drawScale(innerWheelScaleNode, "K", CUBE_SCALE, 260, 1, 1, "label-small");
+        drawScale(innerWheelNode, "CI", INVERSE_LOG10_SCALE, 140, 1, "label-inverse");
+        drawScale(innerWheelNode, "A", SQUARE_SCALE, 200, 1, "label-medium");
+        drawScale(innerWheelNode, "K", CUBE_SCALE, 260, 1, "label-small");
     }
 }
 
