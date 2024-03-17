@@ -2,7 +2,8 @@ window.onload = () => {
 
     const SVG_NS = "http://www.w3.org/2000/svg";
     const PRECISION = 3;
-    const USE_INVERSE = true;
+    const ADVANCED = true;
+    
     const LOG10_SCALE = {
         func: Math.log10,
         ranges: [
@@ -182,7 +183,7 @@ window.onload = () => {
         ]
     };
 
-    function drawScale (node, scale, yOffset, yDirection, rDirection, fill) {
+    function drawScale (node, scaleLabel, scale, yOffset, yDirection, rDirection, labelClass) {
         function checkInterval (i, interval) {
             let x = Math.round(i * 1000);
             let y = Math.round(interval * 1000);
@@ -195,11 +196,22 @@ window.onload = () => {
         if (!rDirection) {
             rDirection = 1;
         }
-        if (!fill) {
-            fill = "black";
+        if (!labelClass) {
+            labelClass = "label";
         }
+
+        // Label the scale
+        if (scaleLabel) {
+            node.appendChild(makeElement("text", {
+                x: 500,
+                y: yOffset + (yDirection == 1 ? 50 : -35),
+                class: labelClass,
+                fill: "blue",
+                transform: "rotate(" + (5.0 * rDirection) + ", 500, 500)"
+            }, scaleLabel));
+        }
+        
         scale.ranges.forEach((range) => {
-            console.log(range);
             for (let i = range.start; i < range.end; i += range.step) {
                 let isLarge = checkInterval(i, range.largeTickInterval);
                 let rotation = "rotate(" + (scale.func(i) * 360.0 * rDirection) + ", 500, 500)";
@@ -216,8 +228,8 @@ window.onload = () => {
                     node.appendChild(makeElement("text", {
                         x: 500,
                         y: yOffset + (yDirection == 1 ? 50 : -35),
-                        class: "label",
-                        fill: fill,
+                        class: labelClass,
+                        fill: "currentColor",
                         transform: rotation
                     }, i.toLocaleString()));
                 }
@@ -386,12 +398,12 @@ window.onload = () => {
     }
 
     // Draw the scales on the wheels
-    drawScale(outerWheelScaleNode, LOG10_SCALE, 80, -1, 1);
-    drawScale(innerWheelScaleNode, LOG10_SCALE, 80, 1, 1);
-    if (USE_INVERSE) {
-        drawScale(innerWheelScaleNode, LOG10_SCALE, 140, 1, -1, "red");
-        drawScale(innerWheelScaleNode, SQUARE_SCALE, 200, 1, 1);
-        drawScale(innerWheelScaleNode, CUBE_SCALE, 260, 1, 1);
+    drawScale(outerWheelScaleNode, "D", LOG10_SCALE, 80, -1, 1);
+    drawScale(innerWheelScaleNode, "C", LOG10_SCALE, 80, 1, 1);
+    if (ADVANCED) {
+        drawScale(innerWheelScaleNode, "CI", LOG10_SCALE, 140, 1, -1, "label-inverse");
+        drawScale(innerWheelScaleNode, "A", SQUARE_SCALE, 200, 1, 1, "label-medium");
+        drawScale(innerWheelScaleNode, "K", CUBE_SCALE, 260, 1, 1, "label-small");
     }
 
     // Make the visualisation interactive

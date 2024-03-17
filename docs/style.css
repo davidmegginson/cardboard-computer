@@ -23,13 +23,24 @@ figcaption {
     color: #666666;
 }
 
-.label, .inverse-label {
-    font-size: 150%;
+.label, .label-inverse, .label-medium, .label-small {
     text-anchor: middle;
 }
 
-.inverse-label {
+.label, .label-inverse {
+    font-size: 150%;
+}
+
+text.label-inverse {
     color: red;
+}
+
+.label-medium {
+    font-size: 125%;
+}
+
+.label-small {
+    font-size: 100%;
 }
 
 #sliderule {
