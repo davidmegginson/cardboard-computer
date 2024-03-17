@@ -43,6 +43,24 @@ text.label-inverse {
     font-size: 100%;
 }
 
+nav {
+    clear: right;
+    border-bottom: 1px solid grey;
+}
+
+nav a {
+    border: 1px solid grey;
+    border-top-left-radius: .5ex;
+    padding: 0 .5ex;
+    margin-left: 1em;
+}
+
+nav a.active-tab {
+    font-weight: bold;
+    border-bottom: 1px solid white;;
+}
+    
+
 #sliderule {
     max-width: 96vw;
     width: 80vh
