@@ -2,6 +2,72 @@ window.onload = () => {
 
     const SVG_NS = "http://www.w3.org/2000/svg";
     const PRECISION = 3;
+    const USE_INVERSE = true;
+    const LOG10_SCALE = {
+        func: Math.log10,
+        ranges: [
+            {
+                start: 1,
+                end: 2,
+                step: 0.01,
+                largeTickInterval: 0.05,
+                labelInterval: 0.1
+            },
+            {
+                start: 2,
+                end: 5,
+                step: 0.02,
+                largeTickInterval: 0.1,
+                labelInterval: 0.5
+            },
+            {
+                start: 5,
+                end: 10,
+                step: 0.05,
+                largeTickInterval: 0.1,
+                labelInterval: 0.5
+            }
+        ]
+    }
+
+    function drawScale (node, scale, yOffset, yDirection, rDirection) {
+        function checkInterval (i, interval) {
+            let x = Math.round(i * 1000);
+            let y = Math.round(interval * 1000);
+            return (x % y == 0);
+        }
+        
+        if (!yDirection) {
+            yDirection = 1;
+        }
+        if (!rDirection) {
+            rDirection = 1;
+        }
+        scale.ranges.forEach((range) => {
+            console.log(range);
+            for (let i = range.start; i < range.end; i += range.step) {
+                let isLarge = checkInterval(i, range.largeTickInterval);
+                let rotation = "rotate(" + (scale.func(i) * 360.0 * rDirection) + ", 500, 500)";
+                node.appendChild(makeElement("line", {
+                    x1: 500,
+                    x2: 500,
+                    y1: yOffset,
+                    y2: yOffset + (isLarge ? 30: 20) * yDirection,
+                    stroke: "black",
+                    stroke_width: (isLarge ? 2 : 1),
+                    transform: rotation
+                }));
+                if (checkInterval(i, range.labelInterval)) {
+                    node.appendChild(makeElement("text", {
+                        x: 500,
+                        y: yOffset + (yDirection == 1 ? 50 : -35),
+                        class: "label",
+                        transform: rotation
+                    }, i.toLocaleString()));
+                }
+            }
+        });
+    }
 
     /**
      * Construct a DOM element in the SVG namespace
@@ -49,71 +115,10 @@ window.onload = () => {
         }
         node.style.transitionDelay = delay + "s";
         node.style.transitionDuration = duration + "s";
-        console.log("rotate", node, n, direction);
         node.style.transform="rotate(" + degrees + "deg)";
     }
 
 
-    /**
-     * Draw the scales on the wheels.
-     * TODO: this needs to be modularised
-     */
-    function drawScales (outerWheelNode, innerWheelNode) {
-        for (let i = 2; i < 1000; i++) {
-
-            function makeRotation(n) {
-                return "rotate(" + (Math.log10(i) * 360.0) + ", 500, 500)";
-            }
-
-            // tick defaults (small tick)
-            let tick_offset = 20;
-            let tick_stroke = 1;
-
-            if (i > 150 && i < 300 && (i % 2) != 0) {
-                continue;
-            }
-            if (i > 300 && (i % 5) != 0) {
-                continue;
-            }
-            if (i > 600 && (i % 10) != 0) {
-                continue;
-            }
-
-            // larger ticks
-            if (i < 10 || (i < 150 && (i % 5) == 0) || (i < 300 && (i % 20) == 0) || (i < 600 && (i % 10) == 0)) {
-                tick_offset = 30;
-                tick_stroke = 2;
-            }
-
-            outerWheelNode.appendChild(makeElement("line", {
-                x1: 500, x2: 500, y1: (80 - tick_offset), y2: 80, stroke: "black", "stroke-width": tick_stroke, transform: makeRotation(i)
-            }));
-
-            innerWheelNode.appendChild(makeElement("line", {
-                x1: 500, x2: 500, y1: 80, y2: 80 + tick_offset, stroke: "black", "stroke-width": tick_stroke, transform: makeRotation(i)
-            }));
-
-            // labels
-            if (i < 20 || (i < 60 && (i % 5) == 0)) {
-                let label_text = "" + (i <= 9 ? i * 10 : i);
-                if (i == 10) {
-                    continue; // already drawing this as a special circle
-                }
-                outerWheelNode.appendChild(makeElement("text", {
-                    x: 500, y: 45, class: "label", transform: makeRotation(i)
-                }, label_text));
-
-                innerWheelNode.appendChild(makeElement("text", {
-                    x: 500, y: 130, class: "label", transform: makeRotation(i)
-                }, label_text));
-            }
-
-        }
-        
-    }
-
-
-    
     /**
      * Generate a multiplication or division problem
      */
@@ -192,6 +197,16 @@ window.onload = () => {
     }
 
 
+    // Set up variables
+    let slideRuleNode = document.getElementById("sliderule-diagram");
+    let outerWheelNode = document.getElementById("outer-wheel");
+    let outerWheelScaleNode = document.getElementById("outer-scale");
+    let innerWheelNode = document.getElementById("inner-wheel");
+    let innerWheelScaleNode = document.getElementById("inner-scale");
+    let inverseScaleNode = document.getElementById("inverse-scale");
+    let cursorNode = document.getElementById("cursor");
+    let problem = null;
+
     /**
      * React to a user action by showing a new problem or a solution.
      */
@@ -205,23 +220,22 @@ window.onload = () => {
         }
     }
 
+    function makeInteractive () {
+        // Add the handler for clicks/taps and keypresses
+        window.addEventListener("click", handler);
+        window.addEventListener("keypress", handler);
 
-    // Set up variables
-    let slideRuleNode = document.getElementById("sliderule-diagram");
-    let outerWheelNode = document.getElementById("outer-wheel");
-    let outerWheelScaleNode = document.getElementById("outer-scale");
-    let innerWheelNode = document.getElementById("inner-wheel");
-    let innerWheelScaleNode = document.getElementById("inner-scale");
-    let cursorNode = document.getElementById("cursor");
-    let problem = null;
+        // Call the handler once manually to start the process
+        handler();
+    }
 
     // Draw the scales on the wheels
-    drawScales(outerWheelScaleNode, innerWheelScaleNode);
+    drawScale(outerWheelScaleNode, LOG10_SCALE, 80, -1, 1);
+    drawScale(innerWheelScaleNode, LOG10_SCALE, 80, 1, 1);
+    if (USE_INVERSE) {
+        drawScale(innerWheelScaleNode, LOG10_SCALE, 140, 1, -1);
+    }
 
-    // Add the handler for clicks/taps and keypresses
-    window.addEventListener("click", handler);
-    window.addEventListener("keypress", handler);
-
-    // Call the handler once manually to start the process
-    handler();
+    // Make the visualisation interactive
+    makeInteractive();
 };
