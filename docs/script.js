@@ -30,7 +30,7 @@ window.onload = () => {
         ]
     }
 
-    function drawScale (node, scale, yOffset, yDirection, rDirection) {
+    function drawScale (node, scale, yOffset, yDirection, rDirection, fill) {
         function checkInterval (i, interval) {
             let x = Math.round(i * 1000);
             let y = Math.round(interval * 1000);
@@ -42,6 +42,9 @@ window.onload = () => {
         }
         if (!rDirection) {
             rDirection = 1;
+        }
+        if (!fill) {
+            fill = "black";
         }
         scale.ranges.forEach((range) => {
             console.log(range);
@@ -62,6 +65,7 @@ window.onload = () => {
                         x: 500,
                         y: yOffset + (yDirection == 1 ? 50 : -35),
                         class: "label",
+                        fill: fill,
                         transform: rotation
                     }, i.toLocaleString()));
                 }
@@ -233,7 +237,7 @@ window.onload = () => {
     drawScale(outerWheelScaleNode, LOG10_SCALE, 80, -1, 1);
     drawScale(innerWheelScaleNode, LOG10_SCALE, 80, 1, 1);
     if (USE_INVERSE) {
-        drawScale(innerWheelScaleNode, LOG10_SCALE, 140, 1, -1);
+        drawScale(innerWheelScaleNode, LOG10_SCALE, 140, 1, -1, "red");
     }
 
     // Make the visualisation interactive
