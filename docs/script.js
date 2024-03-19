@@ -155,6 +155,8 @@ function rotate (rotations) {
  */
 function setProblem () {
 
+    const PI_CUTOFF = 9.0;
+
     let problem = {};
 
     // TODO problems with pi
@@ -163,17 +165,25 @@ function setProblem () {
 
     let result = null;
 
-    if (factor1 > 2) {
+    if (factor1 > 2 && factor1 < PI_CUTOFF) {
         factor1 = 2;
     }
 
-    if (factor2 > 2) {
+    if (factor2 > 2 && factor2 < PI_CUTOFF) {
         factor2 = 2;
     }
 
-    problem.n1 = Math.ceil(Math.random() * (10.0 ** factor1));
+    if (factor1 < PI_CUTOFF) {
+        problem.n1 = Math.ceil(Math.random() * (10.0 ** factor1));
+    } else {
+        problem.n1 = Math.PI;
+    }
     problem.op = null;
-    problem.n2 = Math.ceil(Math.random() * (10.0 ** factor2));
+    if (factor2 < PI_CUTOFF) {
+        problem.n2 = Math.ceil(Math.random() * (10.0 ** factor2));
+    } else {
+        problem.n2 = Math.PI;
+    }
     problem.eq = null;
     problem.n3 = null;
 
@@ -185,9 +195,6 @@ function setProblem () {
         result = problem.n1 * problem.n2;
     } else {
         problem.op = "÷";
-        //            if (problem.n1 < problem.n2) {
-        //                [problem.n1, problem.n2] = [problem.n2, problem.n1];
-        //            }
         result = problem.n1 / problem.n2;
     }
 
@@ -202,9 +209,9 @@ function setProblem () {
  * Show a problem without the solution
  */
 function showProblem (problem) {
-    document.getElementById("n1").textContent = problem.n1.toLocaleString();
+    document.getElementById("n1").textContent = problem.n1 == Math.PI ? "π" : problem.n1.toLocaleString();
     document.getElementById("op").textContent = problem.op;
-    document.getElementById("n2").textContent = problem.n2.toLocaleString();
+    document.getElementById("n2").textContent = problem.n2 == Math.PI ? "π" : problem.n2.toLocaleString();
     document.getElementById("eq").textContent = problem.eq;
     document.getElementById("n3").textContent = "?";
     rotate([
