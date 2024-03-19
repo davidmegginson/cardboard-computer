@@ -6,222 +6,9 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 const PRECISION = 3;
 
 
-//
-// Scale definitions (will move to JSON)
-//
-
-const LOG10_SCALE = {
-    factor: 1,
-    ranges: [
-        {
-            start: 1,
-            end: 2,
-            step: 0.01,
-            largeTickInterval: 0.05,
-            labelInterval: 0.1
-        },
-        {
-            start: 2,
-            end: 5,
-            step: 0.02,
-            largeTickInterval: 0.1,
-            labelInterval: 0.5
-        },
-        {
-            start: 5,
-            end: 10,
-            step: 0.05,
-            largeTickInterval: 0.1,
-            labelInterval: 0.5
-        }
-    ],
-    specialValues: [
-        {
-            label: "π",
-            value: Math.PI
-        }
-    ]
-}
-
-const INVERSE_LOG10_SCALE = {
-    factor: -1,
-    ranges: [
-        {
-            start: 1,
-            end: 2,
-            step: 0.01,
-            largeTickInterval: 0.05,
-            labelInterval: 0.1
-        },
-        {
-            start: 2,
-            end: 5,
-            step: 0.02,
-            largeTickInterval: 0.1,
-            labelInterval: 0.5
-        },
-        {
-            start: 5,
-            end: 10,
-            step: 0.05,
-            largeTickInterval: 0.1,
-            labelInterval: 0.5
-        }
-    ]
-}
-
-const SQUARE_SCALE = {
-    factor: 2,
-    ranges: [
-        {
-            start: 1,
-            end: 1.5,
-            step: 0.02,
-            largeTickInterval: 0.1,
-            labelInterval: 1.5
-        },
-        {
-            start: 1.5,
-            end: 3,
-            step: 0.05,
-            largeTickInterval: 0.1,
-            labelInterval: 0.5
-        },
-        {
-            start: 3,
-            end: 6,
-            step: 0.1,
-            largeTickInterval: 0.5,
-            labelInterval: 1.0
-        },
-        {
-            start: 6,
-            end: 10,
-            step: 0.2,
-            largeTickInterval: 1.0,
-            labelInterval: 1.0
-        },
-        {
-            start: 10,
-            end: 15,
-            step: 0.2,
-            largeTickInterval: 1.0,
-            labelInterval: 5.0
-        },
-        {
-            start: 15,
-            end: 30,
-            step: 0.5,
-            largeTickInterval: 1.0,
-            labelInterval: 5.0
-        },
-        {
-            start: 30,
-            end: 60,
-            step: 1.0,
-            largeTickInterval: 5.0,
-            labelInterval: 10.0
-        },
-        {
-            start: 60,
-            end: 100,
-            step: 2.0,
-            largeTickInterval: 10.0,
-            labelInterval: 10.0
-        }
-    ]
-}
-
-const CUBE_SCALE = {
-    factor: 3,
-    ranges: [
-        {
-            start: 1,
-            end: 1.5,
-            step: 0.05,
-            largeTickInterval: 0.1,
-            labelInterval: 0.5
-        },
-        {
-            start: 1.5,
-            end: 3,
-            step: 0.1,
-            largeTickInterval: 0.5,
-            labelInterval: 1.0
-        },
-        {
-            start: 3,
-            end: 6,
-            step: 0.2,
-            largeTickInterval: 1.0,
-            labelInterval: 1.0
-        },
-        {
-            start: 6,
-            end: 10,
-            step: 0.5,
-            largeTickInterval: 1.0,
-            labelInterval: 1.0
-        },
-        {
-            start: 10,
-            end: 15,
-            step: 0.5,
-            largeTickInterval: 1.0,
-            labelInterval: 5.0
-        },
-        {
-            start: 15,
-            end: 30,
-            step: 1.0,
-            largeTickInterval: 1.0,
-            labelInterval: 5.0
-        },
-        {
-            start: 30,
-            end: 60,
-            step: 2.0,
-            largeTickInterval: 10.0,
-            labelInterval: 10.0
-        },
-        {
-            start: 60,
-            end: 150,
-            step: 5.0,
-            largeTickInterval: 10.0,
-            labelInterval: 50.0
-        },
-        {
-            start: 150,
-            end: 200,
-            step: 10.0,
-            largeTickInterval: 50.0,
-            labelInterval: 50.0
-        },
-        {
-            start: 200,
-            end: 300,
-            step: 10.0,
-            largeTickInterval: 50.0,
-            labelInterval: 100.0
-        },
-        {
-            start: 300,
-            end: 600,
-            step: 20.0,
-            largeTickInterval: 100.0,
-            labelInterval: 100.0
-        },
-        {
-            start: 600,
-            end: 1000,
-            step: 50.0,
-            largeTickInterval: 100.0,
-            labelInterval: 1000.0
-        }
-    ]
-};
-
+/**
+ * Draw a scale on the circular sliderule
+ */
 function drawScale (node, scaleLabel, scale, yOffset, yDirection, labelClass) {
 
     function checkInterval (i, interval) {
@@ -446,13 +233,16 @@ let problem = null;
 
 
 function draw (advanced) {
-    drawScale(outerWheelNode, "D", LOG10_SCALE, 80, -1);
-    drawScale(innerWheelNode, "C", LOG10_SCALE, 80, 1);
-    if (advanced) {
-        drawScale(innerWheelNode, "CI", INVERSE_LOG10_SCALE, 140, 1, "label-inverse");
-        drawScale(innerWheelNode, "A", SQUARE_SCALE, 200, 1, "label-medium");
-        drawScale(innerWheelNode, "K", CUBE_SCALE, 260, 1, "label-small");
-    }
+    fetch("data/scales.json").then((response) => response.json()).then((scales) => {
+        console.log(scales);
+        drawScale(outerWheelNode, "D", scales.LOG10, 80, -1);
+        drawScale(innerWheelNode, "C", scales.LOG10, 80, 1);
+        if (advanced) {
+            drawScale(innerWheelNode, "CI", scales.INVERSE_LOG10, 140, 1, "label-inverse");
+            drawScale(innerWheelNode, "A", scales.SQUARE, 200, 1, "label-medium");
+            drawScale(innerWheelNode, "K", scales.CUBE, 260, 1, "label-small");
+        }
+    });
 }
 
 function makeInteractive () {
