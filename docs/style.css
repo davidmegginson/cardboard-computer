@@ -68,8 +68,9 @@ nav a.active-tab {
     
 
 #sliderule {
-    max-width: 96vw;
-    width: 80vh
+    max-width: 100%;
+    width: 80vh;
+    margin: auto;
 }
 
 #problem {
