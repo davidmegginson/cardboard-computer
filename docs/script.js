@@ -5,7 +5,6 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 const PRECISION = 3;
 
-
 /**
  * Draw a scale on the circular sliderule
  */
@@ -113,34 +112,41 @@ function makeElement (name, atts, value) {
 
 
 /**
- * Construct a rotation transformation string
- * n is the rotation in degrees
- * Currently 500,500 is hardcoded as the centre.
- */
-/**
  * Rotate a node around its centre.
  * The degrees of rotation will be the log10 of n
  * 1 (default) means clockwise; -1 means counter-clockwise.
  */
-function rotate (node, n, direction, duration, delay) {
-    if (!direction) {
-        direction = 1;
+function rotate (rotations) {
+
+    function doTransition (rotation) {
+        let [node, n, direction, duration, delay] = rotation;
+
+        if (!direction) {
+            direction = 1;
+        }
+        if (!duration) {
+            duration = 0;
+        }
+        if (!delay) {
+            delay = 0;
+        }
+        let degrees = (Math.log10(n) * 360.0 * direction) % 360.0;
+        if (degrees > 180.0) {
+            degrees -= 360.0;
+        } else if (degrees < -180.0) {
+            degrees += 360.0;
+        }
+
+        node.style.transitionDelay = delay + "s";
+        node.style.transitionDuration = duration + "s";
+        node.style.transitionProperty = "transform";
+        node.style.transform="rotate(" + degrees + "deg)";
     }
-    if (!duration) {
-        duration = 0;
-    }
-    if (!delay) {
-        delay = 0;
-    }
-    let degrees = (Math.log10(n) * 360.0 * direction) % 360.0;
-    if (degrees > 180.0) {
-        degrees -= 360.0;
-    } else if (degrees < -180.0) {
-        degrees += 360.0;
-    }
-    node.style.transitionDelay = delay + "s";
-    node.style.transitionDuration = duration + "s";
-    node.style.transform="rotate(" + degrees + "deg)";
+
+    rotations.forEach((rotation) => {
+        doTransition(rotation);
+    });
+
 }
 
 
@@ -201,9 +207,12 @@ function showProblem (problem) {
     document.getElementById("n2").textContent = problem.n2.toLocaleString();
     document.getElementById("eq").textContent = problem.eq;
     document.getElementById("n3").textContent = "?";
-    rotate(slideRuleNode, 1, 0, 0);
-    rotate(outerWheelNode, 1, 0, 0);
-    rotate(cursorNode, 1, 0, 0);
+    rotate([
+        [slideRuleNode, 1, 0, 0],
+        [outerWheelNode, 1, 0, 0],
+        [innerWheelNode, 1, 0, 0],
+        [cursorNode, 1, 0, 0]
+    ]);
 }
 
 /**
@@ -212,12 +221,18 @@ function showProblem (problem) {
 function showSolution (problem) {
     document.getElementById("n3").textContent = problem.n3.toLocaleString();
     if (problem.op == '×') {
-        rotate(outerWheelNode, problem.n1, -1, 2, 0);
-        rotate(cursorNode, problem.n2, 1, 2, 2);
-        rotate(slideRuleNode, problem.n2, -1, 2, 4);
+        rotate([
+            [outerWheelNode, problem.n1, -1, 2, 0],
+            [slideRuleNode, problem.n2, -1, 2, 2],
+            [cursorNode, problem.n2, 1, 2, 4]
+        ]);
     } else {
-        rotate(cursorNode, problem.n2, 1, 2, 0);
-        rotate(outerWheelNode, problem.n3, -1, 2, 2);
+        rotate([
+            [outerWheelNode, problem.n1, -1, 2, 0],
+            [innerWheelNode, problem.n2, -1, 2, 2],
+            [slideRuleNode, problem.n2, 1, 2, 4],
+            [cursorNode, problem.n2, -1, 2, 6]
+        ]);
     }
 }
 
@@ -234,7 +249,6 @@ let problem = null;
 
 function draw (advanced) {
     fetch("data/scales.json").then((response) => response.json()).then((scales) => {
-        console.log(scales);
         drawScale(outerWheelNode, "D", scales.LOG10, 80, -1);
         drawScale(innerWheelNode, "C", scales.LOG10, 80, 1);
         if (advanced) {
