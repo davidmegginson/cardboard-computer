@@ -209,7 +209,12 @@ function setProblem () {
     problem.eq = (result == problem.n3) ? "=" : "=~";
 
     // string representations
-    let base = displayNum(problem.n1) + " " + problem.op + " " + displayNum(problem.n2) + " " + problem.eq + " ";
+    let base = null;
+    if (problem.op == "×" && problem.n1 == problem.n2) {
+        base = displayNum(problem.n1) + "² " + problem.eq + " ";
+    } else {
+        base = displayNum(problem.n1) + " " + problem.op + " " + displayNum(problem.n2) + " " + problem.eq + " ";
+    }
     problem.q = base + "?";
     problem.a = base + displayNum(problem.n3.toLocaleString());
 
