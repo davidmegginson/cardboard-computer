@@ -298,35 +298,35 @@ function draw (advanced) {
         drawScale(outerWheelNode, {
             scaleLabel: "D",
             unitPointer: true,
-            scale: scales.LOG10,
+            scale: scales.D,
             yOffset: 80,
             yDirection: -1
         });
         drawScale(innerWheelNode, {
             scaleLabel: "C",
             unitPointer: true,
-            scale: scales.LOG10,
+            scale: scales.C,
             yOffset: 80,
             yDirection: 1
         });
         if (advanced) {
             drawScale(innerWheelNode, {
                 scaleLabel: "CI",
-                scale: scales.INVERSE_LOG10,
+                scale: scales.CI,
                 yOffset: 140,
                 yDirection: 1,
                 labelClass: "label-inverse"
             });
             drawScale(innerWheelNode, {
                 scaleLabel: "A",
-                scale: scales.SQUARE,
+                scale: scales.A,
                 yOffset: 200,
                 yDirection: 1,
                 labelClass: "label-medium"
             });
             drawScale(innerWheelNode, {
                 scaleLabel: "K",
-                scale: scales.CUBE,
+                scale: scales.K,
                 yOffset: 260,
                 yDirection: 1,
                 labelClass: "label-small"

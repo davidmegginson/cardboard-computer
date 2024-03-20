@@ -1,5 +1,41 @@
 {
-    "LOG10": {
+    "D": {
+        "factor": 1,
+        "ranges": [
+            {
+                "start": 1,
+                "end": 2,
+                "step": 0.01,
+                "largeTickInterval": 0.05,
+                "labelInterval": 0.1
+            },
+            {
+                "start": 2,
+                "end": 5,
+                "step": 0.02,
+                "largeTickInterval": 0.1,
+                "labelInterval": 0.5
+            },
+            {
+                "start": 5,
+                "end": 10,
+                "step": 0.05,
+                "largeTickInterval": 0.1,
+                "labelInterval": 0.5
+            }
+        ],
+        "specialValues": [
+            {
+                "label": "c",
+                "value": 1.1283
+            },
+            {
+                "label": "π",
+                "value": 3.1416
+            }
+        ]
+    },
+    "C": {
         "factor": 1,
         "ranges": [
             {
@@ -31,7 +67,7 @@
             }
         ]
     },
-    "INVERSE_LOG10": {
+    "CI": {
         "factor": -1,
         "ranges": [
             {
@@ -57,7 +93,7 @@
             }
         ]
     },
-    "SQUARE": {
+    "A": {
         "factor": 2,
         "ranges": [
             {
@@ -118,7 +154,7 @@
             }
         ]
     },
-    "CUBE": {
+    "K": {
         "factor": 3,
         "ranges": [
             {
