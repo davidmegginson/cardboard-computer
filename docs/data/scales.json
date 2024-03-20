@@ -1,210 +1,210 @@
 {
-  "LOG10": {
-    "factor": 1,
-    "ranges": [
-      {
-        "start": 1,
-        "end": 2,
-        "step": 0.01,
-        "largeTickInterval": 0.05,
-        "labelInterval": 0.1
-      },
-      {
-        "start": 2,
-        "end": 5,
-        "step": 0.02,
-        "largeTickInterval": 0.1,
-        "labelInterval": 0.5
-      },
-      {
-        "start": 5,
-        "end": 10,
-        "step": 0.05,
-        "largeTickInterval": 0.1,
-        "labelInterval": 0.5
-      }
-    ],
-    "specialValues": [
-      {
-        "label": "π",
-        "value": 3.1416
-      }
-    ]
-  },
-  "INVERSE_LOG10": {
-    "factor": -1,
-    "ranges": [
-      {
-        "start": 1,
-        "end": 2,
-        "step": 0.01,
-        "largeTickInterval": 0.05,
-        "labelInterval": 0.1
-      },
-      {
-        "start": 2,
-        "end": 5,
-        "step": 0.02,
-        "largeTickInterval": 0.1,
-        "labelInterval": 0.5
-      },
-      {
-        "start": 5,
-        "end": 10,
-        "step": 0.05,
-        "largeTickInterval": 0.1,
-        "labelInterval": 0.5
-      }
-    ]
-  },
-  "SQUARE": {
-    "factor": 2,
-    "ranges": [
-      {
-        "start": 1,
-        "end": 1.5,
-        "step": 0.02,
-        "largeTickInterval": 0.1,
-        "labelInterval": 1.5
-      },
-      {
-        "start": 1.5,
-        "end": 3,
-        "step": 0.05,
-        "largeTickInterval": 0.1,
-        "labelInterval": 0.5
-      },
-      {
-        "start": 3,
-        "end": 6,
-        "step": 0.1,
-        "largeTickInterval": 0.5,
-        "labelInterval": 1.0
-      },
-      {
-        "start": 6,
-        "end": 10,
-        "step": 0.2,
-        "largeTickInterval": 1.0,
-        "labelInterval": 1.0
-      },
-      {
-        "start": 10,
-        "end": 15,
-        "step": 0.2,
-        "largeTickInterval": 1.0,
-        "labelInterval": 5.0
-      },
-      {
-        "start": 15,
-        "end": 30,
-        "step": 0.5,
-        "largeTickInterval": 1.0,
-        "labelInterval": 5.0
-      },
-      {
-        "start": 30,
-        "end": 60,
-        "step": 1.0,
-        "largeTickInterval": 5.0,
-        "labelInterval": 10.0
-      },
-      {
-        "start": 60,
-        "end": 100,
-        "step": 2.0,
-        "largeTickInterval": 10.0,
-        "labelInterval": 10.0
-      }
-    ]
-  },
-  "CUBE": {
-    "factor": 3,
-    "ranges": [
-      {
-        "start": 1,
-        "end": 1.5,
-        "step": 0.05,
-        "largeTickInterval": 0.1,
-        "labelInterval": 0.5
-      },
-      {
-        "start": 1.5,
-        "end": 3,
-        "step": 0.1,
-        "largeTickInterval": 0.5,
-        "labelInterval": 1.0
-      },
-      {
-        "start": 3,
-        "end": 6,
-        "step": 0.2,
-        "largeTickInterval": 1.0,
-        "labelInterval": 1.0
-      },
-      {
-        "start": 6,
-        "end": 10,
-        "step": 0.5,
-        "largeTickInterval": 1.0,
-        "labelInterval": 1.0
-      },
-      {
-        "start": 10,
-        "end": 15,
-        "step": 0.5,
-        "largeTickInterval": 1.0,
-        "labelInterval": 5.0
-      },
-      {
-        "start": 15,
-        "end": 30,
-        "step": 1.0,
-        "largeTickInterval": 1.0,
-        "labelInterval": 5.0
-      },
-      {
-        "start": 30,
-        "end": 60,
-        "step": 2.0,
-        "largeTickInterval": 10.0,
-        "labelInterval": 10.0
-      },
-      {
-        "start": 60,
-        "end": 150,
-        "step": 5.0,
-        "largeTickInterval": 10.0,
-        "labelInterval": 50.0
-      },
-      {
-        "start": 150,
-        "end": 200,
-        "step": 10.0,
-        "largeTickInterval": 50.0,
-        "labelInterval": 50.0
-      },
-      {
-        "start": 200,
-        "end": 300,
-        "step": 10.0,
-        "largeTickInterval": 50.0,
-        "labelInterval": 100.0
-      },
-      {
-        "start": 300,
-        "end": 600,
-        "step": 20.0,
-        "largeTickInterval": 100.0,
-        "labelInterval": 100.0
-      },
-      {
-        "start": 600,
-        "end": 1000,
-        "step": 50.0,
-        "largeTickInterval": 100.0,
-        "labelInterval": 1000.0
-      }
-    ]
-  }
+    "LOG10": {
+        "factor": 1,
+        "ranges": [
+            {
+                "start": 1,
+                "end": 2,
+                "step": 0.01,
+                "largeTickInterval": 0.05,
+                "labelInterval": 0.1
+            },
+            {
+                "start": 2,
+                "end": 5,
+                "step": 0.02,
+                "largeTickInterval": 0.1,
+                "labelInterval": 0.5
+            },
+            {
+                "start": 5,
+                "end": 10,
+                "step": 0.05,
+                "largeTickInterval": 0.1,
+                "labelInterval": 0.5
+            }
+        ],
+        "specialValues": [
+            {
+                "label": "π",
+                "value": 3.1416
+            }
+        ]
+    },
+    "INVERSE_LOG10": {
+        "factor": -1,
+        "ranges": [
+            {
+                "start": 1,
+                "end": 2,
+                "step": 0.01,
+                "largeTickInterval": 0.05,
+                "labelInterval": 0.1
+            },
+            {
+                "start": 2,
+                "end": 5,
+                "step": 0.02,
+                "largeTickInterval": 0.1,
+                "labelInterval": 0.5
+            },
+            {
+                "start": 5,
+                "end": 10,
+                "step": 0.05,
+                "largeTickInterval": 0.1,
+                "labelInterval": 0.5
+            }
+        ]
+    },
+    "SQUARE": {
+        "factor": 2,
+        "ranges": [
+            {
+                "start": 1,
+                "end": 1.5,
+                "step": 0.02,
+                "largeTickInterval": 0.1,
+                "labelInterval": 1.5
+            },
+            {
+                "start": 1.5,
+                "end": 3,
+                "step": 0.05,
+                "largeTickInterval": 0.1,
+                "labelInterval": 0.5
+            },
+            {
+                "start": 3,
+                "end": 6,
+                "step": 0.1,
+                "largeTickInterval": 0.5,
+                "labelInterval": 1.0
+            },
+            {
+                "start": 6,
+                "end": 10,
+                "step": 0.2,
+                "largeTickInterval": 1.0,
+                "labelInterval": 1.0
+            },
+            {
+                "start": 10,
+                "end": 15,
+                "step": 0.2,
+                "largeTickInterval": 1.0,
+                "labelInterval": 5.0
+            },
+            {
+                "start": 15,
+                "end": 30,
+                "step": 0.5,
+                "largeTickInterval": 1.0,
+                "labelInterval": 5.0
+            },
+            {
+                "start": 30,
+                "end": 60,
+                "step": 1.0,
+                "largeTickInterval": 5.0,
+                "labelInterval": 10.0
+            },
+            {
+                "start": 60,
+                "end": 100,
+                "step": 2.0,
+                "largeTickInterval": 10.0,
+                "labelInterval": 10.0
+            }
+        ]
+    },
+    "CUBE": {
+        "factor": 3,
+        "ranges": [
+            {
+                "start": 1,
+                "end": 1.5,
+                "step": 0.05,
+                "largeTickInterval": 0.1,
+                "labelInterval": 0.5
+            },
+            {
+                "start": 1.5,
+                "end": 3,
+                "step": 0.1,
+                "largeTickInterval": 0.5,
+                "labelInterval": 1.0
+            },
+            {
+                "start": 3,
+                "end": 6,
+                "step": 0.2,
+                "largeTickInterval": 1.0,
+                "labelInterval": 1.0
+            },
+            {
+                "start": 6,
+                "end": 10,
+                "step": 0.5,
+                "largeTickInterval": 1.0,
+                "labelInterval": 1.0
+            },
+            {
+                "start": 10,
+                "end": 15,
+                "step": 0.5,
+                "largeTickInterval": 1.0,
+                "labelInterval": 5.0
+            },
+            {
+                "start": 15,
+                "end": 30,
+                "step": 1.0,
+                "largeTickInterval": 1.0,
+                "labelInterval": 5.0
+            },
+            {
+                "start": 30,
+                "end": 60,
+                "step": 2.0,
+                "largeTickInterval": 10.0,
+                "labelInterval": 10.0
+            },
+            {
+                "start": 60,
+                "end": 150,
+                "step": 5.0,
+                "largeTickInterval": 10.0,
+                "labelInterval": 50.0
+            },
+            {
+                "start": 150,
+                "end": 200,
+                "step": 10.0,
+                "largeTickInterval": 50.0,
+                "labelInterval": 50.0
+            },
+            {
+                "start": 200,
+                "end": 300,
+                "step": 10.0,
+                "largeTickInterval": 50.0,
+                "labelInterval": 100.0
+            },
+            {
+                "start": 300,
+                "end": 600,
+                "step": 20.0,
+                "largeTickInterval": 100.0,
+                "labelInterval": 100.0
+            },
+            {
+                "start": 600,
+                "end": 1000,
+                "step": 50.0,
+                "largeTickInterval": 100.0,
+                "labelInterval": 1000.0
+            }
+        ]
+    }
 }

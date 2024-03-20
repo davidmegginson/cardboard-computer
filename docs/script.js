@@ -8,7 +8,7 @@ const PRECISION = 3;
 /**
  * Draw a scale on the circular sliderule
  */
-function drawScale (node, scaleLabel, scale, yOffset, yDirection, labelClass) {
+function drawScale (node, options) {
 
     function checkInterval (i, interval) {
         let x = Math.round(i * 1000);
@@ -17,41 +17,41 @@ function drawScale (node, scaleLabel, scale, yOffset, yDirection, labelClass) {
     }
 
     function makeRotation (deg) {
-        return "rotate(" + (Math.log10(deg) / scale.factor) * 360.0 + ", 500, 500)";
+        return "rotate(" + (Math.log10(deg) / options.scale.factor) * 360.0 + ", 500, 500)";
     }
 
     let scaleNode = makeElement("g", {
         class: "scale"
     });
     
-    if (!yDirection) {
-        yDirection = 1;
+    if (!options.yDirection) {
+        options.yDirection = 1;
     }
 
-    if (!labelClass) {
-        labelClass = "label";
+    if (!options.labelClass) {
+        options.labelClass = "label";
     }
 
     // Label the scale
-    if (scaleLabel) {
+    if (options.scaleLabel) {
         scaleNode.appendChild(makeElement("text", {
             x: 500,
-            y: yOffset + (yDirection == 1 ? 50 : -35),
-            class: labelClass,
+            y: options.yOffset + (options.yDirection == 1 ? 50 : -35),
+            class: options.labelClass,
             fill: "blue",
-            transform: "rotate(" + (scale.factor < 0 ? -5 : 5) + ", 500, 500)"
-        }, scaleLabel));
+            transform: "rotate(" + (options.scale.factor < 0 ? -5 : 5) + ", 500, 500)"
+        }, options.scaleLabel));
     }
     
-    scale.ranges.forEach((range) => {
+    options.scale.ranges.forEach((range) => {
         for (let i = range.start; i < range.end; i += range.step) {
             let isLarge = checkInterval(i, range.largeTickInterval);
             let rotation = makeRotation(i);
             scaleNode.appendChild(makeElement("line", {
                 x1: 500,
                 x2: 500,
-                y1: yOffset,
-                y2: yOffset + (isLarge ? 30: 20) * yDirection,
+                y1: options.yOffset,
+                y2: options.yOffset + (isLarge ? 30: 20) * options.yDirection,
                 stroke: "black",
                 stroke_width: (isLarge ? 2 : 1),
                 transform: rotation
@@ -59,8 +59,8 @@ function drawScale (node, scaleLabel, scale, yOffset, yDirection, labelClass) {
             if (checkInterval(i, range.labelInterval) || i == range.start) {
                 scaleNode.appendChild(makeElement("text", {
                     x: 500,
-                    y: yOffset + (yDirection == 1 ? 50 : -35),
-                    class: labelClass,
+                    y: options.yOffset + (options.yDirection == 1 ? 50 : -35),
+                    class: options.labelClass,
                     fill: "currentColor",
                     transform: rotation
                 }, i.toLocaleString()));
@@ -68,21 +68,21 @@ function drawScale (node, scaleLabel, scale, yOffset, yDirection, labelClass) {
         }
     });
 
-    if (scale.specialValues) {
-        scale.specialValues.forEach((special) => {
+    if (options.scale.specialValues) {
+        options.scale.specialValues.forEach((special) => {
             let rotation = makeRotation(special.value);
             scaleNode.appendChild(makeElement("text", {
                 x: 500,
-                y: yOffset + (yDirection == 1 ? 50 : -35),
-                class: labelClass,
+                y: options.yOffset + (options.yDirection == 1 ? 50 : -35),
+                class: options.labelClass,
                 fill: "grey",
                 transform: rotation
             }, special.label));
             scaleNode.appendChild(makeElement("line", {
                 x1: 500,
                 x2: 500,
-                y1: yOffset,
-                y2: yOffset + 30 * yDirection,
+                y1: options.yOffset,
+                y2: options.yOffset + 30 * options.yDirection,
                 stroke: "grey",
                 stroke_width: 1,
                 transform: rotation
@@ -268,16 +268,44 @@ let problem = null;
 
 
 /**
- * Draw the circular sliderule
+ * Load definitions from JSON and draw the circulate slide rule
  */
 function draw (advanced) {
     fetch("data/scales.json").then((response) => response.json()).then((scales) => {
-        drawScale(outerWheelNode, "D", scales.LOG10, 80, -1);
-        drawScale(innerWheelNode, "C", scales.LOG10, 80, 1);
+        drawScale(outerWheelNode, {
+            scaleLabel: "D",
+            scale: scales.LOG10,
+            yOffset: 80,
+            yDirection: -1
+        });
+        drawScale(innerWheelNode, {
+            scaleLabel: "C",
+            scale: scales.LOG10,
+            yOffset: 80,
+            yDirection: 1
+        });
         if (advanced) {
-            drawScale(innerWheelNode, "CI", scales.INVERSE_LOG10, 140, 1, "label-inverse");
-            drawScale(innerWheelNode, "A", scales.SQUARE, 200, 1, "label-medium");
-            drawScale(innerWheelNode, "K", scales.CUBE, 260, 1, "label-small");
+            drawScale(innerWheelNode, {
+                scaleLabel: "CI",
+                scale: scales.INVERSE_LOG10,
+                yOffset: 140,
+                yDirection: 1,
+                labelClass: "label-inverse"
+            });
+            drawScale(innerWheelNode, {
+                scaleLabel: "A",
+                scale: scales.SQUARE,
+                yOffset: 200,
+                yDirection: 1,
+                labelClass: "label-medium"
+            });
+            drawScale(innerWheelNode, {
+                scaleLabel: "K",
+                scale: scales.CUBE,
+                yOffset: 260,
+                yDirection: 1,
+                labelClass: "label-small"
+            });
         }
     });
 }
