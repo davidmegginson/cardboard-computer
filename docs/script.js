@@ -149,17 +149,24 @@ function rotate (rotations) {
 
 }
 
+function displayNum (n) {
+    if (n == Math.PI) {
+        return "π";
+    } else {
+        return n.toLocaleString();
+    }
+}
+
 
 /**
  * Generate a multiplication or division problem
  */
 function setProblem () {
 
-    const PI_CUTOFF = 9.0;
+    const PI_CUTOFF = 9.0; // this and above means pi in the random selector
 
     let problem = {};
 
-    // TODO problems with pi
     let factor1 = Math.floor(Math.random() * 10.0);
     let factor2 = Math.floor(Math.random() * 10.0);
 
@@ -201,6 +208,11 @@ function setProblem () {
     problem.n3 = Number(result.toPrecision(PRECISION));
     problem.eq = (result == problem.n3) ? "=" : "=~";
 
+    // string representations
+    let base = displayNum(problem.n1) + " " + problem.op + " " + displayNum(problem.n2) + " " + problem.eq + " ";
+    problem.q = base + "?";
+    problem.a = base + displayNum(problem.n3.toLocaleString());
+
     return problem;
 }
 
@@ -209,11 +221,7 @@ function setProblem () {
  * Show a problem without the solution
  */
 function showProblem (problem) {
-    document.getElementById("n1").textContent = problem.n1 == Math.PI ? "π" : problem.n1.toLocaleString();
-    document.getElementById("op").textContent = problem.op;
-    document.getElementById("n2").textContent = problem.n2 == Math.PI ? "π" : problem.n2.toLocaleString();
-    document.getElementById("eq").textContent = problem.eq;
-    document.getElementById("n3").textContent = "?";
+    document.getElementById("question").textContent = problem.q;
     rotate([
         [slideRuleNode, 1, 0, 0],
         [outerWheelNode, 1, 0, 0],
@@ -226,7 +234,7 @@ function showProblem (problem) {
  * Show the solution, including transforming the wheel and cursor.
  */
 function showSolution (problem) {
-    document.getElementById("n3").textContent = problem.n3.toLocaleString();
+    document.getElementById("question").textContent = problem.a;
     if (problem.op == '×') {
         rotate([
             [outerWheelNode, problem.n1, -1, 2, 0],
@@ -254,6 +262,9 @@ let cursorNode = document.getElementById("cursor");
 let problem = null;
 
 
+/**
+ * Draw the circular sliderule
+ */
 function draw (advanced) {
     fetch("data/scales.json").then((response) => response.json()).then((scales) => {
         drawScale(outerWheelNode, "D", scales.LOG10, 80, -1);
@@ -266,6 +277,10 @@ function draw (advanced) {
     });
 }
 
+
+/**
+ * Make the diagram interactive
+ */
 function makeInteractive () {
 
     function handler (e) {
