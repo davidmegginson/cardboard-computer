@@ -23,12 +23,17 @@ figcaption {
     color: #666666;
 }
 
-.label, .label-inverse, .label-medium, .label-small {
+.label, .label-inverse, .label-medium, .label-small, .unit-pointer {
     text-anchor: middle;
 }
 
-.label {
+.label, .unit-pointer {
     font-size: 144%;
+}
+
+.unit-pointer {
+    color: white;
+    font-weight: bold;
 }
 
 .label-inverse {

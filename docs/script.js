@@ -57,10 +57,33 @@ function drawScale (node, options) {
                 transform: rotation
             }));
             if (checkInterval(i, range.labelInterval) || i == range.start) {
+                let labelClass = options.labelClass;
+
+                // Is this a unit pointer?
+                if (i == 1.0 && options.unitPointer) {
+                    let cy = options.yOffset - (options.yDirection == -1 ? 42.5 : -42.5);
+                    labelClass = "unit-pointer";
+                    scaleNode.appendChild(makeElement("circle", {
+                        fill: "#333333",
+                        stroke: "#333333",
+                        cx: 500,
+                        cy: cy,
+                        r: 15,
+                        transform: rotation
+                    }));
+                    scaleNode.appendChild(makeElement("polygon", {
+                        fill: "#333333",
+                        stroke: "#333333",
+                        points: "485," + cy + " 515," + cy + " 500," + (cy - 45 * options.yDirection),
+                        transform: rotation
+                    }));
+                }
+
+                // Add the main text label
                 scaleNode.appendChild(makeElement("text", {
                     x: 500,
                     y: options.yOffset + (options.yDirection == 1 ? 50 : -35),
-                    class: options.labelClass,
+                    class: labelClass,
                     fill: "currentColor",
                     transform: rotation
                 }, i.toLocaleString()));
@@ -274,12 +297,14 @@ function draw (advanced) {
     fetch("data/scales.json").then((response) => response.json()).then((scales) => {
         drawScale(outerWheelNode, {
             scaleLabel: "D",
+            unitPointer: true,
             scale: scales.LOG10,
             yOffset: 80,
             yDirection: -1
         });
         drawScale(innerWheelNode, {
             scaleLabel: "C",
+            unitPointer: true,
             scale: scales.LOG10,
             yOffset: 80,
             yDirection: 1
