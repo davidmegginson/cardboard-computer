@@ -186,19 +186,22 @@
 
           <p>Stop, you might not need to read this!. Most of the time, orders of magnitude won't be a problem: for example, if you divide 75 by 5, it will be obvious that the answer should be 15 rather than 150 or 1.5.  Sometimes, however — especially with very large or very small numbers — there's a chance of confusion with the zeros or decimal places. In that case, you can apply the rules in this section to ensure you have the correct result.</p>
 
-          <p>Each "trip around the wheel" for the D and C (and CI) scales represents an order of magnitude (10). That means that 2.1 can also represent 21, 210, 2,100, or (in the other direction) .21 or .021. You need to consider the numbers you're multiplying or dividing to decide which order of magnitude applies. For the A scale, each cycle represents two orders of magnitude (100), and for the K scale, each cycle represents three (1,000).</p>
+          <p>Each "trip around the wheel" for the D and C (and CI) scales represents one order of magnitude (10). That means that 2.1 can also represent 21, 210, 2,100, or (in the other direction) .21 or .021. You need to consider the numbers you're multiplying or dividing to decide which order of magnitude applies. For the A scale, each cycle represents two orders of magnitude (100), and for the K scale, each cycle represents three (1,000).</p>
 
           <dl>
 
             <dt>Multiplication</dt>
             <dd>
               <p>Multiply or divide each of the numbers by 10 until they fit into the range 0–10, then reverse the operations on the result.</p>
-              <p><i>Example:</i> for 15 × 400, divide 15 by 10 once to get 1.5 (in the range 0–10) and 400 by 10 twice to get 4. Following the instructions in the <a href="#multiplication">multiplication section</a>, you'll end up with the answer 6. Multiply that by 10 three times (reversing the three division operations) to get the answer 15 × 400 = <b>6,000</b>.</p>
+              <p><i>Example:</i> for 15 × 400, divide 15 by 10 once to get 1.5 (in the range 0–10) and 400 by 10 twice to get 4. Following the instructions in the <a href="#multiplication">multiplication section</a>, you'll end up with the result 6. Multiply that by 10 three times (reversing the three division operations) to get the answer 15 × 400 = <b>6,000</b>.</p>
             </dd>
 
             <dt>Division</dt>
             <dd>
-              <p>(TODO)</p>
+              <p>Multiply or divide each of the numbers by 10 until they fit into the range 0–10. On the result, reverse the operations from the first number (dividend), then <i>repeat</i> them (without reversing) for the second (divisor).</p>
+              <p>If the second number (divisor) is smaller than the first (dividend), divide once more by 10.</p>
+              <p><i>Example 1:</i> for 600 ÷ .3 = ?, divide 600 by 10 twice to get 6 (in the range 0–10), and multiply .3 by 10 once to get 3. Following the instructions in the <a href="#division">division section</a>, you'll end up with the result 2. Multiply by 10 twice (reversing the division operations on 600), then multiply by 10 once more (<i>repeating</i> the multiplication operation on .03), to get the answer 2,000 (2 × 10 × 10 × 10).</p>
+              <p><i>Example 2:</i> for 30 ÷ 700 = ?, divide 30 by 10 once to get 3 (in the range 0-10), and divide 700 by 10 twice to get 7. Following the instructions in the <a href="#division">division section</a>, you'll end up with the result 4.29. Multiply by 10 once (reversion the division operation on 30), divide by 10 twice (<i>repeating> the division operations on 700), then divide by 10 once more because 30 is less than 700, to get the <a href="#precision">approximate result</a> <b>.429</b> (4.29 × 10 ÷ 10 ÷ 10 ÷ 10).</p>
             </dd>
 
             <dt>Square roots</dt>
