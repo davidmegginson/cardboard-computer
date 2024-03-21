@@ -117,4 +117,27 @@ a.link {
 dt {
     color: #666666;
     font-weight: bold;
+    margin-top: 2ex;
+}
+
+#scales img, #scales table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
+
+@media screen and (min-width: 640px) {
+    #scales img, #scales table {
+        display: inline-block;
+        width: 49%;
+        vertical-align: top;
+    }
+
+    #scales table {
+        max-width: 35em;
+    }
+
+    #scales img {
+        max-width: 20em;
+    }
 }
