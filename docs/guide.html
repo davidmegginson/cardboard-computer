@@ -18,7 +18,7 @@
     </header>
     <main>
       <h2>How to use the Cardboard Computer</h2>
-      <p>There are two versions of the Cardboard Computer available: the <a href=".">basic version</a> has just the D and C scales, which allow multiplication and division, and is suitable for beginners and for pre-secondard-school students; the <a href="advanced.html">advanced version</a> adds the CI, A, and K scales for three-step multiplication, square roots, and cube roots, and is suitable for secondard-school and post-secondary students.</p>
+      <p>There are two versions of the Cardboard Computer available: the <a href=".">basic version</a> has just the D and C scales, which allow multiplication and division, and is suitable for beginners and for pre-secondary-school students; the <a href="advanced.html">advanced version</a> adds the CI, A, and K scales for three-step multiplication, square roots, and cube roots, and is suitable for secondard-school and post-secondary students.</p>
       <section id="scales">
         <h3>1. Scales <a class="link" href="#scales">🔗</a></h3>
         <img style="float:left; max-width: 320px; padding: 2ex;" src="images/cardboard-computer.png" />
@@ -48,12 +48,12 @@
             </tr>
             <tr>
               <td>A</td>
-              <td>Squares and square roots (with the C scale).</td>
+              <td><a href="#square-roots">Squares and square roots</a> (with the C scale).</td>
               <td>Advanced</td>
             </tr>
             <tr>
               <td>K</td>
-              <td>Cubes and cube roots (with the C scale).</td>
+              <td><a href="#cube-roots">Cubes and cube roots</a> (with the C scale).</td>
               <td>Advanced</td>
             </tr>
           </tbody>
@@ -77,33 +77,82 @@
         <section id="multiplication">
           <h4>3.1. Multiplying two numbers <a class="link" href="#multiplication">🔗</a></h4>
           <ol>
+            <li>If necessary, multiply or divide each number repeatedly by 10 until it falls in the range 1–10.</li>
             <li>Find the first number on the D scale and rotate so that it appears above the black unit pointer (1) on the C scale.</li>
             <li>Preserving the position of the wheels, find the second number on the C scale</li>
-            <li>Read the result directly above on the D scale (you can use the cursor, if you added one, to help line up the two numbers.</li>
+            <li>Read the number directly above on the D scale (you can use the cursor, if you added one, to help line up the two numbers.</li>
+            <li>To get the result, multiply by 10 for each time you divided by 10 in step one, and divide by 10 for each time you multiplied by 10.</li>
           </ol>
           <p><i>Example:</i> 41 × 12 = ?</p>
           <ol>
-            <li>Rotate the wheels until 4.1 (representing 41) on the outer D scale is directly above the unit pointer (1) on the inner C scale.</li>
-            <li>Without turning the wheels, find 1.2 (representing 12) on the C scale.</li>
-            <li>Read the number 4.92 (representing 492) on the D scale directly above 1.2 on the C scale. Use the cursor to help, if you added one.</li>
+            <li>Divide 41 by 10 once to get 4.1, and divide 12 by 10 once to get 1.2, so that both fall in the range 1–10.</li>
+            <li>Rotate the wheels until 4.1 on the outer D scale is directly above the unit pointer (1) on the inner C scale.</li>
+            <li>Without turning the wheels, find 1.2 on the C scale.</li>
+            <li>Read the number 4.92 on the D scale directly above 1.2 on the C scale. Use the cursor to help, if you added one.</li>
+            <li>Multiple 4.92 by 10 twice (because you divided by 10 twice originally), to get the answer <b>492</b>.</li>
           </ol>
         </section>
         <section id="division">
           <h4>3.2. Dividing two numbers <a class="link" href="#division">🔗</a></h4>
           <ol>
+            <li>If necessary, multiply or divide each number repeatedly by 10 until it falls in the range 1–10.</li>
             <li>Find the first number on the D scale.</li>
             <li>Rotate the wheels until the second number appears on the C scale directly underneath the first number.</li>
             <li>Preserving the position of the wheels, read the answer on the D scale above the unit pointer (1) on the C scale (you can use the cursor, if you added one, to help line up the answer).</li>
+            <li>To get the result, multiply by 10 for each time you divided by 10 in step one, and divide by 10 for each time you multiplied by 10. Then divide by 10 once more.</li>
           </ol>
           <p><i>Example:</i> 15 ÷ 4</p>
           <ol>
-            <li>Find 1.5 (representing 15) on the outer D scale.</li>
+            <li>Divide 15 by 10 to get 1.5 so that it falls in the range 1–10. There is no need to adjust 4, since it is already in the range.</li>
+            <li>Find 1.5 on the outer D scale.</li>
             <li>Rotate the wheels until 4 on the inner C scale is directly beneath 1.5.</li>
-            <li>Without turning the wheels, read the answer 3.75 on the D scale directly above the unit pointer (1).</li>
+            <li>Without turning the wheels, read the answer <b>3.75</b> on the D scale directly above the unit pointer (1).</li>
+            <li>(Note that you will multiple 3.75 by 10 once because you divided 15 by 10 originally, then divide again by 10, so they cancel each-other out in this problem.)</li>
           </ol>
         </section>
       </section>
-      <p>(MORE COMING)</p>
+      <section id="advanced">
+        <h2>4. Square and cube roots <a class="link" href="#advanced">🔗</a></h2>
+        <p>While the C and D scales each represents one <a href="#magnitude">order of magnitude</a> (×10), a "trip around" the A scale represents two orders of magnitude (×100), and the K scale, three orders of magnitude (×1,000). This relationship allows you to use the A and K scales together with C to find square roots and cube roots, as well as cubes and squares. There is also a special "c" marking on the D scale that helps for calculating the area of a circle or the volume of a sphere.</p>
+        <section id="square-roots">
+          <h3>4.1. Squares and square roots <a class="link" href="#square-roots">🔗</a></h3>
+          <p><i>Square root</i>:</p>
+          <ol>
+            <li>Find the original number on the A scale (1–100). If the number is greater than 100, keep dividing by 100 until it falls onto the scale (if it is less than one, then <i>multiply</i> by 100).</li>
+            <li>Above that number on the C scale, read the square root (multiply by 10 for each time you divided the original number by 100, or divide if you originally multiplied).</li>
+            <li>(Note: if you did not add a cursor to your Cardboard computer, use a ruler from the centre to line up the numbers.)</li>
+          </ol>
+          <p><i>Square:</i></p>
+          <ol>
+            <li>Find the number you want to square on the C scale.</li>
+            <li>Read the square of the number on the K scale (multiply by 100 for each time you divided the original number by 10).</li>
+          </ol>
+          <p><i>Example 1: √150 = ?:</i></p>
+          <ol>
+            <li>Divide 150 once by 100 so that it falls onto the K scale (1–100).</li>
+            <li>Find 1.5 (150÷100) on the K scale.</li>
+            <li>Read 1.22 directly above on the C scale. Use the cursor (if you added one) or a ruler to help with the alignment.</li>
+            <li>Since you divided the original number once by 100, multiply the result once by 10 (√100) to get the <a href="#precision">approximate answer</a> <b>12.3</b>.</li>
+          </ol>
+          <p><i>Example 2: 7.8² = ?</i></p>
+          <p>(Note that you could also simply multiply 7.8 × 7.8 on the C or D scales; however, this alternative approach becomes useful with <a
+          href="#combined">Combined operations</a>.)</p>
+          <ol>
+            <li>Find 7.8 on the C scale (no multiplication or division required in this case, since it falls in the range 1–10).</li>
+            <li>Read the <a href="#precision">approximate answer</a> <b>60.1</b> directly below on the K scale. Use the cursor (if you added one) or a ruler to help with the alignment.</li>
+          </ol>
+        </section>
+        <section id="cube-roots">
+          <h3>4.2. Cubes and cube roots <a class="link" href="#cube-roots">🔗</a></h3>
+        </section>
+        <section id="circles">
+          <h3>4.3. Circles and spheres <a class="link" href="#circles">🔗</a></h3>
+        </section>
+      </section>
+      <section id="combined">
+        <h2>5. Combined operations</h2>
+        <p>(MORE COMING)</p>
+      </section>
     </main>
     <footer>
       <p>Started March 2024 by David Megginson, and released into the Public Domain.</p>
