@@ -19,6 +19,7 @@
     <main>
       <h2>How to use the Cardboard Computer</h2>
       <p>There are two versions of the Cardboard Computer available: the <a href=".">basic version</a> has just the D and C scales, which allow multiplication and division, and is suitable for beginners and for pre-secondary-school students; the <a href="advanced.html">advanced version</a> adds the CI, A, and K scales for three-step multiplication, square roots, and cube roots, and is suitable for secondard-school and post-secondary students.</p>
+
       <section id="scales">
         <h3>1. Scales <a class="link" href="#scales">🔗</a></h3>
         <img style="float:left; max-width: 320px; padding: 2ex;" src="images/cardboard-computer.png" />
@@ -59,99 +60,162 @@
           </tbody>
         </table>
       </section>
-      <section id="notes" style="clear: left;">
-        <h3>2. A couple of notes before we start <a class="link" href="#notes">🔗</a></h3>
-        <section id="magnitude">
-          <h4>2.1. Orders of magnitude <a class="link" href="#magnitude">🔗</a></h4>
-          <p>Each "trip around the wheel" for the D and C (and CI) scales represents an order of magnitude. That means that 2.1 can also represent 21, 210, 2,100, or (in the other direction) .21 or .021. You need to consider the numbers you're multiplying or dividing to decide which order of magnitude applies, as you'll see in the examples below.</p>
-        </section>
-        <section id="precision">
-          <h4>2.2. Precision <a class="link" href="#precision">🔗</a></h4>
-          <p>Many answers on the Cardboard Computer will be approximate. The design goal is three <i>significant digits</i>, so you can distinguish between 490 and 491 or 49.0 and 49.1, but not necessarily between 4,900 and 4,901.</p>
-          <p>Precision-engineered commercial slide rules were often accurate up to 4 or 5 significant digits for experienced users. You might sometimes be able to achieve that level of precision with your own Cardboard Computer, depending on how large you make it and how carefully you align the two wheels, but regardless, you won't get the long sequence of apparently exact digits that you will with a computerised calculator. That's not necessarily a problem: many classic aircraft and even early rockets were designed mostly using analogue slide rules.</p>
-        </section>
-      </section>
-      <section id="basic">
-        <h3>3. Multiplication and division <a class="link" href="#basic">🔗</a></h3>
+      
+      <section id="basic" style="clear: left">
+        <h3>2. Multiplication and division <a class="link" href="#basic">🔗</a></h3>
+
         <p>The D and C scales are spaced so that at any point, the number on the D scale and the number immediately below on the C scale are in the same proportion: for example, if 4 appears above 2, then 6 will appear above 3 and 8 will appear above 4. This relationship allows for basic multiplication and division by putting one of the numbers above 1 (the <i>unit pointer</i>, with a black background).</p>
+
         <section id="multiplication">
-          <h4>3.1. Multiplying two numbers <a class="link" href="#multiplication">🔗</a></h4>
+          <h4>2.1. Multiplying two numbers <a class="link" href="#multiplication">🔗</a></h4>
+
+          <p>Apply the <a href="#magnitude">order-of-magnitude</a> rules to the following as needed.</p>
+
           <ol>
-            <li>If necessary, multiply or divide each number repeatedly by 10 until it falls in the range 1–10.</li>
             <li>Find the first number on the D scale and rotate so that it appears above the black unit pointer (1) on the C scale.</li>
             <li>Preserving the position of the wheels, find the second number on the C scale</li>
             <li>Read the number directly above on the D scale (you can use the cursor, if you added one, to help line up the two numbers.</li>
             <li>To get the result, multiply by 10 for each time you divided by 10 in step one, and divide by 10 for each time you multiplied by 10.</li>
           </ol>
+
           <p><i>Example:</i> 41 × 12 = ?</p>
+
           <ol>
-            <li>Divide 41 by 10 once to get 4.1, and divide 12 by 10 once to get 1.2, so that both fall in the range 1–10.</li>
+            <li>Applying the <a href="#magnitude">order-of-magnitude</a> rules, divide 41 by 10 once to get 4.1, and divide 12 by 10 once to get 1.2, so that both fall in the range 1–10.</li>
             <li>Rotate the wheels until 4.1 on the outer D scale is directly above the unit pointer (1) on the inner C scale.</li>
             <li>Without turning the wheels, find 1.2 on the C scale.</li>
             <li>Read the number 4.92 on the D scale directly above 1.2 on the C scale. Use the cursor to help, if you added one.</li>
-            <li>Multiple 4.92 by 10 twice (because you divided by 10 twice originally), to get the answer <b>492</b>.</li>
+            <li>Again, applying the order-of-magnitude rules, multiply the result 4.92 by 10 twice to get the answer <b>492</b>.</li>
           </ol>
+
         </section>
+
         <section id="division">
-          <h4>3.2. Dividing two numbers <a class="link" href="#division">🔗</a></h4>
+          <h4>2.2. Dividing two numbers <a class="link" href="#division">🔗</a></h4>
+
+          <p>Apply the <a href="#magnitude">order-of-magnitude</a> rules to the following as needed.</p>
+
           <ol>
-            <li>If necessary, multiply or divide each number repeatedly by 10 until it falls in the range 1–10.</li>
             <li>Find the first number on the D scale.</li>
             <li>Rotate the wheels until the second number appears on the C scale directly underneath the first number.</li>
             <li>Preserving the position of the wheels, read the answer on the D scale above the unit pointer (1) on the C scale (you can use the cursor, if you added one, to help line up the answer).</li>
-            <li>To get the result, multiply by 10 for each time you divided by 10 in step one, and divide by 10 for each time you multiplied by 10. Then divide by 10 once more.</li>
           </ol>
+
           <p><i>Example:</i> 15 ÷ 4</p>
+
           <ol>
-            <li>Divide 15 by 10 to get 1.5 so that it falls in the range 1–10. There is no need to adjust 4, since it is already in the range.</li>
-            <li>Find 1.5 on the outer D scale.</li>
+            <li>Find 1.5 (for 15) on the outer D scale.</li>
             <li>Rotate the wheels until 4 on the inner C scale is directly beneath 1.5.</li>
             <li>Without turning the wheels, read the answer <b>3.75</b> on the D scale directly above the unit pointer (1).</li>
-            <li>(Note that you will multiple 3.75 by 10 once because you divided 15 by 10 originally, then divide again by 10, so they cancel each-other out in this problem.)</li>
           </ol>
+
         </section>
+
       </section>
+      
       <section id="advanced">
-        <h2>4. Square and cube roots <a class="link" href="#advanced">🔗</a></h2>
+        <h2>3. Square and cube roots <a class="link" href="#advanced">🔗</a></h2>
+
         <p>While the C and D scales each represents one <a href="#magnitude">order of magnitude</a> (×10), a "trip around" the A scale represents two orders of magnitude (×100), and the K scale, three orders of magnitude (×1,000). This relationship allows you to use the A and K scales together with C to find square roots and cube roots, as well as cubes and squares. There is also a special "c" marking on the D scale that helps for calculating the area of a circle or the volume of a sphere.</p>
+
         <section id="square-roots">
-          <h3>4.1. Squares and square roots <a class="link" href="#square-roots">🔗</a></h3>
+          <h3>3.1. Squares and square roots <a class="link" href="#square-roots">🔗</a></h3>
+
+          <p>Apply the <a href="#magnitude">order-of-magnitude</a> rules to the following as needed.</p>
+
           <p><i>Square root</i>:</p>
+
           <ol>
-            <li>Find the original number on the A scale (1–100). If the number is greater than 100, keep dividing by 100 until it falls onto the scale (if it is less than one, then <i>multiply</i> by 100).</li>
-            <li>Above that number on the C scale, read the square root (multiply by 10 for each time you divided the original number by 100, or divide if you originally multiplied).</li>
-            <li>(Note: if you did not add a cursor to your Cardboard computer, use a ruler from the centre to line up the numbers.)</li>
+            <li>Find the original number on the A scale (1–100).</li>
+            <li>Above that number on the C scale, read result.</li>
+            <li>(Note: if you did not add a cursor to your Cardboard computer, use a ruler to line up the numbers.)</li>
           </ol>
+
+          <p><i>Example 1: √150 = ?:</i></p>
+
+          <ol>
+            <li>Following the <a href="#magnitude">order-of-magnitude</a> rules, divide 150 once by 100 to get 1.5, so that it falls onto the K scale (1–100).</li>
+            <li>Find 1.5 on the K scale.</li>
+            <li>Read 1.23 above on the C scale.</li>
+            <li>Following the order-of-magnitude rules again, since you divided the original number once by 100, multiply the result once by 10 to get the <a href="#precision">approximate answer</a> <b>12.3</b>.</li>
+          </ol>
+
           <p><i>Square:</i></p>
+
           <ol>
             <li>Find the number you want to square on the C scale.</li>
-            <li>Read the square of the number on the K scale (multiply by 100 for each time you divided the original number by 10).</li>
+            <li>Read the square of the number below on the K scale).</li>
+            <li>(Note: if you did not add a cursor to your Cardboard computer, use a ruler to line up the numbers.)</li>
           </ol>
-          <p><i>Example 1: √150 = ?:</i></p>
-          <ol>
-            <li>Divide 150 once by 100 so that it falls onto the K scale (1–100).</li>
-            <li>Find 1.5 (150÷100) on the K scale.</li>
-            <li>Read 1.22 directly above on the C scale. Use the cursor (if you added one) or a ruler to help with the alignment.</li>
-            <li>Since you divided the original number once by 100, multiply the result once by 10 (√100) to get the <a href="#precision">approximate answer</a> <b>12.3</b>.</li>
-          </ol>
+
           <p><i>Example 2: 7.8² = ?</i></p>
-          <p>(Note that you could also simply multiply 7.8 × 7.8 on the C or D scales; however, this alternative approach becomes useful with <a
+
+          <p>(Note that you could also simply multiply 7.8 × 7.8 on the C or D scales; however, this alternative approach becomes useful with <a
           href="#combined">Combined operations</a>.)</p>
+
           <ol>
-            <li>Find 7.8 on the C scale (no multiplication or division required in this case, since it falls in the range 1–10).</li>
-            <li>Read the <a href="#precision">approximate answer</a> <b>60.1</b> directly below on the K scale. Use the cursor (if you added one) or a ruler to help with the alignment.</li>
+            <li>Find 7.8 on the C scale (it already falls in the range 1–10).</li>
+            <li>Read the <a href="#precision">approximate answer</a> <b>60.1</b> directly below on the K scale.</li>
           </ol>
+
         </section>
+
         <section id="cube-roots">
-          <h3>4.2. Cubes and cube roots <a class="link" href="#cube-roots">🔗</a></h3>
+          <h3>3.2. Cubes and cube roots <a class="link" href="#cube-roots">🔗</a></h3>
+
+          <p>Apply the <a href="#magnitude">order-of-magnitude</a> rules to the following as needed.</p>
         </section>
+
         <section id="circles">
-          <h3>4.3. Circles and spheres <a class="link" href="#circles">🔗</a></h3>
-        </section>
+          <h3>3.3. Circles and spheres <a class="link" href="#circles">🔗</a></h3>
+          <p>Apply the <a href="#magnitude">order-of-magnitude</a> rules to the following as needed.</p> 
+       </section>
+
       </section>
+      
       <section id="combined">
-        <h2>5. Combined operations</h2>
+        <h2>4. Combined operations</h2>
         <p>(MORE COMING)</p>
+      </section>
+      
+      <section id="notes" style="clear: left;">
+        <h3>5. Notes <a class="link" href="#notes">🔗</a></h3>
+
+        <section id="magnitude">
+          <h4>5.1. Orders of magnitude <a class="link" href="#magnitude">🔗</a></h4>
+          <p>Each "trip around the wheel" for the D and C (and CI) scales represents an order of magnitude (10). That means that 2.1 can also represent 21, 210, 2,100, or (in the other direction) .21 or .021. You need to consider the numbers you're multiplying or dividing to decide which order of magnitude applies. For the A scale, each cycle represents two orders of magnitude (100), and for the K scale, each cycle represents three (1,000).</p>
+          <p>Most of the time, you'll be able to adjust orders of magnitude intuitively and the answer will just look right, so you can ignore the following. However, if you find it confusing, here are some explicit instructions:</p>
+          <dl>
+            <dt>Multiplication</dt>
+            <dd>
+              <p>Multiply or divide each of the numbers by 10 until they fit into the range 0–10, then reverse the operations on the result.</p>
+              <p><i>Example:</i> for 15 × 400, divide 15 by 10 once to get 1.5 (in the range 0–10) and 400 by 10 twice to get 4. Following the instructions in the <a href="#multiplication">multiplication section</a>, you'll end up with the answer 6. Multiply that by 10 three times (reversing the three division operations) to get the answer 15 × 400 = <b>6,000</b>.</p>
+            </dd>
+            <dt>Division</dt>
+            <dd>
+              <p>(TODO)</p>
+            </dd>
+            <dt>Square roots</dt>
+            <dd>
+              <p>Divide or multiply the original number by 100 (10²) until it falls into the range 1–100 on the A scale, then apply the opposite operation to the result from the C scale, multiplying or dividing <i>by 10</i>.</p>
+              <p><i>Example:</i> For √0.003 = ?, first multiply by 100 twice to get 30 (in the range 0–100). Following the instructions in the <a href="#square-root">square root</a> section, you'll find 5.48 on the C scale. Divide that by 100 twice to get the <a href="#precision">approximate answer</a> √0.003 = <b>0.000548</b>.</p>
+              <p>(Note: for squares, apply in the opposite order: multiply or divide the original value by 10 until it fits on the C scale, then divide or multiply the result on the A scale by 100 the same number of times.)</p>
+            </dd>
+            <dt>Cube roots</dt>
+            <dd>
+              <p>Divide or multiple the original number by 1,000 (10³) until it falls into the range 1–1,000 on the K scale, then apply the opposite operation to the result from the C scale, multiplying or dividing the same number of times <i>by 10</i>.</p>
+              <p><i>Example:</i> For ∛2,500 = ?, first divide by 1,000 once to get 25 (in the range 0–1,000). Following the instructions in the <a href="#cube-root">cube root</a> section, you'll find 5 on the C scale. Multiply that by 10 once to get the answer ∛2,500 = <b>50</b>.</p>
+              <p>(Note: for cubes, apply in the opposite order: multiply or divide the original value by 10 until it fits on the C scale, then divide or multiply the result on the K scale by 1,000 the same number of times.)</p>
+            </dd>
+          </dl>
+        </section>
+        
+        <section id="precision">
+          <h4>5.2. Precision <a class="link" href="#precision">🔗</a></h4>
+          <p>Many answers on the Cardboard Computer will be approximate. The design goal is three <i>significant digits</i>, so you can distinguish between 490 and 491 or 49.0 and 49.1, but not necessarily between 4,900 and 4,901.</p>
+          <p>High-quality commercial slide rules were often accurate up to 4 or 5 significant digits for experienced users. You might sometimes be able to achieve that level of precision with your own Cardboard Computer, depending on how large you make it and how carefully you align the two wheels, but regardless, you won't get the long sequence of apparently exact digits that you will with a computerised calculator. That's not necessarily a problem: many classic aircraft and even early rockets were designed mostly using analogue slide rules.</p>
+        </section>
+        
       </section>
     </main>
     <footer>

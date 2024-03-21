@@ -113,3 +113,8 @@ a.link {
     font-size: 69.445%;
     color: #aaaaaa;
 }
+
+dt {
+    color: #666666;
+    font-weight: bold;
+}
