@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Cardboard Computer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png" />
+  </head>
+  <body>
+    <header>
+      <h1>The Cardboard Computer</h1>
+      <nav>
+        <a href=".">Basic</a>
+        <a href="advanced.html">Advanced</a>
+        <a class="active-tab">Guide</a>
+      </nav>
+    </header>
+    <main>
+      <h2>How to use the Cardboard Computer</h2>
+      <p>There are two versions of the Cardboard Computer available: the <a href=".">basic version</a> has just the D and C scales, which allow multiplication and division, and is suitable for beginners and for pre-secondard-school students; the <a href="advanced.html">advanced version</a> adds the CI, A, and K scales for three-step multiplication, square roots, and cube roots, and is suitable for secondard-school and post-secondary students.</p>
+      <section id="scales">
+        <h3>1. Scales <a class="link" href="#scales">🔗</a></h3>
+        <p>From the outside in:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Scale</th>
+              <th>Uses</th>
+              <th>Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>D</td>
+              <td><a href="#basic">Multiplication and division</a> (with the C scale).</td>
+              <td>Basic</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>Multiplication and division (with the D scale).</td>
+              <td>Basic</td>
+            </tr>
+            <tr>
+              <td>CI</td>
+              <td>Combined calculations.</td>
+              <td>Advanced</td>
+            </tr>
+            <tr>
+              <td>A</td>
+              <td>Squares and square roots (with the C scale).</td>
+              <td>Advanced</td>
+            </tr>
+            <tr>
+              <td>K</td>
+              <td>Cubes and cube roots (with the C scale).</td>
+              <td>Advanced</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="notes">
+        <h3>2. A couple of notes before we start <a class="link" href="#notes">🔗</a></h3>
+        <section id="magnitude">
+          <h4>2.1. Orders of magnitude <a class="link" href="#magnitude">🔗</a></h4>
+          <p>Each "trip around the wheel" for the D and C (and CI) scales represents an order of magnitude. That means that 2.1 can also represent 21, 210, 2,100, or (in the other direction) .21 or .021. You need to consider the numbers you're multiplying or dividing to decide which order of magnitude applies, as you'll see in the examples below.</p>
+        </section>
+        <section id="precision">
+          <h4>2.2. Precision <a class="link" href="#precision">🔗</a></h4>
+          <p>Many answers on the Cardboard Computer will be approximate. The design goal is three <i>significant digits</i>, so you can distinguish between 490 and 491 or 49.0 and 49.1, but not necessarily between 4,900 and 4,901.</p>
+          <p>Precision-engineered commercial slide rules were often accurate up to 4 or 5 significant digits for experienced users. You might sometimes be able to achieve that level of precision with your own Cardboard Computer, depending on how large you make it and how carefully you align the two wheels, but regardless, you won't get the long sequence of apparently exact digits that you will with a computerised calculator. That's not necessarily a problem: many classic aircraft and even early rockets were designed mostly using analogue slide rules.</p>
+        </section>
+      </section>
+      <section id="basic">
+        <h3>3. Multiplication and division <a class="link" href="#basic">🔗</a></h3>
+        <p>The D and C scales are spaced so that at any point, the number on the D scale and the number immediately below on the C scale are in the same proportion: for example, if 4 appears above 2, then 6 will appear above 3 and 8 will appear above 4. This relationship allows for basic multiplication and division by putting one of the numbers above 1 (the <i>unit pointer</i>, with a black background).</p>
+        <section id="multiplication">
+          <h4>3.1. Multiplying two numbers <a class="link" href="#multiplication">🔗</a></h4>
+          <ol>
+            <li>Find the first number on the D scale and rotate so that it appears above the black unit pointer (1) on the C scale.</li>
+            <li>Preserving the position of the wheels, find the second number on the C scale</li>
+            <li>Read the result directly above on the D scale (you can use the cursor, if you added one, to help line up the two numbers.</li>
+          </ol>
+          <p><i>Example:</i> 41 × 12 = ?</p>
+          <ol>
+            <li>Rotate the wheels until 4.1 (representing 41) on the outer D scale is directly above the unit pointer (1) on the inner C scale.</li>
+            <li>Without turning the wheels, find 1.2 (representing 12) on the C scale.</li>
+            <li>Read the number 4.92 (representing 492) on the D scale directly above 1.2 on the C scale. Use the cursor to help, if you added one.</li>
+          </ol>
+        </section>
+        <section id="division">
+          <h4>3.2. Dividing two numbers <a class="link" href="#division">🔗</a></h4>
+          <ol>
+            <li>Find the first number on the D scale.</li>
+            <li>Rotate the wheels until the second number appears on the C scale directly underneath the first number.</li>
+            <li>Preserving the position of the wheels, read the answer on the D scale above the unit pointer (1) on the C scale (you can use the cursor, if you added one, to help line up the answer).</li>
+          </ol>
+          <p><i>Example:</i> 15 ÷ 4</p>
+          <ol>
+            <li>Find 1.5 (representing 15) on the outer D scale.</li>
+            <li>Rotate the wheels until 4 on the inner C scale is directly beneath 1.5.</li>
+            <li>Without turning the wheels, read the answer 3.75 on the D scale directly above the unit pointer (1).</li>
+          </ol>
+        </section>
+      </section>
+      <p>(MORE COMING)</p>
+    </main>
+    <footer>
+      <p>Started March 2024 by David Megginson, and released into the Public Domain.</p>
+      <p>No rights reserved.</p>
+      <p>Source code available at <a href="https://github.com/davidmegginson/cardboard-computer">https://github.com/davidmegginson/cardboard-computer</a>.</p>
+    </footer>
+  </body>
+</html>

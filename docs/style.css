@@ -98,3 +98,18 @@ footer {
 footer p {
     margin: .5ex;
 }
+
+th, td {
+    padding: .5ex .5em;
+}
+
+thead th {
+    background: #333333;
+    color: white;
+}
+
+a.link {
+    text-decoration: none;
+    font-size: 69.445%;
+    color: #aaaaaa;
+}
