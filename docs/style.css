@@ -120,23 +120,24 @@ dt {
     margin-top: 2ex;
 }
 
-@media screen and (max-width: 639px) {
+@media screen and (width < 640px) {
+
     #scales img, #scales table {
         display: block;
         width: 100%;
-        max-width: 100%;
-    }}
+    }
 }
 
-@media screen and (min-width: 640px) {
+@media screen and (width >= 640px) {
     #scales img, #scales table {
         display: inline-block;
-        width: 49%;
+        width: 45%;
         vertical-align: top;
     }
 
     #scales table {
         max-width: 45em;
+        margin-right: 1em;
     }
 
     #scales img {
