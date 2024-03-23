@@ -178,3 +178,15 @@ dt {
     }
 
 }
+
+.scale-example {
+    font-size: 83.333%;
+}
+
+.scale-example th, .scale-example td {
+    text-align: right;
+}
+
+table.zebra tr:nth-child(odd) {
+    background: #eeeeff;
+}
