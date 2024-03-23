@@ -26,24 +26,6 @@
     </main>
     <aside>
       <figure id="sliderule">
-        <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
-          <g id="sliderule-diagram">
-            <g id="outer-wheel">
-              <circle cx="500" cy="500" r="490" stroke="black" stroke-width="1" fill="white"/>
-            </g>
-            <g id="inner-wheel">
-              <circle cx="500" cy="500" r="420" stroke="black" stroke-width="1" fill="#eeeeff"/>
-            </g>
-            <g id="cursor">
-              <ellipse cx="500" cy="268"  rx="20" ry="232" fill-opacity="10%" fill="black" stroke="black" stroke-width="1"/>
-              <line id="hairline" x1="500" x2="500" y1="36" y2="500" opacity="50%" stroke="#aa0000" stroke-width="1"/>
-            </g>
-            <g id="grommit">
-              <circle cx="500" cy="500" r="30" fill="#aaaaaa"/>
-              <circle cx="500" cy="500" r="10" stroke="black" stroke-width=".1" fill="#333333"/>
-            </g>
-          </g>
-        </svg>
       </figure>
     </aside>
     <footer>
@@ -55,8 +37,8 @@
     </script>
     <script type="text/javascript">
       window.onload = () => {
-      draw(true);
-      makeInteractive();
+        let computer = new CardboardComputer("sliderule", {advanced: true});
+        computer.makeInteractive();
       };
     </script>
   </body>

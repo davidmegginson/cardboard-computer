@@ -83,7 +83,7 @@ nav a.active-tab {
     font-size: 120%;
 }
 
-#sliderule-diagram, #outer-wheel, #inner-wheel, #cursor {
+.sliderule-diagram, .outer-wheel, .inner-wheel, .cursor {
     transform-origin: center;
 }
 
@@ -129,6 +129,12 @@ dt {
 }
 
 @media screen and (width >= 640px) {
+
+    .guide-figure {
+        float: right;
+        width: 25%;
+    }
+
     #scales img, #scales table {
         display: inline-block;
         width: 45%;
