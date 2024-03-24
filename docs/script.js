@@ -73,7 +73,7 @@ class CardboardComputer {
                 cy: 500,
                 r: 490,
                 stroke: "black",
-                "stroke-width": 1,
+                "stroke-width": 2,
                 fill: "white"
             }));
             slideRuleNode.appendChild(outerWheelNode);
@@ -89,9 +89,34 @@ class CardboardComputer {
                 cy: 500,
                 r: 420,
                 stroke: "black",
-                "stroke-width": 1,
+                "stroke-width": 2,
                 fill: "#eeeeff"
             }));
+            innerWheelNode.appendChild(this.makeElement("text", {
+                x:500,
+                y: 425,
+                class: "label",
+                fill: "black"
+            }, "The Cardboard Computer"));
+            innerWheelNode.appendChild(this.makeElement("text", {
+                x:500,
+                y: 575,
+                class: "label-medium",
+                fill: "black"
+            }, "cardboard-computer.org"));
+            innerWheelNode.appendChild(this.makeElement("image", {
+                href: "images/Public_Domain_Mark_button.svg",
+                x: 460,
+                y: 610,
+                width: 80,
+                height: 28.18
+            }));
+            innerWheelNode.appendChild(this.makeElement("text", {
+                x:500,
+                y: 600,
+                class: "label-small",
+                fill: "black"
+            }, "No rights reserved."));
             slideRuleNode.appendChild(innerWheelNode);
             this.nodes["inner-wheel"] = innerWheelNode;
         }

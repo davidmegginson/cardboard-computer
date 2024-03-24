@@ -207,3 +207,15 @@ figcaption {
     font-style: italic;
     color: #444444;
 }
+
+footer span, footer img {
+    vertical-align: middle;
+}
+
+a.pdm {
+    text-decoration: none;
+}
+
+a.pdm img {
+    height: 3ex;
+}
