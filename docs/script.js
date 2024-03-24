@@ -35,76 +35,90 @@ class CardboardComputer {
         });
         this.svgNode.appendChild(this.slideRuleNode);
 
-        this.outerWheelNode = this.makeElement("g", {
-            class: "outer-wheel"
-        });
-        this.outerWheelNode.appendChild(this.makeElement("circle", {
-            cx: 500,
-            cy: 500,
-            r: 490,
-            stroke: "black",
-            "stroke-width": 1,
-            fill: "white"
-        }));
-        this.slideRuleNode.appendChild(this.outerWheelNode);
+        if (!options.components || options.components.outerWheel) {
+            this.outerWheelNode = this.makeElement("g", {
+                class: "outer-wheel"
+            });
+            this.outerWheelNode.appendChild(this.makeElement("circle", {
+                cx: 500,
+                cy: 500,
+                r: 490,
+                stroke: "black",
+                "stroke-width": 1,
+                fill: "white"
+            }));
+            this.slideRuleNode.appendChild(this.outerWheelNode);
+        }
 
-                                        
-        this.innerWheelNode = this.makeElement("g", {
-            class: "inner-wheel"
-        });
-        this.innerWheelNode.appendChild(this.makeElement("circle", {
-            cx: 500,
-            cy: 500,
-            r: 420,
-            stroke: "black",
-            "stroke-width": 1,
-            fill: "#eeeeff"
-        }));
-        this.slideRuleNode.appendChild(this.innerWheelNode);
+        if (!options.components || options.components.innerWheel) {
+            this.innerWheelNode = this.makeElement("g", {
+                class: "inner-wheel"
+            });
+            this.innerWheelNode.appendChild(this.makeElement("circle", {
+                cx: 500,
+                cy: 500,
+                r: 420,
+                stroke: "black",
+                "stroke-width": 1,
+                fill: "#eeeeff"
+            }));
+            this.slideRuleNode.appendChild(this.innerWheelNode);
+        }
 
-        this.cursorNode = this.makeElement("g", {
-            class: "cursor"
-        });
-        this.cursorNode.appendChild(this.makeElement("ellipse", {
-            cx: 500,
-            cy: 268,
-            rx: 20,
-            ry: 232,
-            "fill-opacity": "10%",
-            fill: "black",
-            stroke: "black",
-            "stroke-width": 1
-        }));
-        this.cursorNode.appendChild(this.makeElement("line", {
-            x1: 500,
-            x2: 500,
-            y1: 36,
-            y2: 500,
-            opacity: "50%",
-            stroke: "#aa0000",
-            "stroke-width": 1
-        }));
-        this.slideRuleNode.appendChild(this.cursorNode);
+        if (!options.components || options.components.cursor) {
+            this.cursorNode = this.makeElement("g", {
+                class: "cursor"
+            });
+            this.cursorNode.appendChild(this.makeElement("ellipse", {
+                cx: 500,
+                cy: 268,
+                rx: 20,
+                ry: 232,
+                "fill-opacity": "10%",
+                fill: "black",
+                stroke: "black",
+                "stroke-width": 1
+            }));
+            this.cursorNode.appendChild(this.makeElement("line", {
+                x1: 500,
+                x2: 500,
+                y1: 36,
+                y2: 500,
+                opacity: "50%",
+                stroke: "#aa0000",
+                "stroke-width": 1
+            }));
+            this.slideRuleNode.appendChild(this.cursorNode);
+        }
 
-        this.grommitNode = this.makeElement("g");
-        this.grommitNode.appendChild(this.makeElement("circle", {
-            class: "grommit",
-            cx: 500,
-            cy: 500,
-            r: 30,
-            fill: "#aaaaaa"
-        }));
-        this.grommitNode.appendChild(this.makeElement("circle", {
-            cx: 500,
-            cy: 500,
-            r: 10,
-            stroke: "black",
-            "stroke-width": ".1",
-            fill: "#333333"
-        }));
-        this.slideRuleNode.appendChild(this.grommitNode);
+        if (!options.components || options.components.grommit) {
+            this.grommitNode = this.makeElement("g");
+            this.grommitNode.appendChild(this.makeElement("circle", {
+                class: "grommit",
+                cx: 500,
+                cy: 500,
+                r: 30,
+                fill: "#aaaaaa"
+            }));
+            this.grommitNode.appendChild(this.makeElement("circle", {
+                cx: 500,
+                cy: 500,
+                r: 10,
+                stroke: "black",
+                "stroke-width": ".1",
+                fill: "#333333"
+            }));
+            this.grommitNode.appendChild(this.makeElement("circle", {
+                cx: 500,
+                cy: 500,
+                r: 2,
+                stroke: "white",
+                fill: "white"
+            }));
+            this.slideRuleNode.appendChild(this.grommitNode);
+        }
 
-        this.draw(options.advanced);
+        this.draw(options);
 
         return this.svgNode;
     }
@@ -388,44 +402,50 @@ class CardboardComputer {
     /**
      * Load definitions from JSON and draw the circulate slide rule
      */
-    draw (advanced) {
+    draw (options) {
         fetch("data/scales.json").then((response) => response.json()).then((scales) => {
-            this.drawScale(this.outerWheelNode, {
-                scaleLabel: "D",
-                unitPointer: true,
-                scale: scales.D,
-                yOffset: 80,
-                yDirection: -1
-            });
-            this.drawScale(this.innerWheelNode, {
-                scaleLabel: "C",
-                unitPointer: true,
-                scale: scales.C,
-                yOffset: 80,
-                yDirection: 1
-            });
-            if (advanced) {
-                this.drawScale(this.innerWheelNode, {
-                    scaleLabel: "CI",
-                    scale: scales.CI,
-                    yOffset: 140,
-                    yDirection: 1,
-                    labelClass: "label-inverse"
+            if (!options.components || options.components.outerWheel) {
+                this.drawScale(this.outerWheelNode, {
+                    scaleLabel: "D",
+                    unitPointer: true,
+                    scale: scales.D,
+                    yOffset: 80,
+                    yDirection: -1
                 });
+            }
+            if (!options.components || options.components.innerWheel) {
+                console.log(options, options.advanced);
                 this.drawScale(this.innerWheelNode, {
-                    scaleLabel: "A",
-                    scale: scales.A,
-                    yOffset: 200,
-                    yDirection: 1,
-                    labelClass: "label-medium"
+                    scaleLabel: "C",
+                    unitPointer: true,
+                    scale: scales.C,
+                    yOffset: 80,
+                    yDirection: 1
                 });
-                this.drawScale(this.innerWheelNode, {
-                    scaleLabel: "K",
-                    scale: scales.K,
-                    yOffset: 260,
-                    yDirection: 1,
-                    labelClass: "label-small"
-                });
+                if (options.advanced) {
+                    console.log("Advanced");
+                    this.drawScale(this.innerWheelNode, {
+                        scaleLabel: "CI",
+                        scale: scales.CI,
+                        yOffset: 140,
+                        yDirection: 1,
+                        labelClass: "label-inverse"
+                    });
+                    this.drawScale(this.innerWheelNode, {
+                        scaleLabel: "A",
+                        scale: scales.A,
+                        yOffset: 200,
+                        yDirection: 1,
+                        labelClass: "label-medium"
+                    });
+                    this.drawScale(this.innerWheelNode, {
+                        scaleLabel: "K",
+                        scale: scales.K,
+                        yOffset: 260,
+                        yDirection: 1,
+                        labelClass: "label-small"
+                    });
+                }
             }
         });
     }

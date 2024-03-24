@@ -153,7 +153,7 @@ dt {
 
 @media print {
 
-    header {
+    header, footer {
         display: none;
     }
 
@@ -180,7 +180,6 @@ dt {
 
     #scales img {
         max-width: 20em;
-        
     }
 
 }
@@ -195,4 +194,16 @@ dt {
 
 table.zebra tr:nth-child(odd) {
     background: #eeeeff;
+}
+
+.template {
+    display: block;
+    width: 15cm;
+    page-break-before: always;
+}
+
+figcaption {
+    font-weight: bold;
+    font-style: italic;
+    color: #444444;
 }

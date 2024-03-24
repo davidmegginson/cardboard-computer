@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Cardboard Computer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" sizes="192x192" href="images/icon.png" />
+  </head>
+  <body>
+    <header>
+      <h1>The Cardboard Computer</h1>
+      <nav>
+        <a href=".">Basic</a>
+        <a href="advanced.html">Advanced</a>
+        <a href="guide.html">Guide</a>
+        <a class="active-tab">Templates</a>
+      </nav>
+    </header>
+    <main>
+      <h2>DiY cut-out templates</h2>
+
+      <p>Print out these templates in landscape orientation and use them to build your own Cardboard Computer. After cutting them out, if you weren't able to print onto card stock, you may want to glue them onto cardboard to stiffen them (they'll be a bit floppy on just paper).</p>
+
+      <p>The outer wheel is always the same. For the inner wheel, you have a choice of a basic one with just the C scale (for multiplication, division, and ratios/conversions), the an advanced one (adding the CI, A, and K scales for three-step multiplication, square roots, and cube roots).</p>
+
+      <p>The wheels need to rotate, and proper alignment is very important for accuracy. The simplest thing is to stick a thumbtack through the centre into something soft (like a cork board). More-portable approaches would involve something like a split-pin, a grommit (which you can get at an arts-and-crafts store or from your local shoe repair place), or even a cleverly-folded twist tie.</p>
+      
+      <p><b>Optional:</b> You may choose to add a cursor to help with alignment. It should be straight and rotate from the centre, like the wheels. You can use a stiff piece of wire or a piece of see-through plastic with a straight line drawn down the middle.</p>
+
+      <figure id="outer-wheel-template" class="template">
+        <figcaption>Outer wheel</figcaption>
+      </figure>
+
+      <figure id="inner-wheel-basic-template" class="template">
+        <figcaption>Inner wheel (basic)</figcaption>
+      </figure>
+
+      <figure id="inner-wheel-advanced-template" class="template">
+        <figcaption>Inner wheel (advanced)</figcaption>
+      </figure>
+
+    </main>
+    <footer>
+      <p>Started March 2024 by David Megginson, and released into the Public Domain.</p>
+      <p>No rights reserved.</p>
+      <p>Source code, feature requests, and bug reports: <a href="https://github.com/davidmegginson/cardboard-computer">https://github.com/davidmegginson/cardboard-computer</a>.</p>
+    </footer>
+    <script type="text/javascript" src="script.js">
+    </script>
+    <script type="text/javascript">
+      window.onload = () => {
+      new CardboardComputer("outer-wheel-template", {
+      components: { outerWheel: true, grommit: true }
+      });
+      new CardboardComputer("inner-wheel-basic-template", {
+      components: { innerWheel: true, grommit: true },
+      advanced: false
+      });
+      new CardboardComputer("inner-wheel-advanced-template", {
+      components: { innerWheel: true, grommit: true },
+      advanced: true
+      });
+      };
+    </script>
+  </body>
+</html>
