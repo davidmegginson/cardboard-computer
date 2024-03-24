@@ -100,11 +100,13 @@ class CardboardComputer {
             let cursorNode = this.makeElement("g", {
                 class: "cursor"
             });
-            cursorNode.appendChild(this.makeElement("ellipse", {
-                cx: 500,
-                cy: 268,
-                rx: 20,
-                ry: 232,
+            cursorNode.appendChild(this.makeElement("rect", {
+                x: 465,
+                y: 40,
+                width: 70,
+                height: 495,
+                rx: 30,
+                ry: 30,
                 "fill-opacity": "10%",
                 fill: "black",
                 stroke: "black",
@@ -113,11 +115,11 @@ class CardboardComputer {
             cursorNode.appendChild(this.makeElement("line", {
                 x1: 500,
                 x2: 500,
-                y1: 36,
+                y1: 40,
                 y2: 500,
                 opacity: "50%",
                 stroke: "#aa0000",
-                "stroke-width": 1
+                "stroke-width": 2
             }));
             slideRuleNode.appendChild(cursorNode);
             this.nodes["cursor"] = cursorNode;
