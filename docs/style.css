@@ -126,6 +126,11 @@ dt {
         display: block;
         width: 100%;
     }
+
+    nav a {
+        font-size: 83.3333%;
+        margin-left: .5em;
+    }
 }
 
 @media screen and (width >= 640px) {
