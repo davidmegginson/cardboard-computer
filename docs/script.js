@@ -414,7 +414,6 @@ class CardboardComputer {
                 });
             }
             if (!options.components || options.components.innerWheel) {
-                console.log(options, options.advanced);
                 this.drawScale(this.innerWheelNode, {
                     scaleLabel: "C",
                     unitPointer: true,
@@ -423,7 +422,6 @@ class CardboardComputer {
                     yDirection: 1
                 });
                 if (options.advanced) {
-                    console.log("Advanced");
                     this.drawScale(this.innerWheelNode, {
                         scaleLabel: "CI",
                         scale: scales.CI,
