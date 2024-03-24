@@ -116,10 +116,17 @@ class CardboardComputer {
                 x1: 500,
                 x2: 500,
                 y1: 40,
-                y2: 500,
+                y2: 535,
                 opacity: "50%",
                 stroke: "#aa0000",
                 "stroke-width": 2
+            }));
+            cursorNode.appendChild(this.makeElement("circle", {
+                cx: 500,
+                cy: 500,
+                r: 4,
+                stroke: "black",
+                fill: "black"
             }));
             slideRuleNode.appendChild(cursorNode);
             this.nodes["cursor"] = cursorNode;
