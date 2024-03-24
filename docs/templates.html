@@ -28,7 +28,7 @@
 
       <p>The wheels need to rotate, and proper alignment is very important for accuracy. The simplest thing is to stick a thumbtack through the centre into something soft (like a cork board). More-portable approaches would involve something like a split-pin, a grommit (which you can get at an arts-and-crafts store or from your local shoe repair place), or even a cleverly-folded twist tie.</p>
       
-      <p><b>Optional:</b> You may choose to add a cursor to help with alignment. It should be straight and rotate from the centre, like the wheels. You can use a stiff piece of wire or a piece of see-through plastic with a straight line drawn down the middle.</p>
+      <p><b>Optional:</b> You may choose to add a cursor to help with alignment. It should be straight and rotate from the centre, like the wheels. You can use a stiff piece of wire or a piece of see-through plastic with a straight line drawn down the middle. A good source for the plastic is an empty food container (it's a good idea to smooth the sides a bit with fine sandpaper or an emery board after cutting it out).</p>
 
       <figure id="outer-wheel-template" class="template">
         <figcaption>Outer wheel</figcaption>
@@ -42,6 +42,10 @@
         <figcaption>Inner wheel (advanced)</figcaption>
       </figure>
 
+      <figure id="cursor-template" class="template">
+        <figcaption>Optional cursor (cutting guide for plastic)</figcaption>
+      </figure>
+
     </main>
     <footer>
       <p>Started March 2024 by David Megginson, and released into the Public Domain.</p>
@@ -52,17 +56,20 @@
     </script>
     <script type="text/javascript">
       window.onload = () => {
-      new CardboardComputer("outer-wheel-template", {
-      components: { outerWheel: true, grommit: true }
-      });
-      new CardboardComputer("inner-wheel-basic-template", {
-      components: { innerWheel: true, grommit: true },
-      advanced: false
-      });
-      new CardboardComputer("inner-wheel-advanced-template", {
-      components: { innerWheel: true, grommit: true },
-      advanced: true
-      });
+          new CardboardComputer("outer-wheel-template", {
+              components: ["outer-wheel", "grommit"]
+          });
+          new CardboardComputer("inner-wheel-basic-template", {
+              components: ["inner-wheel", "grommit"],
+              advanced: false
+          });
+          new CardboardComputer("inner-wheel-advanced-template", {
+              components: ["inner-wheel", "grommit"],
+              advanced: true
+          });
+          new CardboardComputer("cursor-template", {
+              components: ["cursor"]
+          });
       };
     </script>
   </body>

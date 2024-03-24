@@ -1,3 +1,24 @@
+/**
+ * A single instance of the Cardboard computer
+ *
+ * https://cardboard-computer.org
+ *
+ * Usage:
+ *
+ * let computer = new CardboardComputer(containerId, options);
+ *
+ * containerId - the HTML id of the container where the CardboardComputer should draw itself.
+ * options - an object with options for the computer.
+ *
+ * Options:
+ *  advanced - if true, draw the advanced computer, with the CI, A, and K scales.
+ *  components - a list of components to draw ("outer-wheel", "inner-wheel", "cursor", and/or "grommit"); if absent, draw all.
+ *  viewBox - the SVG viewBox to show for the computer (default: "0 0 1000 1000")
+ *
+ * Public methods:
+ *  rotate - apply a list of rotation specifications to the computer.
+ *  makeInteraction - animate an interactive demo
+ */
 class CardboardComputer {
 
     // constants
@@ -8,6 +29,7 @@ class CardboardComputer {
 
     // private variables
     containerNode = null;
+    nodes = {};
 
     /**
      * Construct a new cardboard computer
@@ -16,30 +38,37 @@ class CardboardComputer {
         if (!options) {
             options = {};
         }
+        if (!options.components) {
+            options.components = ["outer-wheel", "inner-wheel", "cursor", "grommit"];
+        }
+        this.options = options;
         this.containerNode = document.getElementById(containerId);
         this.problem = null;
-        this.containerNode.append(this.makeSVG(options));
+        this.containerNode.append(this.makeSVG());
+        console.log(this.nodes);
     }
 
     /**
      * Construct the basic SVG diagram (without scales).
      */
-    makeSVG (options) {
+    makeSVG () {
 
-        this.svgNode = this.makeElement("svg", {
-            viewBox: options.viewBox ? options.viewBox : "0 0 1000 1000"
+        let svgNode = this.makeElement("svg", {
+            viewBox: this.options.viewBox ? this.options.viewBox : "0 0 1000 1000"
         });
+        this.nodes["svg"] = svgNode;
 
-        this.slideRuleNode = this.makeElement("g", {
+        let slideRuleNode = this.makeElement("g", {
             class: "sliderule-diagram"
         });
-        this.svgNode.appendChild(this.slideRuleNode);
+        svgNode.appendChild(slideRuleNode);
+        this.nodes["slide-rule"] = slideRuleNode;
 
-        if (!options.components || options.components.outerWheel) {
-            this.outerWheelNode = this.makeElement("g", {
+        if (this.options.components.includes("outer-wheel")) {
+            let outerWheelNode = this.makeElement("g", {
                 class: "outer-wheel"
             });
-            this.outerWheelNode.appendChild(this.makeElement("circle", {
+            outerWheelNode.appendChild(this.makeElement("circle", {
                 cx: 500,
                 cy: 500,
                 r: 490,
@@ -47,14 +76,15 @@ class CardboardComputer {
                 "stroke-width": 1,
                 fill: "white"
             }));
-            this.slideRuleNode.appendChild(this.outerWheelNode);
+            slideRuleNode.appendChild(outerWheelNode);
+            this.nodes["outer-wheel"] = outerWheelNode;
         }
 
-        if (!options.components || options.components.innerWheel) {
-            this.innerWheelNode = this.makeElement("g", {
+        if (this.options.components.includes("inner-wheel")) {
+            let innerWheelNode = this.makeElement("g", {
                 class: "inner-wheel"
             });
-            this.innerWheelNode.appendChild(this.makeElement("circle", {
+            innerWheelNode.appendChild(this.makeElement("circle", {
                 cx: 500,
                 cy: 500,
                 r: 420,
@@ -62,14 +92,15 @@ class CardboardComputer {
                 "stroke-width": 1,
                 fill: "#eeeeff"
             }));
-            this.slideRuleNode.appendChild(this.innerWheelNode);
+            slideRuleNode.appendChild(innerWheelNode);
+            this.nodes["inner-wheel"] = innerWheelNode;
         }
 
-        if (!options.components || options.components.cursor) {
-            this.cursorNode = this.makeElement("g", {
+        if (this.options.components.includes("cursor")) {
+            let cursorNode = this.makeElement("g", {
                 class: "cursor"
             });
-            this.cursorNode.appendChild(this.makeElement("ellipse", {
+            cursorNode.appendChild(this.makeElement("ellipse", {
                 cx: 500,
                 cy: 268,
                 rx: 20,
@@ -79,7 +110,7 @@ class CardboardComputer {
                 stroke: "black",
                 "stroke-width": 1
             }));
-            this.cursorNode.appendChild(this.makeElement("line", {
+            cursorNode.appendChild(this.makeElement("line", {
                 x1: 500,
                 x2: 500,
                 y1: 36,
@@ -88,19 +119,20 @@ class CardboardComputer {
                 stroke: "#aa0000",
                 "stroke-width": 1
             }));
-            this.slideRuleNode.appendChild(this.cursorNode);
+            slideRuleNode.appendChild(cursorNode);
+            this.nodes["cursor"] = cursorNode;
         }
 
-        if (!options.components || options.components.grommit) {
-            this.grommitNode = this.makeElement("g");
-            this.grommitNode.appendChild(this.makeElement("circle", {
+        if (this.options.components.includes("grommit")) {
+            let grommitNode = this.makeElement("g");
+            grommitNode.appendChild(this.makeElement("circle", {
                 class: "grommit",
                 cx: 500,
                 cy: 500,
                 r: 30,
                 fill: "#aaaaaa"
             }));
-            this.grommitNode.appendChild(this.makeElement("circle", {
+            grommitNode.appendChild(this.makeElement("circle", {
                 cx: 500,
                 cy: 500,
                 r: 10,
@@ -108,20 +140,183 @@ class CardboardComputer {
                 "stroke-width": ".1",
                 fill: "#333333"
             }));
-            this.grommitNode.appendChild(this.makeElement("circle", {
+            grommitNode.appendChild(this.makeElement("circle", {
                 cx: 500,
                 cy: 500,
                 r: 2,
                 stroke: "white",
                 fill: "white"
             }));
-            this.slideRuleNode.appendChild(this.grommitNode);
+            slideRuleNode.appendChild(grommitNode);
+            this.nodes["grommit"] = grommitNode;
         }
 
-        this.draw(options);
+        this.draw();
 
-        return this.svgNode;
+        return svgNode;
     }
+
+    /**
+     * Load definitions from JSON and draw the scales as needed.
+     */
+    draw () {
+        fetch("data/scales.json").then((response) => response.json()).then((scales) => {
+            if (this.options.components.includes("outer-wheel")) {
+                this.drawScale(this.nodes["outer-wheel"], {
+                    scaleLabel: "D",
+                    unitPointer: true,
+                    scale: scales.D,
+                    yOffset: 80,
+                    yDirection: -1
+                });
+            }
+            if (this.options.components.includes("inner-wheel")) {
+                this.drawScale(this.nodes["inner-wheel"], {
+                    scaleLabel: "C",
+                    unitPointer: true,
+                    scale: scales.C,
+                    yOffset: 80,
+                    yDirection: 1
+                });
+                if (this.options.advanced) {
+                    this.drawScale(this.nodes["inner-wheel"], {
+                        scaleLabel: "CI",
+                        scale: scales.CI,
+                        yOffset: 140,
+                        yDirection: 1,
+                        labelClass: "label-inverse"
+                    });
+                    this.drawScale(this.nodes["inner-wheel"], {
+                        scaleLabel: "A",
+                        scale: scales.A,
+                        yOffset: 200,
+                        yDirection: 1,
+                        labelClass: "label-medium"
+                    });
+                    this.drawScale(this.nodes["inner-wheel"], {
+                        scaleLabel: "K",
+                        scale: scales.K,
+                        yOffset: 260,
+                        yDirection: 1,
+                        labelClass: "label-small"
+                    });
+                }
+            }
+        });
+    }
+
+    
+    /**
+     * Draw a scale on the circular sliderule
+     */
+    drawScale (node, scaleOpts) {
+
+        function checkInterval (i, interval) {
+            let x = Math.round(i * 1000);
+            let y = Math.round(interval * 1000);
+            return (x % y == 0);
+        }
+
+        function makeRotation (deg) {
+            return "rotate(" + (Math.log10(deg) / scaleOpts.scale.factor) * 360.0 + ", 500, 500)";
+        }
+
+        let scaleNode = this.makeElement("g", {
+            class: "scale"
+        });
+        
+        if (!scaleOpts.yDirection) {
+            scaleOpts.yDirection = 1;
+        }
+
+        if (!scaleOpts.labelClass) {
+            scaleOpts.labelClass = "label";
+        }
+
+        // Label the scale
+        if (scaleOpts.scaleLabel) {
+            scaleNode.appendChild(this.makeElement("text", {
+                x: 500,
+                y: scaleOpts.yOffset + (scaleOpts.yDirection == 1 ? 50 : -35),
+                class: scaleOpts.labelClass,
+                fill: "blue",
+                transform: "rotate(" + (scaleOpts.scale.factor < 0 ? -5 : 5) + ", 500, 500)"
+            }, scaleOpts.scaleLabel));
+        }
+        
+        scaleOpts.scale.ranges.forEach((range) => {
+            for (let i = range.start; i < range.end; i += range.step) {
+                let isLarge = checkInterval(i, range.largeTickInterval);
+                let rotation = makeRotation(i);
+                scaleNode.appendChild(this.makeElement("line", {
+                    x1: 500,
+                    x2: 500,
+                    y1: scaleOpts.yOffset,
+                    y2: scaleOpts.yOffset + (isLarge ? 30: 20) * scaleOpts.yDirection,
+                    stroke: "black",
+                    stroke_width: (isLarge ? 2 : 1),
+                    transform: rotation
+                }));
+                if (checkInterval(i, range.labelInterval) || i == range.start) {
+                    let labelClass = scaleOpts.labelClass;
+
+                    // Is this a unit pointer?
+                    if (i == 1.0 && scaleOpts.unitPointer) {
+                        let cy = scaleOpts.yOffset - (scaleOpts.yDirection == -1 ? 42.5 : -42.5);
+                        labelClass = "unit-pointer";
+                        scaleNode.appendChild(this.makeElement("circle", {
+                            fill: "#333333",
+                            stroke: "#333333",
+                            cx: 500,
+                            cy: cy,
+                            r: 15,
+                            transform: rotation
+                        }));
+                        scaleNode.appendChild(this.makeElement("polygon", {
+                            fill: "#333333",
+                            stroke: "#333333",
+                            points: "485," + cy + " 515," + cy + " 500," + (cy - 45 * scaleOpts.yDirection),
+                            transform: rotation
+                        }));
+                    }
+
+                    // Add the main text label
+                    scaleNode.appendChild(this.makeElement("text", {
+                        x: 500,
+                        y: scaleOpts.yOffset + (scaleOpts.yDirection == 1 ? 50 : -35),
+                        class: labelClass,
+                        fill: "currentColor",
+                        transform: rotation
+                    }, i.toLocaleString()));
+                }
+            }
+        });
+
+        if (scaleOpts.scale.specialValues) {
+            scaleOpts.scale.specialValues.forEach((special) => {
+                let rotation = makeRotation(special.value);
+                scaleNode.appendChild(this.makeElement("text", {
+                    x: 500,
+                    y: scaleOpts.yOffset + (scaleOpts.yDirection == 1 ? 50 : -35),
+                    class: scaleOpts.labelClass,
+                    fill: "grey",
+                    transform: rotation
+                }, special.label));
+                scaleNode.appendChild(this.makeElement("line", {
+                    x1: 500,
+                    x2: 500,
+                    y1: scaleOpts.yOffset,
+                    y2: scaleOpts.yOffset + 30 * scaleOpts.yDirection,
+                    stroke: "grey",
+                    stroke_width: 1,
+                    transform: rotation
+                }));
+            });
+        }
+
+        node.appendChild(scaleNode);
+    }
+
 
     /**
      * Show a problem without the solution
@@ -129,10 +324,10 @@ class CardboardComputer {
     showProblem (problem) {
         document.getElementById("question").textContent = problem.q;
         this.rotate([
-            [this.slideRuleNode, 1, 0, 0],
-            [this.outerWheelNode, 1, 0, 0],
-            [this.innerWheelNode, 1, 0, 0],
-            [this.cursorNode, 1, 0, 0]
+            ["slide-rule", 1, 0, 0],
+            ["outer-wheel", 1, 0, 0],
+            ["inner-wheel", 1, 0, 0],
+            ["cursor", 1, 0, 0]
         ]);
     }
 
@@ -144,20 +339,19 @@ class CardboardComputer {
         document.getElementById("question").textContent = problem.a;
         if (problem.op == '×') {
             this.rotate([
-                [this.outerWheelNode, problem.n1, -1, 2, 0],
-                [this.slideRuleNode, problem.n2, -1, 2, 2],
-                [this.cursorNode, problem.n2, 1, 2, 4]
+                ["outer-wheel", problem.n1, -1, 2, 0],
+                ["slide-rule", problem.n2, -1, 2, 2],
+                ["cursor", problem.n2, 1, 2, 4]
             ]);
         } else {
             this.rotate([
-                [this.outerWheelNode, problem.n1, -1, 2, 0],
-                [this.innerWheelNode, problem.n2, -1, 2, 2],
-                [this.slideRuleNode, problem.n2, 1, 2, 4],
-                [this.cursorNode, problem.n2, -1, 2, 6]
+                ["outer-wheel", problem.n1, -1, 2, 0],
+                ["inner-wheel", problem.n2, -1, 2, 2],
+                ["slide-rule", problem.n2, 1, 2, 4],
+                ["cursor", problem.n2, -1, 2, 6]
             ]);
         }
     }
-
 
     /**
      * Generate a multiplication or division problem
@@ -224,118 +418,6 @@ class CardboardComputer {
 
 
     /**
-     * Draw a scale on the circular sliderule
-     */
-    drawScale (node, options) {
-
-        function checkInterval (i, interval) {
-            let x = Math.round(i * 1000);
-            let y = Math.round(interval * 1000);
-            return (x % y == 0);
-        }
-
-        function makeRotation (deg) {
-            return "rotate(" + (Math.log10(deg) / options.scale.factor) * 360.0 + ", 500, 500)";
-        }
-
-        let scaleNode = this.makeElement("g", {
-            class: "scale"
-        });
-        
-        if (!options.yDirection) {
-            options.yDirection = 1;
-        }
-
-        if (!options.labelClass) {
-            options.labelClass = "label";
-        }
-
-        // Label the scale
-        if (options.scaleLabel) {
-            scaleNode.appendChild(this.makeElement("text", {
-                x: 500,
-                y: options.yOffset + (options.yDirection == 1 ? 50 : -35),
-                class: options.labelClass,
-                fill: "blue",
-                transform: "rotate(" + (options.scale.factor < 0 ? -5 : 5) + ", 500, 500)"
-            }, options.scaleLabel));
-        }
-        
-        options.scale.ranges.forEach((range) => {
-            for (let i = range.start; i < range.end; i += range.step) {
-                let isLarge = checkInterval(i, range.largeTickInterval);
-                let rotation = makeRotation(i);
-                scaleNode.appendChild(this.makeElement("line", {
-                    x1: 500,
-                    x2: 500,
-                    y1: options.yOffset,
-                    y2: options.yOffset + (isLarge ? 30: 20) * options.yDirection,
-                    stroke: "black",
-                    stroke_width: (isLarge ? 2 : 1),
-                    transform: rotation
-                }));
-                if (checkInterval(i, range.labelInterval) || i == range.start) {
-                    let labelClass = options.labelClass;
-
-                    // Is this a unit pointer?
-                    if (i == 1.0 && options.unitPointer) {
-                        let cy = options.yOffset - (options.yDirection == -1 ? 42.5 : -42.5);
-                        labelClass = "unit-pointer";
-                        scaleNode.appendChild(this.makeElement("circle", {
-                            fill: "#333333",
-                            stroke: "#333333",
-                            cx: 500,
-                            cy: cy,
-                            r: 15,
-                            transform: rotation
-                        }));
-                        scaleNode.appendChild(this.makeElement("polygon", {
-                            fill: "#333333",
-                            stroke: "#333333",
-                            points: "485," + cy + " 515," + cy + " 500," + (cy - 45 * options.yDirection),
-                            transform: rotation
-                        }));
-                    }
-
-                    // Add the main text label
-                    scaleNode.appendChild(this.makeElement("text", {
-                        x: 500,
-                        y: options.yOffset + (options.yDirection == 1 ? 50 : -35),
-                        class: labelClass,
-                        fill: "currentColor",
-                        transform: rotation
-                    }, i.toLocaleString()));
-                }
-            }
-        });
-
-        if (options.scale.specialValues) {
-            options.scale.specialValues.forEach((special) => {
-                let rotation = makeRotation(special.value);
-                scaleNode.appendChild(this.makeElement("text", {
-                    x: 500,
-                    y: options.yOffset + (options.yDirection == 1 ? 50 : -35),
-                    class: options.labelClass,
-                    fill: "grey",
-                    transform: rotation
-                }, special.label));
-                scaleNode.appendChild(this.makeElement("line", {
-                    x1: 500,
-                    x2: 500,
-                    y1: options.yOffset,
-                    y2: options.yOffset + 30 * options.yDirection,
-                    stroke: "grey",
-                    stroke_width: 1,
-                    transform: rotation
-                }));
-            });
-        }
-
-        node.appendChild(scaleNode);
-    }
-
-
-    /**
      * Construct a DOM element in the SVG namespace
      * Use the local name and (optionally) attributes and text content provided
      */
@@ -360,8 +442,11 @@ class CardboardComputer {
      */
     rotate (rotations) {
 
+        let computer = this;
+
         function doTransition (rotation) {
-            let [node, n, direction, duration, delay] = rotation;
+            let [nodeName, n, direction, duration, delay] = rotation;
+            let node = computer.nodes[nodeName];
 
             if (!direction) {
                 direction = 1;
@@ -400,55 +485,6 @@ class CardboardComputer {
 
 
     /**
-     * Load definitions from JSON and draw the circulate slide rule
-     */
-    draw (options) {
-        fetch("data/scales.json").then((response) => response.json()).then((scales) => {
-            if (!options.components || options.components.outerWheel) {
-                this.drawScale(this.outerWheelNode, {
-                    scaleLabel: "D",
-                    unitPointer: true,
-                    scale: scales.D,
-                    yOffset: 80,
-                    yDirection: -1
-                });
-            }
-            if (!options.components || options.components.innerWheel) {
-                this.drawScale(this.innerWheelNode, {
-                    scaleLabel: "C",
-                    unitPointer: true,
-                    scale: scales.C,
-                    yOffset: 80,
-                    yDirection: 1
-                });
-                if (options.advanced) {
-                    this.drawScale(this.innerWheelNode, {
-                        scaleLabel: "CI",
-                        scale: scales.CI,
-                        yOffset: 140,
-                        yDirection: 1,
-                        labelClass: "label-inverse"
-                    });
-                    this.drawScale(this.innerWheelNode, {
-                        scaleLabel: "A",
-                        scale: scales.A,
-                        yOffset: 200,
-                        yDirection: 1,
-                        labelClass: "label-medium"
-                    });
-                    this.drawScale(this.innerWheelNode, {
-                        scaleLabel: "K",
-                        scale: scales.K,
-                        yOffset: 260,
-                        yDirection: 1,
-                        labelClass: "label-small"
-                    });
-                }
-            }
-        });
-    }
-
-    /**
      * Make the diagram interactive
      */
     makeInteractive () {
@@ -466,7 +502,7 @@ class CardboardComputer {
         }
 
         // Add the handler for clicks/taps and keypresses
-        this.slideRuleNode.addEventListener("click", handler);
+        this.nodes["slide-rule"].addEventListener("click", handler);
 
         // Call the handler once manually to start the process
         handler();
