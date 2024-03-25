@@ -1,3 +1,7 @@
+/***************************************************************
+ * Common style rules
+ ***************************************************************/
+
 body {
     font-family: arial, sans-serif;
     padding: 0;
@@ -17,40 +21,8 @@ h1 {
     font-size: 120%;
 }
 
-.prompt {
-    font-style: italic;
-    font-size: 83.3333%;
-    color: #666666;
-}
 
-.label, .label-inverse, .label-medium, .label-small, .unit-pointer {
-    text-anchor: middle;
-}
-
-.label, .unit-pointer {
-    font-size: 144%;
-}
-
-.unit-pointer {
-    color: white;
-    font-weight: bold;
-}
-
-.label-inverse {
-    font-size: 120%;
-}
-
-text.label-inverse {
-    color: red;
-}
-
-.label-medium {
-    font-size: 100%;
-}
-
-.label-small {
-    font-size: 83.3333%;
-}
+/* Primary navigation */
 
 nav {
     clear: right;
@@ -70,7 +42,21 @@ nav a.active-tab {
     font-weight: bold;
     border-bottom: 3px solid white;;
 }
-    
+
+
+/* Figures */
+
+figcaption {
+    font-weight: bold;
+    font-style: italic;
+    color: #444444;
+}
+
+.template {
+    display: block;
+    width: 15cm;
+    page-break-before: always;
+}
 
 #sliderule {
     max-width: 100%;
@@ -83,9 +69,50 @@ nav a.active-tab {
     font-size: 120%;
 }
 
-.sliderule-diagram, .outer-wheel, .inner-wheel, .cursor {
-    transform-origin: center;
+.prompt {
+    font-style: italic;
+    font-size: 83.3333%;
+    color: #666666;
 }
+
+
+/* Guide */
+
+a.link {
+    text-decoration: none;
+    font-size: 69.445%;
+    color: #aaaaaa;
+}
+
+th, td {
+    padding: .5ex .5em;
+}
+
+thead th {
+    background: #333333;
+    color: white;
+}
+
+dt {
+    color: #666666;
+    font-weight: bold;
+    margin-top: 2ex;
+}
+
+.scale-example {
+    font-size: 83.333%;
+}
+
+.scale-example th, .scale-example td {
+    text-align: right;
+}
+
+table.zebra tr:nth-child(odd) {
+    background: #eeeeff;
+}
+
+
+/* Footer */
 
 footer {
     border-top: 1px solid grey;
@@ -99,26 +126,22 @@ footer p {
     margin: .5ex;
 }
 
-th, td {
-    padding: .5ex .5em;
+footer span, footer img {
+    vertical-align: middle;
 }
 
-thead th {
-    background: #333333;
-    color: white;
-}
-
-a.link {
+a.pdm {
     text-decoration: none;
-    font-size: 69.445%;
-    color: #aaaaaa;
 }
 
-dt {
-    color: #666666;
-    font-weight: bold;
-    margin-top: 2ex;
+a.pdm img {
+    height: 3ex;
 }
+
+
+/***************************************************************
+ * Mobile style rules
+ ***************************************************************/
 
 @media screen and (width < 640px) {
 
@@ -132,6 +155,11 @@ dt {
         margin-left: .5em;
     }
 }
+
+
+/***************************************************************
+ * Desktop style rules
+ ***************************************************************/
 
 @media screen and (width >= 640px) {
 
@@ -155,6 +183,11 @@ dt {
         max-width: 20em;
     }
 }
+
+
+/***************************************************************
+ * Print style rules
+ ***************************************************************/
 
 @media print {
 
@@ -189,38 +222,41 @@ dt {
 
 }
 
-.scale-example {
-    font-size: 83.333%;
+/***************************************************************
+ * SVG style rules
+ ***************************************************************/
+
+/* Styles for SVG */
+
+.label, .label-inverse, .label-medium, .label-small, .unit-pointer {
+    text-anchor: middle;
 }
 
-.scale-example th, .scale-example td {
-    text-align: right;
+.label, .unit-pointer {
+    font-size: 144%;
 }
 
-table.zebra tr:nth-child(odd) {
-    background: #eeeeff;
-}
-
-.template {
-    display: block;
-    width: 15cm;
-    page-break-before: always;
-}
-
-figcaption {
+.unit-pointer {
+    color: white;
     font-weight: bold;
-    font-style: italic;
-    color: #444444;
 }
 
-footer span, footer img {
-    vertical-align: middle;
+.label-inverse {
+    font-size: 120%;
 }
 
-a.pdm {
-    text-decoration: none;
+text.label-inverse {
+    color: red;
 }
 
-a.pdm img {
-    height: 3ex;
+.label-medium {
+    font-size: 100%;
+}
+
+.label-small {
+    font-size: 83.3333%;
+}
+
+.sliderule-diagram, .outer-wheel, .inner-wheel, .cursor {
+    transform-origin: center;
 }
