@@ -357,10 +357,10 @@ class CardboardComputer {
      */
     reset () {
         this.rotate([
-            ["slide-rule", 1],
-            ["outer-wheel", 1],
-            ["inner-wheel", 1],
-            ["cursor", 1]
+            ["slide-rule", 1, 1],
+            ["outer-wheel", 1, 1],
+            ["inner-wheel", 1, 1],
+            ["cursor", 1, 1]
         ]);
     }
 
@@ -457,6 +457,51 @@ class CardboardComputer {
         return problem;
     }
 
+    setAdvancedProblem () {
+        let problem = {};
+        let op = null;
+        let eq = null;
+        let result = null;
+        
+        problem.n3 = Math.ceil(Math.random() * 999) / 10.0;
+
+        let i = Math.ceil(Math.random() * 2);
+
+        switch (i) {
+
+        case 1:
+            op = "√";
+            result = problem.n3 * problem.n3;
+            break;
+
+        case 2:
+            op = "∛";
+            result = problem.n3 * problem.n3 * problem.n3;
+            break;
+
+        default:
+            console.error("Got", i);
+            break;
+
+        }
+        problem.n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
+
+        if (problem.n1 == result) {
+            eq = "=";
+        } else {
+            eq = "=~";
+        }
+
+        problem.rotations = [
+            ["slide-rule", problem.n3, -1],
+            ["cursor", problem.n3, 1]
+        ];
+
+        problem.q = op + this.displayNum(problem.n1) + " " + eq + " ?";
+        problem.a = op + this.displayNum(problem.n1) + " " + eq + " " + this.displayNum(problem.n3);
+
+        return problem;
+    }
 
     /**
      * Construct a DOM element in the SVG namespace
@@ -488,12 +533,14 @@ class CardboardComputer {
         function doTransition (rotation, delay) {
             let [nodeName, n, direction] = rotation;
             let node = computer.nodes[nodeName];
-            let degrees = (Math.log10(n) * 360.0 * direction) % 360.0;
+            let degrees = (Math.log10(n) * 360.0 * (direction ? direction : 1)) % 360.0;
+
             if (degrees > 180.0) {
                 degrees -= 360.0;
             } else if (degrees < -180.0) {
                 degrees += 360.0;
             }
+
 
             node.style.transitionDelay = delay + "s";
             node.style.transitionDuration = duration + "s";
@@ -525,7 +572,7 @@ class CardboardComputer {
     /**
      * Make the diagram interactive
      */
-    makeInteractive () {
+    makeInteractive (advanced) {
 
         let computer = this;
 
@@ -534,7 +581,18 @@ class CardboardComputer {
                 computer.showSolution(computer.problem);
                 computer.problem = null;
             } else {
-                computer.problem = computer.setBasicProblem();
+                if (advanced) {
+                    switch (Math.ceil(Math.random() * 2)) {
+                    case 1:
+                        computer.problem = computer.setAdvancedProblem();
+                        break;
+                    case 2:
+                        computer.problem = computer.setBasicProblem();
+                        break;
+                    }
+                } else {
+                    computer.problem = computer.setBasicProblem();
+                }
                 computer.showProblem(computer.problem);
             }
         }
@@ -547,6 +605,3 @@ class CardboardComputer {
     }
 
 };
-
-
-
