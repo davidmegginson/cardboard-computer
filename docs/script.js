@@ -353,16 +353,24 @@ class CardboardComputer {
 
 
     /**
+     * Reset the wheel to its starting position.
+     */
+    reset () {
+        this.rotate([
+            ["slide-rule", 1],
+            ["outer-wheel", 1],
+            ["inner-wheel", 1],
+            ["cursor", 1]
+        ]);
+    }
+
+
+    /**
      * Show a problem without the solution
      */
     showProblem (problem) {
         document.getElementById("question").textContent = problem.q;
-        this.rotate([
-            ["slide-rule", 1, 0, 0],
-            ["outer-wheel", 1, 0, 0],
-            ["inner-wheel", 1, 0, 0],
-            ["cursor", 1, 0, 0]
-        ]);
+        this.reset();
     }
 
 
@@ -371,14 +379,14 @@ class CardboardComputer {
      */
     showSolution (problem) {
         document.getElementById("question").textContent = problem.a;
-        this.rotate(problem.rotations);
+        this.rotate(problem.rotations, 2);
     }
 
 
     /**
      * Generate a multiplication or division problem
      */
-    setProblem () {
+    setBasicProblem () {
 
         const PI_CUTOFF = 9.0; // this and above means pi in the random selector
 
@@ -417,18 +425,18 @@ class CardboardComputer {
         if (Math.random() >= 0.5) {
             problem.op = "×";
             problem.rotations = [
-                ["outer-wheel", problem.n1, -1, 2, 0],
-                ["slide-rule", problem.n2, -1, 2, 2],
-                ["cursor", problem.n2, 1, 2, 4]
+                ["outer-wheel", problem.n1, -1],
+                ["slide-rule", problem.n2, -1],
+                ["cursor", problem.n2, 1]
             ];
             result = problem.n1 * problem.n2;
         } else {
             problem.op = "÷";
             problem.rotations = [
-                ["outer-wheel", problem.n1, -1, 2, 0],
-                ["inner-wheel", problem.n2, -1, 2, 2],
-                ["slide-rule", problem.n2, 1, 2, 4],
-                ["cursor", problem.n2, -1, 2, 6]
+                ["outer-wheel", problem.n1, -1],
+                ["inner-wheel", problem.n2, -1],
+                ["slide-rule", problem.n2, 1],
+                ["cursor", problem.n2, -1]
             ];
             result = problem.n1 / problem.n2;
         }
@@ -473,23 +481,13 @@ class CardboardComputer {
      * The degrees of rotation will be the log10 of n
      * 1 (default) means clockwise; -1 means counter-clockwise.
      */
-    rotate (rotations) {
+    rotate (rotations, duration) {
 
         let computer = this;
 
-        function doTransition (rotation) {
-            let [nodeName, n, direction, duration, delay] = rotation;
+        function doTransition (rotation, delay) {
+            let [nodeName, n, direction] = rotation;
             let node = computer.nodes[nodeName];
-
-            if (!direction) {
-                direction = 1;
-            }
-            if (!duration) {
-                duration = 0;
-            }
-            if (!delay) {
-                delay = 0;
-            }
             let degrees = (Math.log10(n) * 360.0 * direction) % 360.0;
             if (degrees > 180.0) {
                 degrees -= 360.0;
@@ -503,8 +501,15 @@ class CardboardComputer {
             node.style.transform="rotate(" + degrees + "deg)";
         }
 
+        if (!duration) {
+            duration = 0;
+        }
+
+        let delay = 0;
+
         rotations.forEach((rotation) => {
-            doTransition(rotation);
+            doTransition(rotation, delay);
+            delay += duration;
         });
     }
 
@@ -529,7 +534,7 @@ class CardboardComputer {
                 computer.showSolution(computer.problem);
                 computer.problem = null;
             } else {
-                computer.problem = computer.setProblem();
+                computer.problem = computer.setBasicProblem();
                 computer.showProblem(computer.problem);
             }
         }
