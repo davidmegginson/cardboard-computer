@@ -371,21 +371,9 @@ class CardboardComputer {
      */
     showSolution (problem) {
         document.getElementById("question").textContent = problem.a;
-        if (problem.op == '×') {
-            this.rotate([
-                ["outer-wheel", problem.n1, -1, 2, 0],
-                ["slide-rule", problem.n2, -1, 2, 2],
-                ["cursor", problem.n2, 1, 2, 4]
-            ]);
-        } else {
-            this.rotate([
-                ["outer-wheel", problem.n1, -1, 2, 0],
-                ["inner-wheel", problem.n2, -1, 2, 2],
-                ["slide-rule", problem.n2, 1, 2, 4],
-                ["cursor", problem.n2, -1, 2, 6]
-            ]);
-        }
+        this.rotate(problem.rotations);
     }
+
 
     /**
      * Generate a multiplication or division problem
@@ -428,9 +416,20 @@ class CardboardComputer {
 
         if (Math.random() >= 0.5) {
             problem.op = "×";
+            problem.rotations = [
+                ["outer-wheel", problem.n1, -1, 2, 0],
+                ["slide-rule", problem.n2, -1, 2, 2],
+                ["cursor", problem.n2, 1, 2, 4]
+            ];
             result = problem.n1 * problem.n2;
         } else {
             problem.op = "÷";
+            problem.rotations = [
+                ["outer-wheel", problem.n1, -1, 2, 0],
+                ["inner-wheel", problem.n2, -1, 2, 2],
+                ["slide-rule", problem.n2, 1, 2, 4],
+                ["cursor", problem.n2, -1, 2, 6]
+            ];
             result = problem.n1 / problem.n2;
         }
 
