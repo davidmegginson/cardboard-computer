@@ -563,6 +563,28 @@ class CardboardComputer {
         return problem;
     }
 
+    setThreeFactorMultiplicationProblem () {
+        let problem = {};
+        let n1 = Math.ceil(Math.random() * 999) / 10.0;
+        let n2 = Math.ceil(Math.random() * 999) / 10.0;
+        let n3 = Math.ceil(Math.random() * 999) / 10.0;
+        let result = n1 * n2 * n3;
+        let n4 = Number(result.toPrecision(CardboardComputer.PRECISION));
+
+        problem.rotations = [
+            ["outer-wheel", n1, -1],
+            ["inner-wheel", n2, 1],
+            ["slide-rule", [n2, n3], -1],
+            ["cursor", [n2, n3], 1],
+        ];
+
+        let base = this.displayNum(n1) + " × " + this.displayNum(n2) + " × " + this.displayNum(n3) + (result == n4 ? " = " : " =~ ");
+        problem.q = base + "?";
+        problem.a = base + this.displayNum(n4) + " (C → D scale)";
+
+        return problem;
+    }
+
     
     /**
      * Construct a DOM element in the SVG namespace
@@ -595,7 +617,12 @@ class CardboardComputer {
             let [nodeName, n, magnitude] = rotation;
 
             let node = computer.nodes[nodeName];
-            let degrees = (Math.log10(n) * 360.0 / (magnitude ? magnitude : 1.0)) % 360.0;
+            let degrees = null;
+            if (Array.isArray(n)) {
+                degrees = ((Math.log10(n[0]) + Math.log10(n[1])) * 360.0 / (magnitude ? magnitude : 1.0)) % 360.0;
+            } else {
+                degrees = (Math.log10(n) * 360.0 / (magnitude ? magnitude : 1.0)) % 360.0;
+            }
 
             if (degrees > 180.0) {
                 degrees -= 360.0;
@@ -669,6 +696,9 @@ class CardboardComputer {
                         break;
                     case 8:
                         computer.problem = computer.setCircleDiameterProblem();
+                        break;
+                    case 9:
+                        computer.problem = computer.setThreeFactorMultiplicationProblem();
                         break;
                     }
                 } else {
