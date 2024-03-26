@@ -382,127 +382,155 @@ class CardboardComputer {
         this.rotate(problem.rotations, 2);
     }
 
-
-    /**
-     * Generate a multiplication or division problem
-     */
-    setBasicProblem () {
-
-        const PI_CUTOFF = 9.0; // this and above means pi in the random selector
-
+    setMultiplicationProblem () {
         let problem = {};
-
-        let factor1 = Math.floor(Math.random() * 10.0);
-        let factor2 = Math.floor(Math.random() * 10.0);
-
-        let result = null;
-
-        if (factor1 > 2 && factor1 < PI_CUTOFF) {
-            factor1 = 2;
-        }
-
-        if (factor2 > 2 && factor2 < PI_CUTOFF) {
-            factor2 = 2;
-        }
-
-        if (factor1 < PI_CUTOFF) {
-            problem.n1 = Math.ceil(Math.random() * (10.0 ** factor1));
-        } else {
-            problem.n1 = Math.PI;
-        }
-        problem.op = null;
-        if (factor2 < PI_CUTOFF) {
-            problem.n2 = Math.ceil(Math.random() * (10.0 ** factor2));
-        } else {
-            problem.n2 = Math.PI;
-        }
-        problem.eq = null;
-        problem.n3 = null;
-
-        problem.n1 == 1 && problem.n1++;
-        problem.n2 == 1 && problem.n2++;
-
-        if (Math.random() >= 0.5) {
-            problem.op = "×";
-            problem.rotations = [
-                ["outer-wheel", problem.n1, -1],
-                ["slide-rule", problem.n2, -1],
-                ["cursor", problem.n2, 1]
-            ];
-            result = problem.n1 * problem.n2;
-        } else {
-            problem.op = "÷";
-            problem.rotations = [
-                ["outer-wheel", problem.n1, -1],
-                ["inner-wheel", problem.n2, -1],
-                ["slide-rule", problem.n2, 1],
-                ["cursor", problem.n2, -1]
-            ];
-            result = problem.n1 / problem.n2;
-        }
-
-        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
-        problem.eq = (result == problem.n3) ? "=" : "=~";
-
-        // string representations
         let base = null;
-        if (problem.op == "×" && problem.n1 == problem.n2) {
-            base = this.displayNum(problem.n1) + "² " + problem.eq + " ";
-        } else {
-            base = this.displayNum(problem.n1) + " " + problem.op + " " + this.displayNum(problem.n2) + " " + problem.eq + " ";
-        }
-        problem.q = base + "?";
-        problem.a = base + this.displayNum(problem.n3.toLocaleString());
+
+        problem.n1 = Math.ceil(Math.random() * 999) / 10;
+        problem.n2 = Math.ceil(Math.random() * 999) / 10;
+        let result = problem.n1 * problem.n2;
+        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
+        console.log(result, problem);
+
+        problem.rotations = [
+            ["outer-wheel", problem.n1, -1],
+            ["slide-rule", problem.n2, -1],
+            ["cursor", problem.n2, 1]
+        ];
+
+        base = this.displayNum(problem.n1) + " × " + this.displayNum(problem.n2) + (result == problem.n3 ? " = " : " =~ ");
+        problem.q = base + "?"
+        problem.a = base + this.displayNum(problem.n3) + " (C→D scale)";
 
         return problem;
     }
 
-    setAdvancedProblem () {
+    setDivisionProblem () {
         let problem = {};
-        let op = null;
-        let eq = null;
+        let base = null;
+
+        if (Math.random() > .9) {
+            problem.n1 = Math.PI;
+        } else {
+            problem.n1 = Math.ceil(Math.random() * 999) / 10;
+        }
+
+        if (Math.random() > .9) {
+            problem.n2 = Math.PI;
+        } else {
+            problem.n2 = Math.ceil(Math.random() * 999) / 10;
+        }
+        let result = problem.n1 / problem.n2;
+        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
+        console.log(result, problem);
+
+        problem.rotations = [
+            ["outer-wheel", problem.n1, -1],
+            ["inner-wheel", problem.n2, -1],
+            ["slide-rule", problem.n2, 1],
+            ["cursor", problem.n2, -1]
+        ];
+
+        base = this.displayNum(problem.n1) + " ÷ " + this.displayNum(problem.n2) + (result == problem.n3 ? " = " : " =~ ");
+        problem.q = base + "?"
+        problem.a = base + this.displayNum(problem.n3) + " (C→D scale)";
+
+        return problem;
+    }
+
+
+    setSquareRootProblem () {
+        let problem = {};
         let result = null;
         
         problem.n3 = Math.ceil(Math.random() * 999) / 10.0;
-
-        let i = Math.ceil(Math.random() * 2);
-
-        switch (i) {
-
-        case 1:
-            op = "√";
-            result = problem.n3 * problem.n3;
-            break;
-
-        case 2:
-            op = "∛";
-            result = problem.n3 * problem.n3 * problem.n3;
-            break;
-
-        default:
-            console.error("Got", i);
-            break;
-
-        }
+        result = problem.n3 * problem.n3;
         problem.n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        if (problem.n1 == result) {
-            eq = "=";
-        } else {
-            eq = "=~";
-        }
 
         problem.rotations = [
             ["slide-rule", problem.n3, -1],
             ["cursor", problem.n3, 1]
         ];
 
-        problem.q = op + this.displayNum(problem.n1) + " " + eq + " ?";
-        problem.a = op + this.displayNum(problem.n1) + " " + eq + " " + this.displayNum(problem.n3);
+        let base = "√" + this.displayNum(problem.n1) + ((problem.n3 == result) ? " = " : " =~ ");
+        problem.q = base + "?";
+        problem.a = base + this.displayNum(problem.n3) + " (A→C scale)";
+
+        console.log(problem);
 
         return problem;
     }
 
+    
+    setSquareProblem () {
+        let problem = {};
+        let result = null;
+        
+        problem.n1 = Math.ceil(Math.random() * 999) / 10.0;
+        result = problem.n1 * problem.n1;
+        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
+
+        problem.rotations = [
+            ["slide-rule", problem.n1, -1],
+            ["cursor", problem.n1, 1]
+        ];
+
+        let base = this.displayNum(problem.n1) + ((problem.n3 == result) ? "² = " : "² =~ ");
+        problem.q = base + "?";
+        problem.a = base + this.displayNum(problem.n3) + " (C→A scale)";
+
+        console.log(problem);
+
+        return problem;
+    }
+
+    
+    setCubeRootProblem () {
+        let problem = {};
+        let result = null;
+        
+        problem.n3 = Math.ceil(Math.random() * 999) / 10.0;
+        result = problem.n3 * problem.n3 * problem.n3;
+        problem.n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
+
+        problem.rotations = [
+            ["slide-rule", problem.n3, -1],
+            ["cursor", problem.n3, 1]
+        ];
+
+        let base = "∛" + this.displayNum(problem.n1) + ((problem.n3 == result) ? " = " : " =~ ");
+        problem.q = base + "?";
+        problem.a = base + this.displayNum(problem.n3) + " (K→C scale)";
+
+        console.log(problem);
+
+        return problem;
+    }
+
+
+    setCubeProblem () {
+        let problem = {};
+        let result = null;
+        
+        problem.n1 = Math.ceil(Math.random() * 999) / 10.0;
+        result = problem.n1 * problem.n1 * problem.n1;
+        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
+
+        problem.rotations = [
+            ["slide-rule", problem.n1, -1],
+            ["cursor", problem.n1, 1]
+        ];
+
+        let base = this.displayNum(problem.n1) + ((problem.n3 == result) ? "³ = " : "³ =~ ");
+        problem.q = base + "?";
+        problem.a = base + this.displayNum(problem.n3) + " (C→K scale)";
+
+        console.log(problem);
+
+        return problem;
+    }
+
+    
     /**
      * Construct a DOM element in the SVG namespace
      * Use the local name and (optionally) attributes and text content provided
@@ -582,16 +610,35 @@ class CardboardComputer {
                 computer.problem = null;
             } else {
                 if (advanced) {
-                    switch (Math.ceil(Math.random() * 2)) {
+                    switch (Math.ceil(Math.random() * 5)) {
                     case 1:
-                        computer.problem = computer.setAdvancedProblem();
+                        computer.problem = computer.setSquareRootProblem();
                         break;
                     case 2:
-                        computer.problem = computer.setBasicProblem();
+                        computer.problem = computer.setSquareProblem();
+                        break;
+                    case 3:
+                        computer.problem = computer.setCubeRootProblem();
+                        break;
+                    case 4:
+                        computer.problem = computer.setCubeProblem();
+                        break;
+                    case 5:
+                        computer.problem = computer.setMultiplicationProblem();
+                        break;
+                    case 6:
+                        computer.problem = computer.setDivisionProblem();
                         break;
                     }
                 } else {
-                    computer.problem = computer.setBasicProblem();
+                    switch (Math.ceil(Math.random() * 2)) {
+                    case 1:
+                        computer.problem = computer.setMultiplicationProblem();
+                        break;
+                    case 2:
+                        computer.problem = computer.setDivisionProblem();
+                        break;
+                    }
                 }
                 computer.showProblem(computer.problem);
             }
