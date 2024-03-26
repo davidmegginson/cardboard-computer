@@ -45,7 +45,6 @@ class CardboardComputer {
         this.containerNode = document.getElementById(containerId);
         this.problem = null;
         this.containerNode.append(this.makeSVG());
-        console.log(this.nodes);
     }
 
     /**
@@ -390,7 +389,6 @@ class CardboardComputer {
         problem.n2 = Math.ceil(Math.random() * 999) / 10;
         let result = problem.n1 * problem.n2;
         problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
-        console.log(result, problem);
 
         problem.rotations = [
             ["outer-wheel", problem.n1, -1],
@@ -422,7 +420,6 @@ class CardboardComputer {
         }
         let result = problem.n1 / problem.n2;
         problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
-        console.log(result, problem);
 
         problem.rotations = [
             ["outer-wheel", problem.n1, -1],
@@ -456,8 +453,6 @@ class CardboardComputer {
         problem.q = base + "?";
         problem.a = base + this.displayNum(problem.n3) + " (A→C scale)";
 
-        console.log(problem);
-
         return problem;
     }
 
@@ -478,8 +473,6 @@ class CardboardComputer {
         let base = this.displayNum(problem.n1) + ((problem.n3 == result) ? "² = " : "² =~ ");
         problem.q = base + "?";
         problem.a = base + this.displayNum(problem.n3) + " (C→A scale)";
-
-        console.log(problem);
 
         return problem;
     }
@@ -502,8 +495,6 @@ class CardboardComputer {
         problem.q = base + "?";
         problem.a = base + this.displayNum(problem.n3) + " (K→C scale)";
 
-        console.log(problem);
-
         return problem;
     }
 
@@ -525,7 +516,49 @@ class CardboardComputer {
         problem.q = base + "?";
         problem.a = base + this.displayNum(problem.n3) + " (C→K scale)";
 
-        console.log(problem);
+        return problem;
+    }
+
+
+    setCircleAreaProblem () {
+        let problem = {};
+        let result = null;
+
+        problem.n1 = Math.ceil(Math.random() * 999) / 10.0;
+        result = Math.PI * (problem.n1 / 2.0) * (problem.n1 / 2.0);
+        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
+
+        problem.rotations = [
+            ["outer-wheel", 1.1283, -1],
+            ["slide-rule", problem.n3, -2],
+            ["cursor", problem.n3, 2]
+        ];
+
+        let base = "Area of a circle with diameter " + this.displayNum(problem.n1) + ((problem.n3 == result) ? " units = " : " units =~ ");
+        problem.q = base + "?";
+        problem.a = base + this.displayNum(problem.n3) + " units² (D → A scale)";
+
+        return problem;
+    }
+
+    
+    setCircleDiameterProblem () {
+        let problem = {};
+        let result = null;
+
+        problem.n3 = Math.ceil(Math.random() * 999) / 10.0;
+        result = Math.PI * (problem.n3 / 2.0) * (problem.n3 / 2.0);
+        problem.n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
+
+        problem.rotations = [
+            ["outer-wheel", 1.1283, -1],
+            ["slide-rule", problem.n1, -2],
+            ["cursor", problem.n1, 2]
+        ];
+
+        let base = "Diameter of a circle with area " + this.displayNum(problem.n1) + ((problem.n3 == result) ? " units² = " : " units² =~ ");
+        problem.q = base + "?";
+        problem.a = base + this.displayNum(problem.n3) + " units (A → D scale)";
 
         return problem;
     }
@@ -559,9 +592,10 @@ class CardboardComputer {
         let computer = this;
 
         function doTransition (rotation, delay) {
-            let [nodeName, n, direction] = rotation;
+            let [nodeName, n, magnitude] = rotation;
+
             let node = computer.nodes[nodeName];
-            let degrees = (Math.log10(n) * 360.0 * (direction ? direction : 1)) % 360.0;
+            let degrees = (Math.log10(n) * 360.0 / (magnitude ? magnitude : 1.0)) % 360.0;
 
             if (degrees > 180.0) {
                 degrees -= 360.0;
@@ -610,7 +644,8 @@ class CardboardComputer {
                 computer.problem = null;
             } else {
                 if (advanced) {
-                    switch (Math.ceil(Math.random() * 5)) {
+                    let i = Math.ceil(Math.random() * 7);
+                    switch (i) {
                     case 1:
                         computer.problem = computer.setSquareRootProblem();
                         break;
@@ -628,6 +663,12 @@ class CardboardComputer {
                         break;
                     case 6:
                         computer.problem = computer.setDivisionProblem();
+                        break;
+                    case 7:
+                        computer.problem = computer.setCircleAreaProblem();
+                        break;
+                    case 8:
+                        computer.problem = computer.setCircleDiameterProblem();
                         break;
                     }
                 } else {
