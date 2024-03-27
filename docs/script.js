@@ -495,207 +495,182 @@ class CardboardComputer {
     //
 
     _setMultiplicationProblem () {
-        let problem = {};
-        let base = null;
+        let n1 = Math.ceil(Math.random() * 999) / 10;
+        let n2 = Math.ceil(Math.random() * 999) / 10;
+        let result = n1 * n2;
+        let n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
 
-        problem.n1 = Math.ceil(Math.random() * 999) / 10;
-        problem.n2 = Math.ceil(Math.random() * 999) / 10;
-        let result = problem.n1 * problem.n2;
-        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
+        let base = CardboardComputer.displayNum(n1) + " × " + CardboardComputer.displayNum(n2) + (result == n3 ? " = " : " =~ ");
 
-        problem.rotations = [
-            ["outer-wheel", problem.n1, -1],
-            ["slide-rule", problem.n2, -1],
-            ["cursor", problem.n2, 1]
-        ];
-
-        base = CardboardComputer.displayNum(problem.n1) + " × " + CardboardComputer.displayNum(problem.n2) + (result == problem.n3 ? " = " : " =~ ");
-        problem.q = base + "?"
-        problem.a = base + CardboardComputer.displayNum(problem.n3) + " (C→D scale)";
-
-        return problem;
+        return {
+            rotations: [
+                ["outer-wheel", n1, -1],
+                ["slide-rule", n2, -1],
+                ["cursor", n2, 1]
+            ],
+            q: base + "?",
+            a: base + CardboardComputer.displayNum(n3) + " (C→D scale)",
+            help: "multiplication"
+        };
     }
 
+
     _setDivisionProblem () {
-        let problem = {};
-        let base = null;
+        let n1 = Math.ceil(Math.random() * 999) / 10;
+        let n2 = Math.ceil(Math.random() * 999) / 10;
+        let result = n1 / n2;
+        let n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
 
-        if (Math.random() > .9) {
-            problem.n1 = Math.PI;
-        } else {
-            problem.n1 = Math.ceil(Math.random() * 999) / 10;
-        }
+        let base = CardboardComputer.displayNum(n1) + " ÷ " + CardboardComputer.displayNum(n2) + (result == n3 ? " = " : " =~ ");
 
-        if (Math.random() > .9) {
-            problem.n2 = Math.PI;
-        } else {
-            problem.n2 = Math.ceil(Math.random() * 999) / 10;
-        }
-        let result = problem.n1 / problem.n2;
-        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        problem.rotations = [
-            ["outer-wheel", problem.n1, -1],
-            ["inner-wheel", problem.n2, -1],
-            ["slide-rule", problem.n2, 1],
-            ["cursor", problem.n2, -1]
-        ];
-
-        base = CardboardComputer.displayNum(problem.n1) + " ÷ " + CardboardComputer.displayNum(problem.n2) + (result == problem.n3 ? " = " : " =~ ");
-        problem.q = base + "?"
-        problem.a = base + CardboardComputer.displayNum(problem.n3) + " (C→D scale)";
-
-        return problem;
+        return {
+            rotations: [
+                ["outer-wheel", n1, -1],
+                ["inner-wheel", n2, -1],
+                ["slide-rule", n2, 1],
+                ["cursor", n2, -1]
+            ],
+            q: base + "?",
+            a: base + CardboardComputer.displayNum(n3) + " (C→D scale)",
+            help: "division"
+        };
     }
 
 
     _setSquareRootProblem () {
-        let problem = {};
-        let result = null;
-        
-        problem.n3 = Math.ceil(Math.random() * 999) / 10.0;
-        result = problem.n3 * problem.n3;
-        problem.n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
+        // work backwards from answer
+        let n2 = Math.ceil(Math.random() * 999) / 10.0;
+        let result = n2 * n2;
+        let n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
 
         problem.rotations = [
-            ["slide-rule", problem.n3, -1],
-            ["cursor", problem.n3, 1]
+            ["slide-rule", n2, -1],
+            ["cursor", n2, 1]
         ];
 
-        let base = "√" + CardboardComputer.displayNum(problem.n1) + ((problem.n3 == result) ? " = " : " =~ ");
-        problem.q = base + "?";
-        problem.a = base + CardboardComputer.displayNum(problem.n3) + " (A→C scale)";
+        let base = "√" + CardboardComputer.displayNum(n1) + ((n2 == result) ? " = " : " =~ ");
 
-        return problem;
+        return {
+            rotations: [
+                ["slide-rule", n2, -1],
+                ["cursor", n2, 1]
+            ],
+            q: base + "?",
+            a: base + CardboardComputer.displayNum(n2) + " (A→C scale)"
+        }
     }
 
     
     _setSquareProblem () {
-        let problem = {};
-        let result = null;
-        
-        problem.n1 = Math.ceil(Math.random() * 999) / 10.0;
-        result = problem.n1 * problem.n1;
-        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
+        let n1 = Math.ceil(Math.random() * 999) / 10.0;
+        let result = n1 * n1;
+        let n2 = Number(result.toPrecision(CardboardComputer.PRECISION));
 
-        problem.rotations = [
-            ["slide-rule", problem.n1, -1],
-            ["cursor", problem.n1, 1]
-        ];
+        let base = CardboardComputer.displayNum(n1) + ((problem.n2 == result) ? "² = " : "² =~ ");
 
-        let base = CardboardComputer.displayNum(problem.n1) + ((problem.n3 == result) ? "² = " : "² =~ ");
-        problem.q = base + "?";
-        problem.a = base + CardboardComputer.displayNum(problem.n3) + " (C→A scale)";
-
-        return problem;
+        return {
+            rotations: [
+                ["slide-rule", n1, -1],
+                ["cursor", n1, 1]
+            ],
+            q: base + "?",
+            a: base + CardboardComputer.displayNum(n2) + " (C→A scale)"
+        }
     }
 
     
     _setCubeRootProblem () {
-        let problem = {};
-        let result = null;
-        
-        problem.n3 = Math.ceil(Math.random() * 999) / 10.0;
-        result = problem.n3 * problem.n3 * problem.n3;
-        problem.n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
+        // work backwards from answer
+        let n2 = Math.ceil(Math.random() * 999) / 10.0;
+        let result = n2 * n2 * n2;
+        let n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
 
-        problem.rotations = [
-            ["slide-rule", problem.n3, -1],
-            ["cursor", problem.n3, 1]
-        ];
+        let base = "∛" + CardboardComputer.displayNum(n1) + ((n2 == result) ? " = " : " =~ ");
 
-        let base = "∛" + CardboardComputer.displayNum(problem.n1) + ((problem.n3 == result) ? " = " : " =~ ");
-        problem.q = base + "?";
-        problem.a = base + CardboardComputer.displayNum(problem.n3) + " (K→C scale)";
-
-        return problem;
+        return {
+            rotations: [
+                ["slide-rule", n2, -1],
+                ["cursor", n2, 1]
+            ],
+            q: base + "?",
+            a: base + CardboardComputer.displayNum(n2) + " (K→C scale)"
+        };
     }
 
 
     _setCubeProblem () {
-        let problem = {};
-        let result = null;
-        
-        problem.n1 = Math.ceil(Math.random() * 999) / 10.0;
-        result = problem.n1 * problem.n1 * problem.n1;
-        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
+        let n1 = Math.ceil(Math.random() * 999) / 10.0;
+        let result = n1 * n1 * n1;
+        let n2 = Number(result.toPrecision(CardboardComputer.PRECISION));
 
-        problem.rotations = [
-            ["slide-rule", problem.n1, -1],
-            ["cursor", problem.n1, 1]
-        ];
+        let base = CardboardComputer.displayNum(n1) + ((n2 == result) ? "³ = " : "³ =~ ");
 
-        let base = CardboardComputer.displayNum(problem.n1) + ((problem.n3 == result) ? "³ = " : "³ =~ ");
-        problem.q = base + "?";
-        problem.a = base + CardboardComputer.displayNum(problem.n3) + " (C→K scale)";
-
-        return problem;
+        return {
+            rotations: [
+                ["slide-rule", n1, -1],
+                ["cursor", n1, 1]
+            ],
+            q: base + "?",
+            a: base + CardboardComputer.displayNum(n2) + " (C→K scale)"
+        };
     }
 
 
     _setCircleAreaProblem () {
-        let problem = {};
-        let result = null;
+        let n1 = Math.ceil(Math.random() * 999) / 10.0;
+        let result = Math.PI * (n1 / 2.0) * (n1 / 2.0);
+        let n2 = Number(result.toPrecision(CardboardComputer.PRECISION));
 
-        problem.n1 = Math.ceil(Math.random() * 999) / 10.0;
-        result = Math.PI * (problem.n1 / 2.0) * (problem.n1 / 2.0);
-        problem.n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
+        let base = "Area of a circle with diameter " + CardboardComputer.displayNum(n1) + ((n2 == result) ? " units = " : " units =~ ");
 
-        problem.rotations = [
-            ["outer-wheel", CardboardComputer.C, -1],
-            ["slide-rule", problem.n3, -2],
-            ["cursor", problem.n3, 2]
-        ];
-
-        let base = "Area of a circle with diameter " + CardboardComputer.displayNum(problem.n1) + ((problem.n3 == result) ? " units = " : " units =~ ");
-        problem.q = base + "?";
-        problem.a = base + CardboardComputer.displayNum(problem.n3) + " units² (D → A scale)";
-
-        return problem;
+        return {
+            rotations: [
+                ["outer-wheel", CardboardComputer.C, -1],
+                ["slide-rule", n2, -2],
+                ["cursor", n2, 2]
+            ],
+            q: base + "?",
+            a: base + CardboardComputer.displayNum(n2) + " units² (D → A scale)"
+        };
     }
 
     
     _setCircleDiameterProblem () {
-        let problem = {};
-        let result = null;
+        // work backwards from answer
+        let n2 = Math.ceil(Math.random() * 999) / 10.0;
+        let result = Math.PI * (n2 / 2.0) * (n2 / 2.0);
+        let n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
 
-        problem.n3 = Math.ceil(Math.random() * 999) / 10.0;
-        result = Math.PI * (problem.n3 / 2.0) * (problem.n3 / 2.0);
-        problem.n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        problem.rotations = [
-            ["outer-wheel", CardboardComputer.C, -1],
-            ["slide-rule", problem.n1, -2],
-            ["cursor", problem.n1, 2]
-        ];
-
-        let base = "Diameter of a circle with area " + CardboardComputer.displayNum(problem.n1) + ((problem.n3 == result) ? " units² = " : " units² =~ ");
-        problem.q = base + "?";
-        problem.a = base + CardboardComputer.displayNum(problem.n3) + " units (A → D scale)";
-
-        return problem;
+        let base = "Diameter of a circle with area " + CardboardComputer.displayNum(n1) + ((n2 == result) ? " units² = " : " units² =~ ");
+        return {
+            rotations: [
+                ["outer-wheel", CardboardComputer.C, -1],
+                ["slide-rule", n1, -2],
+                ["cursor", n1, 2]
+            ],
+            q: base + "?",
+            a: base + CardboardComputer.displayNum(n2) + " units (A → D scale)"
+        };
     }
 
     _setThreeFactorMultiplicationProblem () {
-        let problem = {};
         let n1 = Math.ceil(Math.random() * 999) / 10.0;
         let n2 = Math.ceil(Math.random() * 999) / 10.0;
         let n3 = Math.ceil(Math.random() * 999) / 10.0;
         let result = n1 * n2 * n3;
         let n4 = Number(result.toPrecision(CardboardComputer.PRECISION));
 
-        problem.rotations = [
-            ["outer-wheel", n1, -1],
-            ["inner-wheel", n2, 1],
-            ["slide-rule", [n2, n3], -1],
-            ["cursor", [n2, n3], 1],
-        ];
-
         let base = CardboardComputer.displayNum(n1) + " × " + CardboardComputer.displayNum(n2) + " × " + CardboardComputer.displayNum(n3) + (result == n4 ? " = " : " =~ ");
-        problem.q = base + "?";
-        problem.a = base + CardboardComputer.displayNum(n4) + " (C → D scale)";
-
-        return problem;
+        return {
+            rotations: [
+                ["outer-wheel", n1, -1],
+                ["inner-wheel", n2, 1],
+                ["slide-rule", [n2, n3], -1],
+                ["cursor", [n2, n3], 1],
+            ],
+            q: base + "?",
+            a: base + CardboardComputer.displayNum(n4) + " (C → D scale)",
+        };
     }
 
     
