@@ -1,3 +1,40 @@
+////////////////////////////////////////////////////////////////////////
+// The Cardboard Computer
+//
+// Javascript module to draw and animate a circular slide rule.
+//
+// Written by David Megginson, 2024-03
+// Public domain: no rights reserved
+////////////////////////////////////////////////////////////////////////
+
+
+
+//
+// Constants
+//
+
+/**
+ *XML Namespace for SVG
+ */
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+/**
+ * Supports 3 significant digits
+ */
+const PRECISION = 3;
+
+/**
+ * Constant for ccircle diameter or area
+ */
+const C = 1.1283;
+
+
+
+//
+// Main class
+//
+
+
 /**
  * A single instance of the Cardboard computer
  *
@@ -20,17 +57,6 @@
  *  makeInteraction - animate an interactive demo
  */
 class CardboardComputer {
-
-    //
-    // Constants
-    //
-
-    static SVG_NS = "http://www.w3.org/2000/svg";
-    
-    static PRECISION = 3;
-
-    static C = 1.1283;
-
 
     //
     // Constructor and public methods
@@ -130,7 +156,7 @@ class CardboardComputer {
                 self._problem = null;
             } else {
                 let problem_list = advanced ? ADVANCED_PROBLEMS : BASIC_PROBLEMS;
-                self._problem = CardboardComputer.randomItem(problem_list).apply(self, []);
+                self._problem = randomItem(problem_list).apply(self, []);
                 self._showProblem(self._problem);
             }
         }
@@ -155,22 +181,22 @@ class CardboardComputer {
      */
     _makeSVG () {
 
-        let svgNode = CardboardComputer.makeElement("svg", {
+        let svgNode = makeElement("svg", {
             viewBox: this._options.viewBox ? this._options.viewBox : "0 0 1000 1000"
         });
         this._nodes["svg"] = svgNode;
 
-        let slideRuleNode = CardboardComputer.makeElement("g", {
+        let slideRuleNode = makeElement("g", {
             class: "sliderule-diagram"
         });
         svgNode.appendChild(slideRuleNode);
         this._nodes["slide-rule"] = slideRuleNode;
 
         if (this._options.components.includes("outer-wheel")) {
-            let outerWheelNode = CardboardComputer.makeElement("g", {
+            let outerWheelNode = makeElement("g", {
                 class: "outer-wheel"
             });
-            outerWheelNode.appendChild(CardboardComputer.makeElement("circle", {
+            outerWheelNode.appendChild(makeElement("circle", {
                 cx: 500,
                 cy: 500,
                 r: 490,
@@ -183,10 +209,10 @@ class CardboardComputer {
         }
 
         if (this._options.components.includes("inner-wheel")) {
-            let innerWheelNode = CardboardComputer.makeElement("g", {
+            let innerWheelNode = makeElement("g", {
                 class: "inner-wheel"
             });
-            innerWheelNode.appendChild(CardboardComputer.makeElement("circle", {
+            innerWheelNode.appendChild(makeElement("circle", {
                 cx: 500,
                 cy: 500,
                 r: 420,
@@ -194,26 +220,26 @@ class CardboardComputer {
                 "stroke-width": 2,
                 fill: "#eeeeff"
             }));
-            innerWheelNode.appendChild(CardboardComputer.makeElement("text", {
+            innerWheelNode.appendChild(makeElement("text", {
                 x:500,
                 y: 425,
                 class: "label",
                 fill: "black"
             }, "The Cardboard Computer"));
-            innerWheelNode.appendChild(CardboardComputer.makeElement("text", {
+            innerWheelNode.appendChild(makeElement("text", {
                 x:500,
                 y: 575,
                 class: "label-medium",
                 fill: "black"
             }, "cardboard-computer.org"));
-            innerWheelNode.appendChild(CardboardComputer.makeElement("image", {
+            innerWheelNode.appendChild(makeElement("image", {
                 href: "images/Public_Domain_Mark_button.svg",
                 x: 460,
                 y: 610,
                 width: 80,
                 height: 28.18
             }));
-            innerWheelNode.appendChild(CardboardComputer.makeElement("text", {
+            innerWheelNode.appendChild(makeElement("text", {
                 x:500,
                 y: 600,
                 class: "label-small",
@@ -224,10 +250,10 @@ class CardboardComputer {
         }
 
         if (this._options.components.includes("cursor")) {
-            let cursorNode = CardboardComputer.makeElement("g", {
+            let cursorNode = makeElement("g", {
                 class: "cursor"
             });
-            cursorNode.appendChild(CardboardComputer.makeElement("rect", {
+            cursorNode.appendChild(makeElement("rect", {
                 x: 465,
                 y: 40,
                 width: 70,
@@ -239,7 +265,7 @@ class CardboardComputer {
                 stroke: "black",
                 "stroke-width": 1
             }));
-            cursorNode.appendChild(CardboardComputer.makeElement("line", {
+            cursorNode.appendChild(makeElement("line", {
                 x1: 500,
                 x2: 500,
                 y1: 40,
@@ -248,7 +274,7 @@ class CardboardComputer {
                 stroke: "#aa0000",
                 "stroke-width": 2
             }));
-            cursorNode.appendChild(CardboardComputer.makeElement("circle", {
+            cursorNode.appendChild(makeElement("circle", {
                 cx: 500,
                 cy: 500,
                 r: 4,
@@ -260,15 +286,15 @@ class CardboardComputer {
         }
 
         if (this._options.components.includes("grommit")) {
-            let grommitNode = CardboardComputer.makeElement("g");
-            grommitNode.appendChild(CardboardComputer.makeElement("circle", {
+            let grommitNode = makeElement("g");
+            grommitNode.appendChild(makeElement("circle", {
                 class: "grommit",
                 cx: 500,
                 cy: 500,
                 r: 30,
                 fill: "#aaaaaa"
             }));
-            grommitNode.appendChild(CardboardComputer.makeElement("circle", {
+            grommitNode.appendChild(makeElement("circle", {
                 cx: 500,
                 cy: 500,
                 r: 10,
@@ -276,7 +302,7 @@ class CardboardComputer {
                 "stroke-width": ".1",
                 fill: "#333333"
             }));
-            grommitNode.appendChild(CardboardComputer.makeElement("circle", {
+            grommitNode.appendChild(makeElement("circle", {
                 cx: 500,
                 cy: 500,
                 r: 2,
@@ -357,7 +383,7 @@ class CardboardComputer {
             return "rotate(" + (Math.log10(deg) / scaleOpts.scale.factor) * 360.0 + ", 500, 500)";
         }
 
-        let scaleNode = CardboardComputer.makeElement("g", {
+        let scaleNode = makeElement("g", {
             class: "scale"
         });
         
@@ -371,7 +397,7 @@ class CardboardComputer {
 
         // Label the scale
         if (scaleOpts.scaleLabel) {
-            scaleNode.appendChild(CardboardComputer.makeElement("text", {
+            scaleNode.appendChild(makeElement("text", {
                 x: 500,
                 y: scaleOpts.yOffset + (scaleOpts.yDirection == 1 ? 50 : -35),
                 class: scaleOpts.labelClass,
@@ -384,7 +410,7 @@ class CardboardComputer {
             for (let i = range.start; i < range.end; i += range.step) {
                 let isLarge = checkInterval(i, range.largeTickInterval);
                 let rotation = makeRotation(i);
-                scaleNode.appendChild(CardboardComputer.makeElement("line", {
+                scaleNode.appendChild(makeElement("line", {
                     x1: 500,
                     x2: 500,
                     y1: scaleOpts.yOffset,
@@ -400,7 +426,7 @@ class CardboardComputer {
                     if (i == 1.0 && scaleOpts.unitPointer) {
                         let cy = scaleOpts.yOffset - (scaleOpts.yDirection == -1 ? 42.5 : -42.5);
                         labelClass = "unit-pointer";
-                        scaleNode.appendChild(CardboardComputer.makeElement("circle", {
+                        scaleNode.appendChild(makeElement("circle", {
                             fill: "#333333",
                             stroke: "#333333",
                             cx: 500,
@@ -408,7 +434,7 @@ class CardboardComputer {
                             r: 15,
                             transform: rotation
                         }));
-                        scaleNode.appendChild(CardboardComputer.makeElement("polygon", {
+                        scaleNode.appendChild(makeElement("polygon", {
                             fill: "#333333",
                             stroke: "#333333",
                             points: "485," + cy + " 515," + cy + " 500," + (cy - 45 * scaleOpts.yDirection),
@@ -417,7 +443,7 @@ class CardboardComputer {
                     }
 
                     // Add the main text label
-                    scaleNode.appendChild(CardboardComputer.makeElement("text", {
+                    scaleNode.appendChild(makeElement("text", {
                         x: 500,
                         y: scaleOpts.yOffset + (scaleOpts.yDirection == 1 ? 50 : -35),
                         class: labelClass,
@@ -431,14 +457,14 @@ class CardboardComputer {
         if (scaleOpts.scale.specialValues) {
             scaleOpts.scale.specialValues.forEach((special) => {
                 let rotation = makeRotation(special.value);
-                scaleNode.appendChild(CardboardComputer.makeElement("text", {
+                scaleNode.appendChild(makeElement("text", {
                     x: 500,
                     y: scaleOpts.yOffset + (scaleOpts.yDirection == 1 ? 50 : -35),
                     class: scaleOpts.labelClass,
                     fill: "grey",
                     transform: rotation
                 }, special.label));
-                scaleNode.appendChild(CardboardComputer.makeElement("line", {
+                scaleNode.appendChild(makeElement("line", {
                     x1: 500,
                     x2: 500,
                     y1: scaleOpts.yOffset,
@@ -495,12 +521,9 @@ class CardboardComputer {
     //
 
     _setMultiplicationProblem () {
-        let n1 = Math.ceil(Math.random() * 999) / 10;
-        let n2 = Math.ceil(Math.random() * 999) / 10;
+        let [n1, n2] = [genNum(), genNum()];
         let result = n1 * n2;
-        let n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        let base = CardboardComputer.displayNum(n1) + " × " + CardboardComputer.displayNum(n2) + (result == n3 ? " = " : " =~ ");
+        let base = num(n1) + " × " + num(n2) + eq(result);
 
         return {
             rotations: [
@@ -509,19 +532,16 @@ class CardboardComputer {
                 ["cursor", n2, 1]
             ],
             q: base + "?",
-            a: base + CardboardComputer.displayNum(n3) + " (C→D scale)",
+            a: base + num(result) + " (C→D scale)",
             help: "multiplication"
         };
     }
 
 
     _setDivisionProblem () {
-        let n1 = Math.ceil(Math.random() * 999) / 10;
-        let n2 = Math.ceil(Math.random() * 999) / 10;
+        let [n1, n2] = [genNum(), genNum()];
         let result = n1 / n2;
-        let n3 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        let base = CardboardComputer.displayNum(n1) + " ÷ " + CardboardComputer.displayNum(n2) + (result == n3 ? " = " : " =~ ");
+        let base = num(n1) + " ÷ " + num(n2) + eq(result);
 
         return {
             rotations: [
@@ -531,7 +551,7 @@ class CardboardComputer {
                 ["cursor", n2, -1]
             ],
             q: base + "?",
-            a: base + CardboardComputer.displayNum(n3) + " (C→D scale)",
+            a: base + num(result) + " (C→D scale)",
             help: "division"
         };
     }
@@ -539,34 +559,26 @@ class CardboardComputer {
 
     _setSquareRootProblem () {
         // work backwards from answer
-        let n2 = Math.ceil(Math.random() * 999) / 10.0;
-        let result = n2 * n2;
-        let n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        problem.rotations = [
-            ["slide-rule", n2, -1],
-            ["cursor", n2, 1]
-        ];
-
-        let base = "√" + CardboardComputer.displayNum(n1) + ((n2 == result) ? " = " : " =~ ");
+        let result = genNum();
+        let n1 = result ** 2;
+        let base = "√" + num(n1) + eq(result);
 
         return {
             rotations: [
-                ["slide-rule", n2, -1],
-                ["cursor", n2, 1]
+                ["slide-rule", result, -1],
+                ["cursor", result, 1]
             ],
             q: base + "?",
-            a: base + CardboardComputer.displayNum(n2) + " (A→C scale)"
+            a: base + num(result) + " (A→C scale)",
+            help: "square-roots"
         }
     }
 
     
     _setSquareProblem () {
-        let n1 = Math.ceil(Math.random() * 999) / 10.0;
-        let result = n1 * n1;
-        let n2 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        let base = CardboardComputer.displayNum(n1) + ((problem.n2 == result) ? "² = " : "² =~ ");
+        let n1 = genNum();
+        let result = n1 ** 2;
+        let base = num(n1) + "²" + eq(result);
 
         return {
             rotations: [
@@ -574,36 +586,34 @@ class CardboardComputer {
                 ["cursor", n1, 1]
             ],
             q: base + "?",
-            a: base + CardboardComputer.displayNum(n2) + " (C→A scale)"
+            a: base + num(result) + " (C→A scale)",
+            help: "squares"
         }
     }
 
     
     _setCubeRootProblem () {
         // work backwards from answer
-        let n2 = Math.ceil(Math.random() * 999) / 10.0;
-        let result = n2 * n2 * n2;
-        let n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        let base = "∛" + CardboardComputer.displayNum(n1) + ((n2 == result) ? " = " : " =~ ");
+        let result = genNum();
+        let n1 = result ** 3;
+        let base = "∛" + num(n1) + eq(result);
 
         return {
             rotations: [
-                ["slide-rule", n2, -1],
-                ["cursor", n2, 1]
+                ["slide-rule", result, -1],
+                ["cursor", result, 1]
             ],
             q: base + "?",
-            a: base + CardboardComputer.displayNum(n2) + " (K→C scale)"
+            a: base + num(result) + " (K→C scale)",
+            help: "cube-roots"
         };
     }
 
 
     _setCubeProblem () {
-        let n1 = Math.ceil(Math.random() * 999) / 10.0;
-        let result = n1 * n1 * n1;
-        let n2 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        let base = CardboardComputer.displayNum(n1) + ((n2 == result) ? "³ = " : "³ =~ ");
+        let n1 = genNum();
+        let result = n1 ** 3;
+        let base = num(n1) + "³" + eq(result);
 
         return {
             rotations: [
@@ -611,56 +621,53 @@ class CardboardComputer {
                 ["cursor", n1, 1]
             ],
             q: base + "?",
-            a: base + CardboardComputer.displayNum(n2) + " (C→K scale)"
+            a: base + num(result) + " (C→K scale)"
         };
     }
 
 
     _setCircleAreaProblem () {
-        let n1 = Math.ceil(Math.random() * 999) / 10.0;
-        let result = Math.PI * (n1 / 2.0) * (n1 / 2.0);
-        let n2 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        let base = "Area of a circle with diameter " + CardboardComputer.displayNum(n1) + ((n2 == result) ? " units = " : " units =~ ");
+        let n1 = genNum();
+        let result = Math.PI * (n1 / 2.0) ** 2;
+        let base = "Circle diameter " + num(n1) + " units" + eq(result) + "area ";
 
         return {
             rotations: [
-                ["outer-wheel", CardboardComputer.C, -1],
-                ["slide-rule", n2, -2],
-                ["cursor", n2, 2]
+                ["outer-wheel", C, -1],
+                ["slide-rule", result, -2],
+                ["cursor", result, 2]
             ],
-            q: base + "?",
-            a: base + CardboardComputer.displayNum(n2) + " units² (D → A scale)"
+            q: base + "? units²",
+            a: base + num(result) + " units² (D → A scale)",
+            help: "circles.area"
         };
     }
 
     
     _setCircleDiameterProblem () {
         // work backwards from answer
-        let n2 = Math.ceil(Math.random() * 999) / 10.0;
-        let result = Math.PI * (n2 / 2.0) * (n2 / 2.0);
-        let n1 = Number(result.toPrecision(CardboardComputer.PRECISION));
-
-        let base = "Diameter of a circle with area " + CardboardComputer.displayNum(n1) + ((n2 == result) ? " units² = " : " units² =~ ");
+        let result = genNum();
+        let n1 = Math.PI * (n2 / 2.0) ** 2;
+        let base = "Circle area " + num(n1) + " units²" + eq(result) + "diameter ";
+        
         return {
             rotations: [
-                ["outer-wheel", CardboardComputer.C, -1],
+                ["outer-wheel", C, -1],
                 ["slide-rule", n1, -2],
                 ["cursor", n1, 2]
             ],
-            q: base + "?",
-            a: base + CardboardComputer.displayNum(n2) + " units (A → D scale)"
+            q: base + "? units",
+            a: base + num(n2) + " units (A → D scale)",
+            help: "circles.diameter"
         };
     }
 
+    
     _setThreeFactorMultiplicationProblem () {
-        let n1 = Math.ceil(Math.random() * 999) / 10.0;
-        let n2 = Math.ceil(Math.random() * 999) / 10.0;
-        let n3 = Math.ceil(Math.random() * 999) / 10.0;
+        let [n1, n2, n3] = [genNum(), genNum(), genNum()];
         let result = n1 * n2 * n3;
-        let n4 = Number(result.toPrecision(CardboardComputer.PRECISION));
+        let base = num(n1) + " × " + num(n2) + " × " + num(n3) + eq(result);
 
-        let base = CardboardComputer.displayNum(n1) + " × " + CardboardComputer.displayNum(n2) + " × " + CardboardComputer.displayNum(n3) + (result == n4 ? " = " : " =~ ");
         return {
             rotations: [
                 ["outer-wheel", n1, -1],
@@ -669,51 +676,81 @@ class CardboardComputer {
                 ["cursor", [n2, n3], 1],
             ],
             q: base + "?",
-            a: base + CardboardComputer.displayNum(n4) + " (C → D scale)",
+            a: base + num(result) + " (C → D scale)",
+            help: "successive-multiplication"
         };
     }
 
     
-    //
-    // Static helper methods
-    //
-
-    
-    /**
-     * Construct a DOM element in the SVG namespace
-     * Use the local name and (optionally) attributes and text content provided
-     */
-    static makeElement (name, atts, value) {
-        let node = document.createElementNS(CardboardComputer.SVG_NS, name);
-        if (atts) {
-            for (let att in atts) {
-                node.setAttribute(att, atts[att]);
-            }
-        }
-        if (value) {
-            node.textContent = value;
-        }
-        return node;
-    }
-
-
-    /**
-     * Choose a random item from a list.
-     */
-    static randomItem (l) {
-        return l[Math.floor(Math.random() * l.length)];
-    }
-
-
-    /**
-     * Display a number in human-friendly format.
-     */
-    static displayNum (n) {
-        if (n == Math.PI) {
-            return "π";
-        } else {
-            return n.toLocaleString();
-        }
-    }
-    
 };
+
+
+
+//
+// Internal helper functions
+//
+
+/**
+ * Construct a DOM element in the SVG namespace
+ * Use the local name and (optionally) attributes and text content provided
+ */
+function makeElement (name, atts, value) {
+    let node = document.createElementNS(SVG_NS, name);
+    if (atts) {
+        for (let att in atts) {
+            node.setAttribute(att, atts[att]);
+        }
+    }
+    if (value) {
+        node.textContent = value;
+    }
+    return node;
+}
+
+
+/**
+ * Choose a random item from a list.
+ */
+function randomItem (l) {
+    return l[Math.floor(Math.random() * l.length)];
+}
+
+
+/**
+ * Reduce a number to PRECISION significant digits
+ */
+function sigDig (n) {
+    return Number(n.toPrecision(PRECISION));
+}
+
+/**
+ * Generate a random number for problems.
+ * The number will have three significant digits, and can vary by 6 orders of magnitude.
+ */
+function genNum () {
+    let n = Math.ceil(Math.random() * 999);
+    let magnitude = Math.ceil(Math.random() * 5) - 4;
+    return (n * 10 ** magnitude);
+}
+
+
+/**
+ * Display " = " or " =~ " depending on the precision of a number.
+ */
+function eq (n) {
+    return (sigDig(n) == n) ? " = " : " =~ ";
+}
+
+
+/**
+ * Display a number in human-friendly format.
+ */
+function num (n) {
+    if (n == Math.PI) {
+        return "π";
+    } else {
+        return sigDig(n).toLocaleString();
+    }
+}
+
+// end
