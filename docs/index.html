@@ -19,8 +19,6 @@
     </header>
     <main>
       <figure id="problem" title="Randomly-generated math problem for the circular slide rule to solve.">
-        <span id="question"></span>
-        <p class="prompt">Click or tap the wheel to continue.</p>
       </figure>
       <figure id="sliderule" title="Interactive animation of a simple circular slide rule solving problems.">
       </figure>
@@ -42,7 +40,7 @@
     <script type="text/javascript">
       window.onload = () => {
         let computer = new CardboardComputer("sliderule", { advanced: false });
-        computer.makeInteractive();
+        computer.activateDemo("problem", false);
       };
     </script>
   </body>

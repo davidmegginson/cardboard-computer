@@ -19,14 +19,10 @@
     </header>
     <main>
       <figure id="problem" title="Randomly-generated math problem for the circular slide rule to solve.">
-        <span id="question"></span>
-        <p class="prompt">Click or tap, or hit a key to continue</p>
       </figure>
-    </main>
-    <aside>
       <figure id="sliderule" title="Interactive animation of an advanced circular slide rule solving problems.">
       </figure>
-    </aside>
+    </main>
     <footer>
       <p>Started March 2024 by David Megginson, and released into the Public Domain.</p>
       <p>
@@ -42,7 +38,7 @@
     <script type="text/javascript">
       window.onload = () => {
         let computer = new CardboardComputer("sliderule", {advanced: true});
-        computer.makeInteractive(true);
+        computer.activateDemo("problem", true);
       };
     </script>
   </body>

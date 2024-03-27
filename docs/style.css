@@ -69,6 +69,14 @@ figcaption {
     font-size: 120%;
 }
 
+.question:after {
+    content: " ";
+}
+
+.help {
+    font-size: 83.3333%;
+}
+
 .prompt {
     font-style: italic;
     font-size: 83.3333%;

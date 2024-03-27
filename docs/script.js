@@ -54,7 +54,7 @@ const C = 1.1283;
  *
  * Public methods:
  *  rotate - apply a list of rotation specifications to the computer.
- *  makeInteraction - animate an interactive demo
+ *  activateDemo - animate an interactive demo
  */
 class CardboardComputer {
 
@@ -130,7 +130,7 @@ class CardboardComputer {
     /**
      * Make the diagram interactive
      */
-    makeInteractive (advanced) {
+    activateDemo (problemContainerId, advanced) {
 
         let self = this;
 
@@ -161,6 +161,31 @@ class CardboardComputer {
             }
         }
 
+        if (this._isInteractive) {
+            return true;
+        } else {
+            this._isInteractive = true;
+        }
+
+        // Find the container (should be a figure element)
+        console.log(problemContainerId);
+        this._problemNode = document.getElementById(problemContainerId);
+
+        // Populate the container
+
+        this._questionContainerNode = makeElement("div", { class: "question-container" });
+        
+        this._questionNode = makeElement("span", { class: "question" });
+        this._questionContainerNode.appendChild(this._questionNode);
+
+        this._helpNode = makeElement("a", { class: "help" }, "help");
+        this._questionContainerNode.appendChild(this._helpNode);
+
+        this._problemNode.appendChild(this._questionContainerNode);
+
+        this._promptNode = makeElement("p", { class: "prompt" }, "Click or tap the wheels to continue");
+        this._problemNode.appendChild(this._promptNode);
+
         // Add the handler for clicks/taps and keypresses
         this._nodes["slide-rule"].addEventListener("click", handler);
 
@@ -181,22 +206,22 @@ class CardboardComputer {
      */
     _makeSVG () {
 
-        let svgNode = makeElement("svg", {
+        let svgNode = makeElementSVG("svg", {
             viewBox: this._options.viewBox ? this._options.viewBox : "0 0 1000 1000"
         });
         this._nodes["svg"] = svgNode;
 
-        let slideRuleNode = makeElement("g", {
+        let slideRuleNode = makeElementSVG("g", {
             class: "sliderule-diagram"
         });
         svgNode.appendChild(slideRuleNode);
         this._nodes["slide-rule"] = slideRuleNode;
 
         if (this._options.components.includes("outer-wheel")) {
-            let outerWheelNode = makeElement("g", {
+            let outerWheelNode = makeElementSVG("g", {
                 class: "outer-wheel"
             });
-            outerWheelNode.appendChild(makeElement("circle", {
+            outerWheelNode.appendChild(makeElementSVG("circle", {
                 cx: 500,
                 cy: 500,
                 r: 490,
@@ -209,10 +234,10 @@ class CardboardComputer {
         }
 
         if (this._options.components.includes("inner-wheel")) {
-            let innerWheelNode = makeElement("g", {
+            let innerWheelNode = makeElementSVG("g", {
                 class: "inner-wheel"
             });
-            innerWheelNode.appendChild(makeElement("circle", {
+            innerWheelNode.appendChild(makeElementSVG("circle", {
                 cx: 500,
                 cy: 500,
                 r: 420,
@@ -220,26 +245,26 @@ class CardboardComputer {
                 "stroke-width": 2,
                 fill: "#eeeeff"
             }));
-            innerWheelNode.appendChild(makeElement("text", {
+            innerWheelNode.appendChild(makeElementSVG("text", {
                 x:500,
                 y: 425,
                 class: "label",
                 fill: "black"
             }, "The Cardboard Computer"));
-            innerWheelNode.appendChild(makeElement("text", {
+            innerWheelNode.appendChild(makeElementSVG("text", {
                 x:500,
                 y: 575,
                 class: "label-medium",
                 fill: "black"
             }, "cardboard-computer.org"));
-            innerWheelNode.appendChild(makeElement("image", {
+            innerWheelNode.appendChild(makeElementSVG("image", {
                 href: "images/Public_Domain_Mark_button.svg",
                 x: 460,
                 y: 610,
                 width: 80,
                 height: 28.18
             }));
-            innerWheelNode.appendChild(makeElement("text", {
+            innerWheelNode.appendChild(makeElementSVG("text", {
                 x:500,
                 y: 600,
                 class: "label-small",
@@ -250,10 +275,10 @@ class CardboardComputer {
         }
 
         if (this._options.components.includes("cursor")) {
-            let cursorNode = makeElement("g", {
+            let cursorNode = makeElementSVG("g", {
                 class: "cursor"
             });
-            cursorNode.appendChild(makeElement("rect", {
+            cursorNode.appendChild(makeElementSVG("rect", {
                 x: 465,
                 y: 40,
                 width: 70,
@@ -265,7 +290,7 @@ class CardboardComputer {
                 stroke: "black",
                 "stroke-width": 1
             }));
-            cursorNode.appendChild(makeElement("line", {
+            cursorNode.appendChild(makeElementSVG("line", {
                 x1: 500,
                 x2: 500,
                 y1: 40,
@@ -274,7 +299,7 @@ class CardboardComputer {
                 stroke: "#aa0000",
                 "stroke-width": 2
             }));
-            cursorNode.appendChild(makeElement("circle", {
+            cursorNode.appendChild(makeElementSVG("circle", {
                 cx: 500,
                 cy: 500,
                 r: 4,
@@ -286,15 +311,15 @@ class CardboardComputer {
         }
 
         if (this._options.components.includes("grommit")) {
-            let grommitNode = makeElement("g");
-            grommitNode.appendChild(makeElement("circle", {
+            let grommitNode = makeElementSVG("g");
+            grommitNode.appendChild(makeElementSVG("circle", {
                 class: "grommit",
                 cx: 500,
                 cy: 500,
                 r: 30,
                 fill: "#aaaaaa"
             }));
-            grommitNode.appendChild(makeElement("circle", {
+            grommitNode.appendChild(makeElementSVG("circle", {
                 cx: 500,
                 cy: 500,
                 r: 10,
@@ -302,7 +327,7 @@ class CardboardComputer {
                 "stroke-width": ".1",
                 fill: "#333333"
             }));
-            grommitNode.appendChild(makeElement("circle", {
+            grommitNode.appendChild(makeElementSVG("circle", {
                 cx: 500,
                 cy: 500,
                 r: 2,
@@ -383,7 +408,7 @@ class CardboardComputer {
             return "rotate(" + (Math.log10(deg) / scaleOpts.scale.factor) * 360.0 + ", 500, 500)";
         }
 
-        let scaleNode = makeElement("g", {
+        let scaleNode = makeElementSVG("g", {
             class: "scale"
         });
         
@@ -397,7 +422,7 @@ class CardboardComputer {
 
         // Label the scale
         if (scaleOpts.scaleLabel) {
-            scaleNode.appendChild(makeElement("text", {
+            scaleNode.appendChild(makeElementSVG("text", {
                 x: 500,
                 y: scaleOpts.yOffset + (scaleOpts.yDirection == 1 ? 50 : -35),
                 class: scaleOpts.labelClass,
@@ -410,7 +435,7 @@ class CardboardComputer {
             for (let i = range.start; i < range.end; i += range.step) {
                 let isLarge = checkInterval(i, range.largeTickInterval);
                 let rotation = makeRotation(i);
-                scaleNode.appendChild(makeElement("line", {
+                scaleNode.appendChild(makeElementSVG("line", {
                     x1: 500,
                     x2: 500,
                     y1: scaleOpts.yOffset,
@@ -426,7 +451,7 @@ class CardboardComputer {
                     if (i == 1.0 && scaleOpts.unitPointer) {
                         let cy = scaleOpts.yOffset - (scaleOpts.yDirection == -1 ? 42.5 : -42.5);
                         labelClass = "unit-pointer";
-                        scaleNode.appendChild(makeElement("circle", {
+                        scaleNode.appendChild(makeElementSVG("circle", {
                             fill: "#333333",
                             stroke: "#333333",
                             cx: 500,
@@ -434,7 +459,7 @@ class CardboardComputer {
                             r: 15,
                             transform: rotation
                         }));
-                        scaleNode.appendChild(makeElement("polygon", {
+                        scaleNode.appendChild(makeElementSVG("polygon", {
                             fill: "#333333",
                             stroke: "#333333",
                             points: "485," + cy + " 515," + cy + " 500," + (cy - 45 * scaleOpts.yDirection),
@@ -443,7 +468,7 @@ class CardboardComputer {
                     }
 
                     // Add the main text label
-                    scaleNode.appendChild(makeElement("text", {
+                    scaleNode.appendChild(makeElementSVG("text", {
                         x: 500,
                         y: scaleOpts.yOffset + (scaleOpts.yDirection == 1 ? 50 : -35),
                         class: labelClass,
@@ -457,14 +482,14 @@ class CardboardComputer {
         if (scaleOpts.scale.specialValues) {
             scaleOpts.scale.specialValues.forEach((special) => {
                 let rotation = makeRotation(special.value);
-                scaleNode.appendChild(makeElement("text", {
+                scaleNode.appendChild(makeElementSVG("text", {
                     x: 500,
                     y: scaleOpts.yOffset + (scaleOpts.yDirection == 1 ? 50 : -35),
                     class: scaleOpts.labelClass,
                     fill: "grey",
                     transform: rotation
                 }, special.label));
-                scaleNode.appendChild(makeElement("line", {
+                scaleNode.appendChild(makeElementSVG("line", {
                     x1: 500,
                     x2: 500,
                     y1: scaleOpts.yOffset,
@@ -502,7 +527,8 @@ class CardboardComputer {
      * Show a problem without the solution
      */
     _showProblem (problem) {
-        document.getElementById("question").textContent = problem.q;
+        this._questionNode.textContent = problem.q;
+        this._helpNode.setAttribute("href", "guide.html#" + problem.help);
         this._reset();
     }
 
@@ -511,7 +537,7 @@ class CardboardComputer {
      * Show the solution, including transforming the wheel and cursor.
      */
     _showSolution (problem) {
-        document.getElementById("question").textContent = problem.a;
+        this._questionNode.textContent = problem.a;
         this.rotate(problem.rotations, 2);
     }
 
@@ -587,7 +613,7 @@ class CardboardComputer {
             ],
             q: base + "?",
             a: base + num(result) + " (C→A scale)",
-            help: "squares"
+            help: "square-roots"
         }
     }
 
@@ -621,7 +647,8 @@ class CardboardComputer {
                 ["cursor", n1, 1]
             ],
             q: base + "?",
-            a: base + num(result) + " (C→K scale)"
+            a: base + num(result) + " (C→K scale)",
+            help: "cube-roots"
         };
     }
 
@@ -647,7 +674,7 @@ class CardboardComputer {
     _setCircleDiameterProblem () {
         // work backwards from answer
         let result = genNum();
-        let n1 = Math.PI * (n2 / 2.0) ** 2;
+        let n1 = Math.PI * (result / 2.0) ** 2;
         let base = "Circle area " + num(n1) + " units²" + eq(result) + "diameter ";
         
         return {
@@ -657,7 +684,7 @@ class CardboardComputer {
                 ["cursor", n1, 2]
             ],
             q: base + "? units",
-            a: base + num(n2) + " units (A → D scale)",
+            a: base + num(result) + " units (A → D scale)",
             help: "circles.diameter"
         };
     }
@@ -690,11 +717,29 @@ class CardboardComputer {
 // Internal helper functions
 //
 
+
+/**
+ * Construct a DOM element in the default namespace.
+ */
+function makeElement (name, atts, value) {
+    let node = document.createElement(name);
+    if (atts) {
+        for (let att in atts) {
+            node.setAttribute(att, atts[att]);
+        }
+    }
+    if (value) {
+        node.textContent = value;
+    }
+    return node;
+}
+
+
 /**
  * Construct a DOM element in the SVG namespace
  * Use the local name and (optionally) attributes and text content provided
  */
-function makeElement (name, atts, value) {
+function makeElementSVG (name, atts, value) {
     let node = document.createElementNS(SVG_NS, name);
     if (atts) {
         for (let att in atts) {
