@@ -62,12 +62,12 @@ class CardboardComputer {
      */
     rotate (rotations, duration) {
 
-        let computer = this;
+        let self = this;
 
         function doTransition (rotation, delay) {
             let [nodeName, n, magnitude] = rotation;
 
-            let node = computer._nodes[nodeName];
+            let node = self._nodes[nodeName];
             let degrees = null;
             if (Array.isArray(n)) {
                 degrees = ((Math.log10(n[0]) + Math.log10(n[1])) * 360.0 / (magnitude ? magnitude : 1.0)) % 360.0;
@@ -106,7 +106,7 @@ class CardboardComputer {
      */
     makeInteractive (advanced) {
 
-        let computer = this;
+        let self = this;
 
         const BASIC_PROBLEMS = [
             this._setMultiplicationProblem,
@@ -123,14 +123,15 @@ class CardboardComputer {
             this._setThreeFactorMultiplicationProblem
         ]);
 
+        // Take action every time the user clicks or taps on the wheel
         function handler (e) {
-            if (computer._problem) {
-                computer._showSolution(computer._problem);
-                computer._problem = null;
+            if (self._problem) {
+                self._showSolution(self._problem);
+                self._problem = null;
             } else {
                 let problem_list = advanced ? ADVANCED_PROBLEMS : BASIC_PROBLEMS;
-                computer._problem = CardboardComputer.randomItem(problem_list).apply(computer, []);
-                computer._showProblem(computer._problem);
+                self._problem = CardboardComputer.randomItem(problem_list).apply(self, []);
+                self._showProblem(self._problem);
             }
         }
 
