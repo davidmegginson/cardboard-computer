@@ -37,7 +37,7 @@ To use the advanced version, change the ``advanced`` option from ``false`` to ``
 To add an interactive demo, create a second element in your HTML, like this:
 
 ```
-<figure id="sliderule"></figure>
+<figure id="demo"></figure>
 ```
 
 and change your import to
