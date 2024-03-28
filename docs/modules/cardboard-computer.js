@@ -225,6 +225,10 @@ export class CardboardComputer {
     makeInteractive () {
 
         let draggingNode = null;
+        let startAngle = null;
+        let rotation = null;
+
+        let rotations = new WeakMap();
 
         let rect = this._nodes["slide-rule"].getBoundingClientRect();
         let centre = [
@@ -234,27 +238,36 @@ export class CardboardComputer {
 
         console.log(centre);
 
+        function calcAngle (x, y) {
+            let x1 = x - centre[0];
+            let y1 = centre[1] - y;
+            let angle = Math.atan(x1 / y1) / Math.PI * 180;
+            if (y1 < 0) { angle = 180 + angle; }
+            if (angle < 0) { angle += 360; }
+            return angle;
+        }
+
         function startHandler (event) {
             draggingNode = event.target.parentNode;
-            console.log(draggingNode.getBoundingClientRect());
-            console.log("start dragging", event, draggingNode);
+            startAngle = calcAngle(event.x, event.y);
+            console.log(rotations);
+            if (!rotations.has(draggingNode)) {
+                rotations.set(draggingNode, 0);
+            }
         }
 
         function moveHandler (event) {
             if (draggingNode) {
-                let x = event.x - centre[0];
-                let y = centre[1] - event.y;
-                let angle = Math.atan(x / y) / Math.PI * 180;
-                if (y < 0) { angle = 180 + angle; }
-                if (angle < 0) { angle += 360; }
-                console.log(x, y, angle);
-                draggingNode.style.transform = "rotate(" + angle + "deg)";
+                let angle = calcAngle(event.x, event.y);
+                rotation = rotations.get(draggingNode) + angle - startAngle;
+                draggingNode.style.transform = "rotate(" + rotation + "deg)";
             }
         }
 
         function endHandler (event) {
-            console.log("finish dragging", event, draggingNode);
+            rotations.set(draggingNode, rotation);
             draggingNode = null;
+            startAngle = null;
         }
 
         for (let nodeName in this._nodes) {
