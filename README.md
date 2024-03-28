@@ -56,4 +56,4 @@ Created by David Megginson, starting in March 2024.
 
 ## License
 
-The CardboardComputer is released into the Public Domain, and comes with NO WARRANTY. See [UNLICENSE.md](./UNLICENSE.md) for details.
+The CardboardComputer is released into the Public Domain, and comes with NO WARRANTY. See [UNLICENCE.md](./UNLICENSE.md) for details.
