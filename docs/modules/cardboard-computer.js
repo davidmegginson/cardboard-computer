@@ -16,17 +16,23 @@
 /**
  *XML Namespace for SVG
  */
-const SVG_NS = "http://www.w3.org/2000/svg";
+export const SVG_NS = "http://www.w3.org/2000/svg";
 
 /**
  * Supports 3 significant digits
  */
-const PRECISION = 3;
+export const PRECISION = 3;
 
 /**
- * Constant for ccircle diameter or area
+ * Gauge mark for circle diameter or area (simplified to 5 significant digits).
  */
-const C = 1.1283;
+export const C = 1.1283;
+
+/**
+ * Gauge mark for PI (simplified to 5 significant digits).
+ */
+export const PI = 3.1416
+
 
 
 //
@@ -57,6 +63,7 @@ const C = 1.1283;
  */
 export class CardboardComputer {
 
+
     //
     // Constructor and public methods
     //
@@ -79,11 +86,21 @@ export class CardboardComputer {
         this._containerNode.append(this._makeSVG());
     }
 
-
+
     /**
      * Rotate a node around the centre of the diagram.
+     *
+     * Rotations are specified as a list of [nodeName, n, magnitude] entries.
+     *
      * The degrees of rotation will be the log10 of n
-     * 1 (default) means clockwise; -1 means counter-clockwise.
+     *
+     * For the magitude, positive means clockwise.
+     *
+     * The duration for each rotation is specified in seconds (defaults to 0).
+     *
+     * Note that each node can be rotated only once (to be fixed later).
+     *
+     * @return The CardboardComputer object, for chaining.
      */
     rotate (rotations, duration) {
 
@@ -123,13 +140,20 @@ export class CardboardComputer {
             doTransition(rotation, delay);
             delay += duration;
         });
+
+        // for chaining
+        return this;
     }
 
 
     /**
-     * Make the diagram interactive
+     * Activate an interactive demo.
+     *
+     * problemContainerId: the HTML id of a container element to hold problems (usually a figure).
+     *
+     * @return The CardboardComputer object, for chaining.
      */
-    activateDemo (problemContainerId, advanced) {
+    activateDemo (problemContainerId) {
 
         let self = this;
 
@@ -154,7 +178,7 @@ export class CardboardComputer {
                 self._showSolution(self._problem);
                 self._problem = null;
             } else {
-                let problem_list = advanced ? ADVANCED_PROBLEMS : BASIC_PROBLEMS;
+                let problem_list = self._options.advanced ? ADVANCED_PROBLEMS : BASIC_PROBLEMS;
                 self._problem = randomItem(problem_list).apply(self, []);
                 self._showProblem(self._problem);
             }
@@ -190,6 +214,9 @@ export class CardboardComputer {
 
         // Call the handler once manually to start the process
         handler();
+
+        // For chaining
+        return this;
     }
 
     
@@ -654,7 +681,7 @@ export class CardboardComputer {
 
     _setCircleAreaProblem () {
         let n1 = genNum();
-        let result = Math.PI * (n1 / 2.0) ** 2;
+        let result = PI * (n1 / 2.0) ** 2;
         let base = "Circle diameter " + num(n1) + " units" + eq(result) + "area ";
 
         return {
@@ -673,7 +700,7 @@ export class CardboardComputer {
     _setCircleDiameterProblem () {
         // work backwards from answer
         let result = genNum();
-        let n1 = Math.PI * (result / 2.0) ** 2;
+        let n1 = PI * (result / 2.0) ** 2;
         let base = "Circle area " + num(n1) + " units²" + eq(result) + "diameter ";
         
         return {
@@ -790,7 +817,7 @@ function eq (n) {
  * Display a number in human-friendly format.
  */
 function num (n) {
-    if (n == Math.PI) {
+    if (n == PI) {
         return "π";
     } else {
         return sigDig(n).toLocaleString();

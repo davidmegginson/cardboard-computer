@@ -37,8 +37,7 @@
     </footer>
     <script type="text/javascript" defer="defer">
       import("./modules/cardboard-computer.js").then((cc) => {
-          let computer = new cc.CardboardComputer("sliderule", { advanced: false });
-          computer.activateDemo("problem", false);
+          new cc.CardboardComputer("sliderule", { advanced: false }).activateDemo("problem");
       });
     </script>
   </body>

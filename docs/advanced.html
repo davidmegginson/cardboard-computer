@@ -33,12 +33,9 @@
       </p>
       <p>Source code, feature requests, and bug reports: <a href="https://github.com/davidmegginson/cardboard-computer">https://github.com/davidmegginson/cardboard-computer</a>.</p>
     </footer>
-    <script type="text/javascript" src="script.js">
-    </script>
     <script type="text/javascript" defer="defer">
       import("./modules/cardboard-computer.js").then((cc) => {
-          let computer = new cc.CardboardComputer("sliderule", { advanced: true });
-          computer.activateDemo("problem", true);
+          new cc.CardboardComputer("sliderule", { advanced: true }).activateDemo("problem");
       });
     </script>
   </body>
