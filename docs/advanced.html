@@ -35,11 +35,11 @@
     </footer>
     <script type="text/javascript" src="script.js">
     </script>
-    <script type="text/javascript">
-      window.onload = () => {
-        let computer = new CardboardComputer("sliderule", {advanced: true});
-        computer.activateDemo("problem", true);
-      };
+    <script type="text/javascript" defer="defer">
+      import("./modules/cardboard-computer.js").then((cc) => {
+          let computer = new cc.CardboardComputer("sliderule", { advanced: true });
+          computer.activateDemo("problem", true);
+      });
     </script>
   </body>
 </html>

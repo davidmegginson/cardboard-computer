@@ -60,22 +60,22 @@
     <script type="text/javascript" src="script.js">
     </script>
     <script type="text/javascript">
-      window.onload = () => {
-          new CardboardComputer("outer-wheel-template", {
+      import("./modules/cardboard-computer.js").then((cc) => {
+          new cc.CardboardComputer("outer-wheel-template", {
               components: ["outer-wheel", "grommit"]
           });
-          new CardboardComputer("inner-wheel-basic-template", {
+          new cc.CardboardComputer("inner-wheel-basic-template", {
               components: ["inner-wheel", "grommit"],
               advanced: false
           });
-          new CardboardComputer("inner-wheel-advanced-template", {
+          new cc.CardboardComputer("inner-wheel-advanced-template", {
               components: ["inner-wheel", "grommit"],
               advanced: true
           });
-          new CardboardComputer("cursor-template", {
+          new cc.CardboardComputer("cursor-template", {
               components: ["cursor"]
           });
-      };
+      });
     </script>
   </body>
 </html>

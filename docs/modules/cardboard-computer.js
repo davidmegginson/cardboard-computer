@@ -28,7 +28,6 @@ const PRECISION = 3;
  */
 const C = 1.1283;
 
-
 
 //
 // Main class
@@ -56,7 +55,7 @@ const C = 1.1283;
  *  rotate - apply a list of rotation specifications to the computer.
  *  activateDemo - animate an interactive demo
  */
-class CardboardComputer {
+export class CardboardComputer {
 
     //
     // Constructor and public methods
