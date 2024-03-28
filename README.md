@@ -7,7 +7,7 @@ Web site: https://cardboard-computer.org
 
 User guide: https://cardboard-computer.org/guide.html
 
-Cut-out templates: https://cardboard-computer/templates.html
+Cut-out templates: https://cardboard-computer.org/templates.html
 
 
 ## Embedding in your own web pages
