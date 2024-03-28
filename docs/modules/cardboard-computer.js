@@ -191,7 +191,6 @@ export class CardboardComputer {
         }
 
         // Find the container (should be a figure element)
-        console.log(problemContainerId);
         this._problemNode = document.getElementById(problemContainerId);
 
         // Populate the container
@@ -261,24 +260,39 @@ export class CardboardComputer {
 
         // Event handler for the drag start (mousedown)
         function startHandler (event) {
-            draggingNode = event.target.parentNode;
-            startAngle = calcAngle(event.x, event.y);
-            console.log(rotations);
+            let target = event.target;
+            let x = event.x;
+            let y = event.y;
+            if (event.targetTouches) {
+                target = event.targetTouches[0].target;
+                x = event.targetTouches[0].pageX;
+                y = event.targetTouches[0].pageY;
+            }
+            draggingNode = target.parentNode;
+            startAngle = calcAngle(x, y);
             if (!rotations.has(draggingNode)) {
                 rotations.set(draggingNode, 0);
             }
+            event.preventDefault();
         }
 
         // Event handler for the drag in progress (mousemove)
         function moveHandler (event) {
             // skip if there's not a drag in progress
             if (draggingNode) {
-                let angle = calcAngle(event.x, event.y);
+                let x = event.x;
+                let y = event.y;
+                if (event.targetTouches) {
+                    x = event.targetTouches[0].pageX;
+                    y = event.targetTouches[0].pageY;
+                }
+                let angle = calcAngle(x, y);
 
                 // rotation is the angle from where the mouse started
                 // plus the angle from where the component started
                 currentRotation = rotations.get(draggingNode) + angle - startAngle;
                 draggingNode.style.transform = "rotate(" + currentRotation + "deg)";
+                event.preventDefault();
             }
         }
 
@@ -288,17 +302,23 @@ export class CardboardComputer {
             rotations.set(draggingNode, currentRotation);
             draggingNode = null;
             startAngle = null;
+            event.preventDefault();
         }
 
         // Set up the event handlers on the children of the groups
-        // (you can't rotate an SVG g node itself
+        // (you can't rotate an SVG g node itself, so we have to
+        // attach handlers to the children).
+        // Supports both touch and pointer events.
         for (let nodeName in this._nodes) {
             let node = this._nodes[nodeName]
             for (const child of node.children) {
                 if (child.localName != "g") {
                     node.setAttribute("transform-origin", "center");
+                    child.addEventListener("touchstart", startHandler);
                     child.addEventListener("mousedown", startHandler);
+                    child.addEventListener("touchmove", moveHandler);
                     child.addEventListener("mousemove", moveHandler);
+                    child.addEventListener("touchend", endHandler);
                     child.addEventListener("mouseup", endHandler);
                 }
             }
@@ -322,6 +342,9 @@ export class CardboardComputer {
         let svgNode = makeElementSVG("svg", {
             viewBox: this._options.viewBox ? this._options.viewBox : "0 0 1000 1000"
         });
+
+        // apparently helps to capture touch events in SVG
+        svgNode.addEventListener("touchstart", () => {});
 
         let slideRuleNode = makeElementSVG("g", {
             class: "sliderule-diagram"
