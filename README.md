@@ -52,7 +52,7 @@ import("./modules/cardboard-computer.js").then((cc) => {
 
 ## Author
 
-Create by David Megginson, starting in March 2024.
+Created by David Megginson, starting in March 2024.
 
 ## License
 
