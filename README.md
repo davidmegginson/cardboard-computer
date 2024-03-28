@@ -1,7 +1,7 @@
 The Cardboard Computer
 ======================
 
-Cut-out templates, information, and exercises for making a paper or cardboard circular sliderule that can do multiplication, division, and conversions (likes kilometers to miles).
+Cut-out templates, information, and exercises for making a paper or cardboard circular sliderule that can do multiplication, division, cube/square roots, circle problems, 3-stage multiplication, and ratios/conversions (likes kilometers to miles).
 
 Web site: https://cardboard-computer.org
 
