@@ -219,6 +219,58 @@ export class CardboardComputer {
         return this;
     }
 
+    /**
+     * Allow dragging the wheels around.
+     */
+    makeInteractive () {
+
+        let draggingNode = null;
+
+        let rect = this._nodes["slide-rule"].getBoundingClientRect();
+        let centre = [
+            rect.x + rect.width / 2,
+            rect.y + rect.height / 2
+        ];
+
+        console.log(centre);
+
+        function startHandler (event) {
+            draggingNode = event.target.parentNode;
+            console.log(draggingNode.getBoundingClientRect());
+            console.log("start dragging", event, draggingNode);
+        }
+
+        function moveHandler (event) {
+            if (draggingNode) {
+                let x = event.x - centre[0];
+                let y = centre[1] - event.y;
+                let angle = Math.atan(x / y) / Math.PI * 180;
+                if (y < 0) { angle = 180 + angle; }
+                if (angle < 0) { angle += 360; }
+                console.log(x, y, angle);
+                draggingNode.style.transform = "rotate(" + angle + "deg)";
+            }
+        }
+
+        function endHandler (event) {
+            console.log("finish dragging", event, draggingNode);
+            draggingNode = null;
+        }
+
+        for (let nodeName in this._nodes) {
+            let node = this._nodes[nodeName]
+            for (const child of node.children) {
+                if (child.localName != "g") {
+                    node.setAttribute("transform-origin", "center");
+                    child.addEventListener("mousedown", startHandler);
+                    child.addEventListener("mousemove", moveHandler);
+                    child.addEventListener("mouseup", endHandler);
+                }
+            }
+        }
+    }
+    
+
     
     //
     // Private methods for constructing an SVG DOM tree
@@ -235,7 +287,6 @@ export class CardboardComputer {
         let svgNode = makeElementSVG("svg", {
             viewBox: this._options.viewBox ? this._options.viewBox : "0 0 1000 1000"
         });
-        this._nodes["svg"] = svgNode;
 
         let slideRuleNode = makeElementSVG("g", {
             class: "sliderule-diagram"
