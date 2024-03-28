@@ -224,29 +224,42 @@ export class CardboardComputer {
      */
     makeInteractive () {
 
-        let draggingNode = null;
+        // Compass angle from centre where the mousedown event happened
         let startAngle = null;
-        let rotation = null;
 
+        // (Parent) g node being rotated, if any
+        let draggingNode = null;
+
+        // Current rotation angle while a drag is in progress
+        let currentRotation = null;
+
+        // We need to keep track of the last rotation for each element
         let rotations = new WeakMap();
 
+        // Bounding rectangle of the slide rule
         let rect = this._nodes["slide-rule"].getBoundingClientRect();
+
+        // Centre of the slide rule, in screen coordinates
         let centre = [
             rect.x + rect.width / 2,
             rect.y + rect.height / 2
         ];
 
-        console.log(centre);
-
+        
+        // Calculate the compass angle of a point from the object's centre
         function calcAngle (x, y) {
             let x1 = x - centre[0];
             let y1 = centre[1] - y;
             let angle = Math.atan(x1 / y1) / Math.PI * 180;
+
+            // We have to mess a bit with quadrants
             if (y1 < 0) { angle = 180 + angle; }
             if (angle < 0) { angle += 360; }
+            
             return angle;
         }
 
+        // Event handler for the drag start (mousedown)
         function startHandler (event) {
             draggingNode = event.target.parentNode;
             startAngle = calcAngle(event.x, event.y);
@@ -256,20 +269,29 @@ export class CardboardComputer {
             }
         }
 
+        // Event handler for the drag in progress (mousemove)
         function moveHandler (event) {
+            // skip if there's not a drag in progress
             if (draggingNode) {
                 let angle = calcAngle(event.x, event.y);
-                rotation = rotations.get(draggingNode) + angle - startAngle;
-                draggingNode.style.transform = "rotate(" + rotation + "deg)";
+
+                // rotation is the angle from where the mouse started
+                // plus the angle from where the component started
+                currentRotation = rotations.get(draggingNode) + angle - startAngle;
+                draggingNode.style.transform = "rotate(" + currentRotation + "deg)";
             }
         }
 
+        // Event handler for the drag end (mouseup)
         function endHandler (event) {
-            rotations.set(draggingNode, rotation);
+            // save the currrent rotation for next time
+            rotations.set(draggingNode, currentRotation);
             draggingNode = null;
             startAngle = null;
         }
 
+        // Set up the event handlers on the children of the groups
+        // (you can't rotate an SVG g node itself
         for (let nodeName in this._nodes) {
             let node = this._nodes[nodeName]
             for (const child of node.children) {
@@ -338,17 +360,18 @@ export class CardboardComputer {
             innerWheelNode.appendChild(makeElementSVG("text", {
                 x:500,
                 y: 425,
-                class: "label",
+                class: "label nodrag",
                 fill: "black"
             }, "The Cardboard Computer"));
             innerWheelNode.appendChild(makeElementSVG("text", {
                 x:500,
                 y: 575,
-                class: "label-medium",
+                class: "label-medium nodrag",
                 fill: "black"
             }, "cardboard-computer.org"));
             innerWheelNode.appendChild(makeElementSVG("image", {
                 href: "images/Public_Domain_Mark_button.svg",
+                class: "nodrag",
                 x: 460,
                 y: 610,
                 width: 80,
@@ -357,7 +380,7 @@ export class CardboardComputer {
             innerWheelNode.appendChild(makeElementSVG("text", {
                 x:500,
                 y: 600,
-                class: "label-small",
+                class: "label-small nodrag",
                 fill: "black"
             }, "No rights reserved."));
             slideRuleNode.appendChild(innerWheelNode);
@@ -381,6 +404,7 @@ export class CardboardComputer {
                 "stroke-width": 1
             }));
             cursorNode.appendChild(makeElementSVG("line", {
+                class: "nodrag",
                 x1: 500,
                 x2: 500,
                 y1: 40,
@@ -390,6 +414,7 @@ export class CardboardComputer {
                 "stroke-width": 2
             }));
             cursorNode.appendChild(makeElementSVG("circle", {
+                class: "nodrag",
                 cx: 500,
                 cy: 500,
                 r: 4,
@@ -499,7 +524,7 @@ export class CardboardComputer {
         }
 
         let scaleNode = makeElementSVG("g", {
-            class: "scale"
+            class: "scale nodrag"
         });
         
         if (!scaleOpts.yDirection) {
@@ -542,6 +567,7 @@ export class CardboardComputer {
                         let cy = scaleOpts.yOffset - (scaleOpts.yDirection == -1 ? 42.5 : -42.5);
                         labelClass = "unit-pointer";
                         scaleNode.appendChild(makeElementSVG("circle", {
+                            class: "nodrag",
                             fill: "#333333",
                             stroke: "#333333",
                             cx: 500,
@@ -550,6 +576,7 @@ export class CardboardComputer {
                             transform: rotation
                         }));
                         scaleNode.appendChild(makeElementSVG("polygon", {
+                            class: "nodrag",
                             fill: "#333333",
                             stroke: "#333333",
                             points: "485," + cy + " 515," + cy + " 500," + (cy - 45 * scaleOpts.yDirection),

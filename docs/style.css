@@ -249,6 +249,10 @@ a.pdm img {
     font-weight: bold;
 }
 
+.nodrag {
+    pointer-events: none;
+}
+
 .label-inverse {
     font-size: 120%;
 }
