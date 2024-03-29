@@ -86,7 +86,6 @@ export class CardboardComputer {
         this._containerNode.append(this._makeSVG());
     }
 
-
     /**
      * Rotate a node around the centre of the diagram.
      *
@@ -323,10 +322,26 @@ export class CardboardComputer {
                 }
             }
         }
+
+        // for chaining
+        return this;
+    }
+
+
+    /**
+     * Switch to advanced or basic mode
+     */
+    switchMode (advanced) {
+        for (const childNode of this._containerNode.childNodes) {
+            this._containerNode.removeChild(childNode);
+        }
+        this._options.advanced = advanced;
+        this._containerNode.append(this._makeSVG());
+        return this;
     }
     
 
-    
+    
     //
     // Private methods for constructing an SVG DOM tree
     // (private by convention, not ES7 private)
