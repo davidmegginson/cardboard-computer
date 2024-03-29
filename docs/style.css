@@ -47,9 +47,6 @@ nav a.active-tab {
 /* Figures */
 
 figcaption {
-    font-weight: bold;
-    font-style: italic;
-    color: #444444;
 }
 
 .template {
@@ -84,6 +81,23 @@ figcaption {
     color: #666666;
 }
 
+.diy-pic-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 2ex;
+    gap: .5ex;
+}
+
+.diy-pic {
+    flex-basis: 20ex;
+    padding: .5ex;
+    border: 1px solid;
+}
+
+.diy-pic img {
+    max-width: 100%;
+}
 
 /* Guide */
 
@@ -227,6 +241,11 @@ a.pdm img {
 
     #scales img {
         max-width: 20em;
+    }
+
+    .diy-pic-container {
+        gap: 0;
+        row-gap: 2ex;
     }
 
 }

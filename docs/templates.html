@@ -21,31 +21,75 @@
     <main>
       <h2>DiY cut-out templates</h2>
 
-      <p>(If you have trouble printing from your browser, you can download these templates as PDF in <a href="cardboard-computer-templates-a4.pdf">A4</a> or <a href="cardboard-computer-templates-usletter.pdf">US letter</a> paper size.)</p>
+      <p>If you have trouble printing from your browser, you can download these templates as PDF in <a href="cardboard-computer-templates-a4.pdf">A4</a> or <a href="cardboard-computer-templates-usletter.pdf">US letter</a> paper size. To save paper and toner, skip these instructions and print out just the pages with the cut-out templates you need.</p>
 
-      <p>Print out these templates in landscape orientation and use them to build your own Cardboard Computer. After cutting them out, if you weren't able to print onto card stock, you may want to glue them onto cardboard to stiffen them (they'll be a bit floppy on just paper).</p>
+      <div class="diy-pic-container">
 
-      <p>The outer wheel is always the same. For the inner wheel, you have a choice of a basic one with just the C scale (for multiplication, division, and ratios/conversions), the an advanced one (adding the CI, A, and K scales for three-step multiplication, square roots, and cube roots).</p>
+        <figure class="diy-pic">
+          <img src="images/01-cutting-out.jpg" />
+          <figcaption>Cut out the templates. It is a good idea to glue the wheels onto a cardboard backing.</figcaption>
+        </figure>
 
-      <p>The wheels need to rotate, and proper alignment is very important for accuracy. The simplest thing is to stick a thumbtack through the centre into something soft (like a cork board). More-portable approaches would involve something like a split-pin, a grommit (which you can get at an arts-and-crafts store or from your local shoe repair place), or even a cleverly-folded twist tie.</p>
-      
-      <p><b>Optional:</b> You may choose to add a cursor to help with alignment. It should be straight and rotate from the centre, like the wheels. You can use a stiff piece of wire or a piece of see-through plastic with a straight line drawn down the middle. A good source for the plastic is an empty food container (it's a good idea to smooth the sides a bit with fine sandpaper or an emery board after cutting it out).</p>
+        <figure class="diy-pic">
+          <img src="images/02-cut-outs.jpg" />
+          <figcaption>All the parts cut out (you don't need usually need <i>both</i> inner wheels).</figcaption>
+        </figure>
 
-      <figure id="outer-wheel-template" class="template">
-        <figcaption>Outer wheel</figcaption>
-      </figure>
+        <figure class="diy-pic">
+          <img src="images/03-plastic.jpg" />
+          <figcaption>Stiff plastic packaging is a good source for a cursor.</figcaption>
+        </figure>
 
-      <figure id="inner-wheel-basic-template" class="template">
-        <figcaption>Inner wheel (basic)</figcaption>
-      </figure>
+        <figure class="diy-pic">
+          <img src="images/04-cursor.jpg" />
+          <figcaption>Tape the paper template to the plastic and cut around it.</figcaption>
+        </figure>
 
-      <figure id="inner-wheel-advanced-template" class="template">
-        <figcaption>Inner wheel (advanced)</figcaption>
-      </figure>
+        <figure class="diy-pic">
+          <img src="images/05-hairline.jpg" />
+          <figcaption>Use a fine marker and ruler to draw the hairline down the middle of the cursor.</figcaption>
+        </figure>
 
-      <figure id="cursor-template" class="template">
-        <figcaption>Optional cursor (cutting guide for plastic)</figcaption>
-      </figure>
+        <figure class="diy-pic">
+          <img src="images/06-alignment.jpg" />
+          <figcaption>It is important to align the wheels precisely. Check that the numbers line up all the way around.</figcaption>
+        </figure>
+        
+        <figure class="diy-pic">
+          <img src="images/07-basic.jpg" />
+          <figcaption>Basic version assembled (using a thumbtack in a corkboard as the pivot).</figcaption>
+        </figure>
+        
+        <figure class="diy-pic">
+          <img src="images/08-advanced.jpg" />
+          <figcaption>Advanced version assembled.</figcaption>
+        </figure>
+
+      </div>
+
+      <section class="template">
+        <h2>Outer wheel template</h2>
+        <figure id="outer-wheel-template">
+        </figure>
+      </section>
+
+      <section class="template">
+        <h2>Basic inner-wheel template</h2>
+        <figure id="inner-wheel-basic-template">
+        </figure>
+      </section>
+
+      <section class="template">
+        <h2>Advanced inner-wheel template</h2>
+        <figure id="inner-wheel-advanced-template">
+        </figure>
+      </section>
+
+      <section class="template">
+        <h2>Cursor template (optional)</h2>
+        <figure id="cursor-template">
+        </figure>
+      </section>
 
     </main>
     <footer>
@@ -60,20 +104,20 @@
     </footer>
     <script type="text/javascript">
       import("./modules/cardboard-computer.js").then((cc) => {
-          new cc.CardboardComputer("outer-wheel-template", {
-              components: ["outer-wheel", "grommit"]
-          });
-          new cc.CardboardComputer("inner-wheel-basic-template", {
-              components: ["inner-wheel", "grommit"],
-              advanced: false
-          });
-          new cc.CardboardComputer("inner-wheel-advanced-template", {
-              components: ["inner-wheel", "grommit"],
-              advanced: true
-          });
-          new cc.CardboardComputer("cursor-template", {
-              components: ["cursor"]
-          });
+      new cc.CardboardComputer("outer-wheel-template", {
+      components: ["outer-wheel", "grommit"]
+      });
+      new cc.CardboardComputer("inner-wheel-basic-template", {
+      components: ["inner-wheel", "grommit"],
+      advanced: false
+      });
+      new cc.CardboardComputer("inner-wheel-advanced-template", {
+      components: ["inner-wheel", "grommit"],
+      advanced: true
+      });
+      new cc.CardboardComputer("cursor-template", {
+      components: ["cursor"]
+      });
       });
     </script>
   </body>
