@@ -51,6 +51,8 @@ export const PI = 3.1416
  *
  * containerId - the HTML id of the container where the CardboardComputer should draw itself.
  * options - an object with options for the computer.
+
+ * Note: private variables methods are private-by-convention (starting with "_") rather than ES7 private.
  *
  * Options:
  *  advanced - if true, draw the advanced computer, with the CI, A, and K scales.
@@ -60,6 +62,7 @@ export const PI = 3.1416
  * Public methods:
  *  rotate - apply a list of rotation specifications to the computer.
  *  activateDemo - animate an interactive demo
+ *  makeInteractive - all the user to draw the parts around
  */
 export class CardboardComputer {
 
@@ -344,7 +347,6 @@ export class CardboardComputer {
     
     //
     // Private methods for constructing an SVG DOM tree
-    // (private by convention, not ES7 private)
     //
 
 
@@ -361,12 +363,15 @@ export class CardboardComputer {
         // apparently helps to capture touch events in SVG
         svgNode.addEventListener("touchstart", () => {});
 
+        // root group
+        // rotating this rotates all parts of the slide rule together
         let slideRuleNode = makeElementSVG("g", {
             class: "sliderule-diagram"
         });
         svgNode.appendChild(slideRuleNode);
         this._nodes["slide-rule"] = slideRuleNode;
 
+        // outer wheel group (rotates independently)
         if (this._options.components.includes("outer-wheel")) {
             let outerWheelNode = makeElementSVG("g", {
                 class: "outer-wheel"
@@ -383,6 +388,7 @@ export class CardboardComputer {
             this._nodes["outer-wheel"] = outerWheelNode;
         }
 
+        // inner wheel group (rotates independently)
         if (this._options.components.includes("inner-wheel")) {
             let innerWheelNode = makeElementSVG("g", {
                 class: "inner-wheel"
@@ -425,6 +431,7 @@ export class CardboardComputer {
             this._nodes["inner-wheel"] = innerWheelNode;
         }
 
+        // cursor group (rotates independently)
         if (this._options.components.includes("cursor")) {
             let cursorNode = makeElementSVG("g", {
                 class: "cursor"
@@ -463,6 +470,7 @@ export class CardboardComputer {
             this._nodes["cursor"] = cursorNode;
         }
 
+        // Centre grommit group (mainly decorative)
         if (this._options.components.includes("grommit")) {
             let grommitNode = makeElementSVG("g");
             grommitNode.appendChild(makeElementSVG("circle", {
@@ -491,15 +499,17 @@ export class CardboardComputer {
             this._nodes["grommit"] = grommitNode;
         }
 
-        this._draw();
+        // Fill in the dynamically-generated scales
+        this._drawScales();
 
         return svgNode;
     }
 
     /**
-     * Load definitions from JSON and draw the scales as needed.
+     * Draw the scales as configured.
+     * The scale definitions are in data/scales.json
      */
-    _draw () {
+    _drawScales () {
         fetch("data/scales.json").then((response) => response.json()).then((scales) => {
             if (this._options.components.includes("outer-wheel")) {
                 this._drawScale(this._nodes["outer-wheel"], {
@@ -547,33 +557,38 @@ export class CardboardComputer {
 
     
     /**
-     * Draw a scale on the circular sliderule
+     * Draw a single scale.
      */
     _drawScale (node, scaleOpts) {
 
+        // Check if a number falls into an interval
         function checkInterval (i, interval) {
             let x = Math.round(i * 1000);
             let y = Math.round(interval * 1000);
             return (x % y == 0);
         }
 
+        // Make a rotation transformation string
         function makeRotation (deg) {
             return "rotate(" + (Math.log10(deg) / scaleOpts.scale.factor) * 360.0 + ", 500, 500)";
         }
 
+        // Group to hold this scale
         let scaleNode = makeElementSVG("g", {
             class: "scale nodrag"
         });
-        
+
+        // Default to clockwise
         if (!scaleOpts.yDirection) {
             scaleOpts.yDirection = 1;
         }
 
+        // Default to the main (big) label class
         if (!scaleOpts.labelClass) {
             scaleOpts.labelClass = "label";
         }
 
-        // Label the scale
+        // Label the scale (e.g. D, C, CI ...)
         if (scaleOpts.scaleLabel) {
             scaleNode.appendChild(makeElementSVG("text", {
                 x: 500,
@@ -583,11 +598,21 @@ export class CardboardComputer {
                 transform: "rotate(" + (scaleOpts.scale.factor < 0 ? -5 : 5) + ", 500, 500)"
             }, scaleOpts.scaleLabel));
         }
-        
+
+        // Iterate through the ranges, adding tick lines and numbers as configured
+        // (The ranges change as the numbers become closer in each scale)
         scaleOpts.scale.ranges.forEach((range) => {
+
+            // Walk through the range as specified
             for (let i = range.start; i < range.end; i += range.step) {
+
+                // Is this a large tick (defaults to small)?
                 let isLarge = checkInterval(i, range.largeTickInterval);
+
+                // Make the rotation transformation string
                 let rotation = makeRotation(i);
+
+                // Draw the large or small tick mark, rotated as needed
                 scaleNode.appendChild(makeElementSVG("line", {
                     x1: 500,
                     x2: 500,
@@ -597,10 +622,16 @@ export class CardboardComputer {
                     stroke_width: (isLarge ? 2 : 1),
                     transform: rotation
                 }));
+
+
+                // Check if this is also a text-label interval
+                // (We always draw a text label at the start of a range)
                 if (checkInterval(i, range.labelInterval) || i == range.start) {
+
+                    // What's the CSS class for this text label?
                     let labelClass = scaleOpts.labelClass;
 
-                    // Is this a unit pointer?
+                    // Is this a unit pointer? If so, draw differently (and change the CSS class)
                     if (i == 1.0 && scaleOpts.unitPointer) {
                         let cy = scaleOpts.yOffset - (scaleOpts.yDirection == -1 ? 42.5 : -42.5);
                         labelClass = "unit-pointer";
@@ -622,7 +653,7 @@ export class CardboardComputer {
                         }));
                     }
 
-                    // Add the main text label
+                    // Finally, draw the text label itself, rotated in sync with the ticks
                     scaleNode.appendChild(makeElementSVG("text", {
                         x: 500,
                         y: scaleOpts.yOffset + (scaleOpts.yDirection == 1 ? 50 : -35),
@@ -634,6 +665,7 @@ export class CardboardComputer {
             }
         });
 
+        // Draw any special gauge marks like pi or C
         if (scaleOpts.scale.specialValues) {
             scaleOpts.scale.specialValues.forEach((special) => {
                 let rotation = makeRotation(special.value);
@@ -656,14 +688,15 @@ export class CardboardComputer {
             });
         }
 
+        // add the scale to the wheel
         node.appendChild(scaleNode);
     }
 
 
+
     //
-    // Private methods for creating and animating problems
+    // Private methods for creating and animating exercises
     //
-
 
     /**
      * Reset the wheel to its starting position.
@@ -697,10 +730,8 @@ export class CardboardComputer {
     }
 
 
-    //
     // Individual problem-type methods
-    //
-
+  
     _setMultiplicationProblem () {
         let [n1, n2] = [genNum(), genNum()];
         let result = n1 * n2;
@@ -863,7 +894,6 @@ export class CardboardComputer {
         };
     }
 
-    
 };
 
 
