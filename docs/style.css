@@ -74,6 +74,7 @@ figcaption {
 }
 
 .help {
+    float: right;
     font-size: 83.3333%;
 }
 
